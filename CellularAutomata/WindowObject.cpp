@@ -2,8 +2,11 @@
 
 #include "World.h"
 
+BOOST_CLASS_EXPORT_IMPLEMENT(WindowObject)
+
 WindowObject::WindowObject(void)
 	: BaseObject("window")
+	, FEnable(false)
 {
 	FLayer = 1;
 }

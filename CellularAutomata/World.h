@@ -8,7 +8,7 @@
 
 #include <SFML\Graphics.hpp>
 
-#include <boost/serialization/list.hpp>
+#include <boost/serialization/vector.hpp>
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/version.hpp>
 #include <boost/serialization/split_member.hpp>
@@ -17,6 +17,9 @@
 #include "BaseObject.h"
 #include "CellularAutomata.h"
 
+#include "AllObject.h"
+
+
 class WorldSizeType
 {
 public:
@@ -24,22 +27,14 @@ public:
 	int first;
 	int second;
 
-	friend class boost::serialization::access;
 	// ----------------- SAVELOAD ------------------------------
 	friend class boost::serialization::access;
-    template<class Archive>
-    void save(Archive & ar, const unsigned int version) const
+	template<class Archive>
+    void serialize(Archive & ar, const unsigned int version) const
     {
 		ar  & first;
 		ar  & second;
     }
-    template<class Archive>
-    void load(Archive & ar, const unsigned int version)
-    {
-        ar  & first;
-		ar  & second;
-    }
-    BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 
@@ -59,22 +54,29 @@ public:
 	// World logic
 	void OnTick();
 	void OnClick(int parX, int parY);
+	float GetTickSize() const { return FTickSize; }
+	void SetTickSize(float parTickSize) { FTickSize = parTickSize; }
 
 	CellularAutomata& GetCelluls() { return FCellularAutomata; }
+	std::string const & GetMapName() const {return FMapName; }
 
 	// ----------------- SAVELOAD ------------------------------
 	friend class boost::serialization::access;
     template<class Archive>
     void save(Archive & ar, const unsigned int version) const
     {
-		ar  & FWorldSize;
-		ar  & FInitialWorldTemperature;
+		ar & FWorldSize;
+		ar & FInitialWorldTemperature;
+		ar & FMapName;
+		ar & FMaps;
     }
     template<class Archive>
     void load(Archive & ar, const unsigned int version)
     {
-        ar  & FWorldSize;
-		ar  & FInitialWorldTemperature;
+        ar & FWorldSize;
+		ar & FInitialWorldTemperature;
+		ar & FMapName;
+		ar & FMaps;
     }
     BOOST_SERIALIZATION_SPLIT_MEMBER()
 
@@ -82,12 +84,16 @@ private:
 	bool InitWorldParams(ParamList const & parParams);
 	bool CreateObject(ParamList const & parParams);
 	
+	std::string FMapName;
 	WorldSizeType FWorldSize;
+	float FTickSize;
 	float FInitialWorldTemperature;
 
 	ObjectFactory const & FFactory;
 
 	MapWithTileLevel FMaps;
 	CellularAutomata FCellularAutomata;
+
+	sf::Font FDefaultFont;
 };
 

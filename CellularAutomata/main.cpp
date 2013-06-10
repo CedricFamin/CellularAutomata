@@ -11,9 +11,7 @@
 
 #include "World.h"
 #include "ObjectFactory.h"
-#include "WallObject.h"
-#include "HeatObject.h"
-#include "WindowObject.h"
+#include "AllObject.h"
 
 namespace {
 	static int VIEW_SPEED = 10;
@@ -28,7 +26,7 @@ void SaveWorld(World & parWorld, std::string const & parFilename)
 
 	// Generate filename 
 	std::stringstream filename("");
-	filename << "../Save/save-" << std::time(NULL) << ".save";
+	filename << "../Save/" << parWorld.GetMapName() << "-save-" << std::time(NULL) << ".casave";
 
 	file.open(filename.str(), std::fstream::trunc | std::ios::out);
 	if (!file.is_open())
@@ -55,14 +53,13 @@ int main(int ac, char **av)
 		return 1;
 	}
 
-    sf::RenderWindow app(sf::VideoMode(WindowXSize, WindowYSize, 32), "Cellular Automata", sf::Style::Titlebar | sf::Style::Close);
+	sf::RenderWindow app(sf::VideoMode(WindowXSize, WindowYSize, 32), world.GetMapName(), sf::Style::Titlebar | sf::Style::Close);
 	sf::Vector2f center((float)world.GetX()/2, (float)world.GetY()/2);
     sf::Vector2f halfsize((float)world.GetX(), (float)world.GetY());
     sf::View view(center, halfsize);
     float zoom = 1.0f;
 	view.zoom(1.0f);
 	app.setView(view);
-	float tickSize = .01f;
 	sf::Clock deltaClock;
 	bool pause = false;
 	while (app.isOpen())
@@ -105,6 +102,12 @@ int main(int ac, char **av)
 					case sf::Keyboard::F5:
 						SaveWorld(world, MapFileName);
 						break;
+					case sf::Keyboard::PageUp:
+						world.SetTickSize(world.GetTickSize() * 0.5f);
+						break;
+					case sf::Keyboard::PageDown:
+						world.SetTickSize(world.GetTickSize() * 2.0f);
+						break;
                     default:
                         break;
                 }
@@ -121,8 +124,9 @@ int main(int ac, char **av)
                     break;
             }
         }
-        app.clear();
-		if (!pause && deltaClock.getElapsedTime().asSeconds() > tickSize)
+        
+		app.clear();
+		if (!pause && deltaClock.getElapsedTime().asSeconds() > world.GetTickSize())
 		{
 			world.OnTick();
 			deltaClock.restart();
@@ -131,6 +135,8 @@ int main(int ac, char **av)
 		world.Draw(app);
 		app.setView(view);
 		app.display();
+
+		
     }
     return 0;
 }

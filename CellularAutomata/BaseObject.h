@@ -5,6 +5,12 @@
 
 #include <SFML\Graphics.hpp>
 
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/export.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+
 class World;
 
 // Class de base pour les objet du monde
@@ -19,6 +25,16 @@ public:
 		int maxX;
 		int minY;
 		int maxY;
+
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive & ar, const unsigned int version)
+		{
+			ar & minX;
+			ar & maxX;
+			ar & minY;
+			ar & maxY;
+		}
 	};
 
 	BaseObject(std::string const & parIdentitier);
@@ -32,6 +48,16 @@ public:
 	virtual void Draw(sf::RenderWindow & app) const = 0;
 	virtual void Update(World * parWorld) {}
 	virtual void OnClick(World * parWorld, int parX, int parY) {}
+
+	friend class boost::serialization::access;
+	template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+		ar & FLayer;
+		ar & FPosition;
+		ar & FIdentifier;
+    }
+
 protected:
 	int FLayer;
 	ObjectPosition FPosition;
@@ -39,3 +65,4 @@ protected:
 
 };
 
+BOOST_CLASS_EXPORT_KEY(BaseObject);

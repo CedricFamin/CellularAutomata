@@ -59,7 +59,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-system-d.lib;sfml-window-d.lib;libboost_serialization-vc110-mt-gd-1_53.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-system-d.lib;sfml-window-d.lib;libboost_serialization-vc110-mt-gd-1_53.lib;libboost_filesystem-vc110-mt-gd-1_53.lib;libboost_system-vc110-mt-gd-1_53.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -83,6 +83,7 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AllObject.h" />
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="CellularAutomata.h" />
     <ClInclude Include="HeatObject.h" />

@@ -2,6 +2,8 @@
 
 #include "World.h"
 
+BOOST_CLASS_EXPORT_IMPLEMENT(WallObject)
+
 WallObject::WallObject(void)
 : BaseObject("wall")
 {

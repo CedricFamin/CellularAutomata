@@ -2,14 +2,19 @@
 #include <regex>
 #include <sstream>
 
+#include "boost/filesystem.hpp"
+
 #include "World.h"
 
+#include "AllObject.h"
 
 World::World(ObjectFactory const & parFactory)
 : FFactory(parFactory)
 , FWorldSize(0, 0)
 , FInitialWorldTemperature(0)
+, FTickSize(.2f)
 {
+	FDefaultFont.loadFromFile("../font/arial.ttf");
 }
 
 
@@ -29,6 +34,16 @@ void World::Draw(sf::RenderWindow& app) const
 	}
 
 	FCellularAutomata.Draw(app);
+
+	// draw interface
+	{ // tick
+		std::ostringstream strText;
+		strText << "TickSize : " << FTickSize;
+		sf::Text txt(strText.str(), FDefaultFont, 10);
+		sf::Vector2f pos = app.mapPixelToCoords(sf::Vector2i(10, 10), app.getView());
+		txt.setPosition(pos.x, pos.y);
+		app.draw(txt);
+	}
 }
 
 bool World::InitWorldParams(ParamList const & parParams)
@@ -66,6 +81,9 @@ bool World::CreateObject(ParamList const & parParams)
 
 bool World::LoadWorld(std::string const & parFilename)
 {
+	boost::filesystem::path const p(parFilename);
+	FMapName = p.stem().string();
+
 	typedef std::map<std::string, bool(World::*)(ParamList const &)>  MapOperationType;
 	MapOperationType operation;
 	{
@@ -74,10 +92,11 @@ bool World::LoadWorld(std::string const & parFilename)
 	}
 
 	std::ifstream fileStream;
-
 	fileStream.open(parFilename);
 	std::smatch m;
 	std::regex e ("([a-z|A-Z|0-9]+) ?");
+
+	
 
 	if (!fileStream.is_open())
 	{

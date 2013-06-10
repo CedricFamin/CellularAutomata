@@ -2,8 +2,11 @@
 
 #include "World.h"
 
+BOOST_CLASS_EXPORT_IMPLEMENT(HeatObject)
+
 HeatObject::HeatObject(void)
 	: BaseObject("heat")
+	, FEnable(false)
 {
 	FLayer = 1;
 }
