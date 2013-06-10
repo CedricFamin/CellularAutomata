@@ -48,6 +48,9 @@
     <ClCompile Include="BaseObject.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
+    <ClCompile Include="KeyToAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectFactory.h">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="AllObject.h">
       <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyToAction.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

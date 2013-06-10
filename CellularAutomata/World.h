@@ -56,6 +56,8 @@ public:
 	void OnClick(int parX, int parY);
 	float GetTickSize() const { return FTickSize; }
 	void SetTickSize(float parTickSize) { FTickSize = parTickSize; }
+	void TogglePause() { FPause = !FPause; }
+	bool Pause() const { return FPause; }
 
 	CellularAutomata& GetCelluls() { return FCellularAutomata; }
 	std::string const & GetMapName() const {return FMapName; }
@@ -87,6 +89,7 @@ private:
 	std::string FMapName;
 	WorldSizeType FWorldSize;
 	float FTickSize;
+	bool FPause;
 	float FInitialWorldTemperature;
 
 	ObjectFactory const & FFactory;

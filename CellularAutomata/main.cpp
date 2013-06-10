@@ -12,35 +12,17 @@
 #include "World.h"
 #include "ObjectFactory.h"
 #include "AllObject.h"
+#include "KeyToAction.h"
 
 namespace {
-	static int VIEW_SPEED = 10;
 	static unsigned int WindowXSize = 960;
 	static unsigned int WindowYSize = 640;
 	static std::string MapFileName = "../Map/BaseMap.map";
 }
 
-void SaveWorld(World & parWorld, std::string const & parFilename)
-{
-	std::ofstream file;
-
-	// Generate filename 
-	std::stringstream filename("");
-	filename << "../Save/" << parWorld.GetMapName() << "-save-" << std::time(NULL) << ".casave";
-
-	file.open(filename.str(), std::fstream::trunc | std::ios::out);
-	if (!file.is_open())
-	{
-		std::cout << "Cannot open file : " << filename.str() << std::endl;
-		return; 
-	}
-	boost::archive::text_oarchive oa(file);
-	oa << parWorld;
-}
-
 int main(int ac, char **av)
 {
- 
+	KeyToAction keyAction;
 	ObjectFactory factory;
 	factory.RegisterObject(new WallObject());
 	factory.RegisterObject(new HeatObject());
@@ -61,7 +43,6 @@ int main(int ac, char **av)
 	view.zoom(1.0f);
 	app.setView(view);
 	sf::Clock deltaClock;
-	bool pause = false;
 	while (app.isOpen())
     {
         sf::Event event;
@@ -73,44 +54,8 @@ int main(int ac, char **av)
                     app.close();
                     break;
                 case sf::Event::KeyPressed :
-                switch (event.key.code)
-                {
-					case sf::Keyboard::Escape :
-                        app.close();
-                        break;
-                    case sf::Keyboard::Up :
-                        view.move(0, -VIEW_SPEED / zoom);
-                        break;
-                    case sf::Keyboard::Down :
-                        view.move(0, VIEW_SPEED / zoom);
-                        break;
-                    case sf::Keyboard::Right :
-                        view.move(VIEW_SPEED / zoom, 0);
-                        break;
-                    case sf::Keyboard::Left :
-                        view.move(-VIEW_SPEED / zoom, 0);
-                        break;
-                    case sf::Keyboard::Subtract:
-                        view.zoom(1.2f);
-                        break;
-					case sf::Keyboard::Add:
-                        view.zoom(0.8f);
-                        break;
-					case sf::Keyboard::Space:
-						pause = !pause;
-						break;
-					case sf::Keyboard::F5:
-						SaveWorld(world, MapFileName);
-						break;
-					case sf::Keyboard::PageUp:
-						world.SetTickSize(world.GetTickSize() * 0.5f);
-						break;
-					case sf::Keyboard::PageDown:
-						world.SetTickSize(world.GetTickSize() * 2.0f);
-						break;
-                    default:
-                        break;
-                }
+					if (keyAction[event.key.code])
+						keyAction[event.key.code](app, view, world);
 				case sf::Event::MouseButtonPressed:
 				{
 					if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -126,7 +71,7 @@ int main(int ac, char **av)
         }
         
 		app.clear();
-		if (!pause && deltaClock.getElapsedTime().asSeconds() > world.GetTickSize())
+		if (!world.Pause() && deltaClock.getElapsedTime().asSeconds() > world.GetTickSize())
 		{
 			world.OnTick();
 			deltaClock.restart();

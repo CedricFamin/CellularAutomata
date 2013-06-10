@@ -76,6 +76,7 @@
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="CellularAutomata.cpp" />
     <ClCompile Include="HeatObject.cpp" />
+    <ClCompile Include="KeyToAction.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="WallObject.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="CellularAutomata.h" />
     <ClInclude Include="HeatObject.h" />
+    <ClInclude Include="KeyToAction.h" />
     <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="WallObject.h" />
     <ClInclude Include="WindowObject.h" />

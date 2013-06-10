@@ -13,6 +13,7 @@ World::World(ObjectFactory const & parFactory)
 , FWorldSize(0, 0)
 , FInitialWorldTemperature(0)
 , FTickSize(.2f)
+, FPause(false)
 {
 	FDefaultFont.loadFromFile("../font/arial.ttf");
 }
