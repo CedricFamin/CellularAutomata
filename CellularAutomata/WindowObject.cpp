@@ -37,16 +37,27 @@ void WindowObject::Update(World * parWorld)
 {
 	if (!FEnable)
 		return ;
-	// on refroidit  les case sur laquel on est
-	for (int x = FPosition.minX; x < FPosition.maxX; ++x)
+
+	std::pair<int, int> cellulCoord = parWorld->GetCelluls().CoordConverter().MapCoordToCellulCoord(FPosition.minX, FPosition.minY);
+	int maxX = parWorld->GetCelluls().CoordConverter().GetX();
+	int maxY = parWorld->GetCelluls().CoordConverter().GetY();
+	int baseX = cellulCoord.first;
+	int baseY = cellulCoord.second;
+	// on refroidit les case sur laquelle on est
+	for (int x = baseX; x < maxX ; ++x)
 	{
-		for (int y = FPosition.minY; y < FPosition.maxY; ++y)
+		std::pair<int, int> realCoord(INT_MAX, INT_MAX);
+		for (int y = baseY; y < maxY; ++y)
 		{
-			if (parWorld->GetCelluls()[y][x] > 0)
-			{
-				parWorld->GetCelluls().UpdateCell(x, y, std::max(parWorld->GetCelluls()[y][x] - 1, 0.0f));
-			}
+			realCoord = parWorld->GetCelluls().CoordConverter().CellulCoordToMapCoord(x, y);
+			if (realCoord.second >= FPosition.maxY)
+				break;
+			float temp = parWorld->GetCelluls()[y][x];
+			if (temp > 0)
+				parWorld->GetCelluls().UpdateCell(x, y, temp - 1.0f);
 		}
+		if (realCoord.first >= FPosition.maxX)
+			break;
 	}
 }
 

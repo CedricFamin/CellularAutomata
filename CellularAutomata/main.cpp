@@ -39,7 +39,6 @@ int main(int ac, char **av)
 	sf::Vector2f center((float)world.GetX()/2, (float)world.GetY()/2);
     sf::Vector2f halfsize((float)world.GetX(), (float)world.GetY());
     sf::View view(center, halfsize);
-    float zoom = 1.0f;
 	view.zoom(1.0f);
 	app.setView(view);
 	sf::Clock deltaClock;
@@ -76,12 +75,9 @@ int main(int ac, char **av)
 			world.OnTick();
 			deltaClock.restart();
 		}
-
 		world.Draw(app);
 		app.setView(view);
 		app.display();
-
-		
     }
     return 0;
 }
