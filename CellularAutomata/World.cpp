@@ -42,18 +42,12 @@ void World::DrawInterface(sf::RenderWindow& app) const
 {
 	{ 
 		// background 
-		sf::Vector2f size(app.getSize().x, 40);
+		sf::Vector2f size(app.getSize().x, 45);
 		sf::RectangleShape shape(size);
 		shape.setPosition(0, 0);
 		shape.setFillColor(sf::Color(0, 0, 0, 155));
-		app.draw(shape);
-	}
-	{ 
-		// border
-		sf::Vector2f size(app.getSize().x, 10);
-		sf::RectangleShape shape(size);
-		shape.setPosition(0, 40);
-		shape.setFillColor(sf::Color(0, 0, 0, 255));
+		shape.setOutlineColor(sf::Color(200, 200, 200, 200));
+		shape.setOutlineThickness(-3.0f);
 		app.draw(shape);
 	}
 
