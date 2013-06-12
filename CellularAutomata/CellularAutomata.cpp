@@ -20,6 +20,8 @@ std::pair<int, int> CellularCoordConverter::CellulCoordToMapCoord(int parX, int 
 }
 
 CellularAutomata::CellularAutomata()
+: FAverageTemp(0.0f)
+, FDeltaTemp(0.0f)
 {
 	for (int i = 0; i < 11; ++i)
 	{
@@ -68,6 +70,10 @@ void CellularAutomata::Update()
 	float * currentPreviousCellul = NULL;
 	float * currentCellul = NULL;
 	// Regle : update des cellule
+	float nbCell = 0;
+	FAverageTemp = 0;
+	float tempMax = FLT_MIN;
+	float tempMin = FLT_MAX;
 	for (int i = 0; i < FCoordConverter.GetY(); ++i)
 	{
 		currentCellul = FCelluls[i];
@@ -98,8 +104,14 @@ void CellularAutomata::Update()
 			*currentCellul = totalTemp / nbTempUse;
 			if (*currentCellul > 10.0f)
 				*currentCellul = 10.0f;
+			if (*currentCellul > tempMax) tempMax = *currentCellul;
+			if (*currentCellul < tempMin) tempMin = *currentCellul;
+			FAverageTemp += *currentCellul;
+			++nbCell;
 		}
 	}
+	FAverageTemp = ceilf((FAverageTemp/ nbCell) * 100.0f) / 100.0f;
+	FDeltaTemp = tempMax - tempMin;
 }
 
 void CellularAutomata::Draw(sf::RenderWindow& app) const

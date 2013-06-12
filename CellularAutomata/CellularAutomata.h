@@ -40,8 +40,12 @@ public:
 
 	void Draw(sf::RenderWindow& app) const;
 	CellularCoordConverter const & CoordConverter() const { return FCoordConverter; }
+	float GetAverageTemp() const { return FAverageTemp; }
+	float GetDeltaTemp() const { return FDeltaTemp; }
 protected:
 private:
+	float FAverageTemp;
+	float FDeltaTemp;
 	float ** FPreviousCelluls;
 	float ** FCelluls;
 	CellToUpdateList FCellsToUpdate;

@@ -75,8 +75,10 @@ int main(int ac, char **av)
 			world.OnTick();
 			deltaClock.restart();
 		}
-		world.Draw(app);
 		app.setView(view);
+		world.Draw(app);
+		app.setView(app.getDefaultView());
+		world.DrawInterface(app);
 		app.display();
     }
     return 0;

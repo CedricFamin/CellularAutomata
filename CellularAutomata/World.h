@@ -51,6 +51,7 @@ public:
 	int GetX() const { return FWorldSize.first; }
 	int GetY() const { return FWorldSize.second; }
 	void Draw(sf::RenderWindow& app) const;
+	void DrawInterface(sf::RenderWindow& app) const;
 	// World logic
 	void OnTick();
 	void OnClick(int parX, int parY);
@@ -71,6 +72,7 @@ public:
 		ar & FInitialWorldTemperature;
 		ar & FMapName;
 		ar & FMaps;
+		ar & FTickNb;
     }
     template<class Archive>
     void load(Archive & ar, const unsigned int version)
@@ -79,6 +81,7 @@ public:
 		ar & FInitialWorldTemperature;
 		ar & FMapName;
 		ar & FMaps;
+		ar & FTickNb;
     }
     BOOST_SERIALIZATION_SPLIT_MEMBER()
 
@@ -88,6 +91,7 @@ private:
 	
 	std::string FMapName;
 	WorldSizeType FWorldSize;
+	unsigned int FTickNb;
 	float FTickSize;
 	bool FPause;
 	float FInitialWorldTemperature;

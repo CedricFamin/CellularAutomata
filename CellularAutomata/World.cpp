@@ -14,6 +14,7 @@ World::World(ObjectFactory const & parFactory)
 , FInitialWorldTemperature(0)
 , FTickSize(.2f)
 , FPause(false)
+, FTickNb(0)
 {
 	FDefaultFont.loadFromFile("../font/arial.ttf");
 }
@@ -35,14 +36,54 @@ void World::Draw(sf::RenderWindow& app) const
 	}
 
 	FCellularAutomata.Draw(app);
+}
 
-	// draw interface
+void World::DrawInterface(sf::RenderWindow& app) const
+{
+	{ 
+		// background 
+		sf::Vector2f size(app.getSize().x, 40);
+		sf::RectangleShape shape(size);
+		shape.setPosition(0, 0);
+		shape.setFillColor(sf::Color(0, 0, 0, 155));
+		app.draw(shape);
+	}
+	{ 
+		// border
+		sf::Vector2f size(app.getSize().x, 10);
+		sf::RectangleShape shape(size);
+		shape.setPosition(0, 40);
+		shape.setFillColor(sf::Color(0, 0, 0, 255));
+		app.draw(shape);
+	}
+
+	// stat
 	{ // tick
 		std::ostringstream strText;
 		strText << "TickSize : " << FTickSize;
 		sf::Text txt(strText.str(), FDefaultFont, 10);
-		sf::Vector2f pos = app.mapPixelToCoords(sf::Vector2i(10, 10), app.getView());
-		txt.setPosition(pos.x, pos.y);
+		txt.setPosition(10, 10);
+		app.draw(txt);
+	}
+	{ // average temp
+		std::ostringstream strText;
+		strText << "Average Temp : " << FCellularAutomata.GetAverageTemp();
+		sf::Text txt(strText.str(), FDefaultFont, 10);
+		txt.setPosition(10, 25);
+		app.draw(txt);
+	}
+	{ // average temp
+		std::ostringstream strText;
+		strText << "Delta temp : " << FCellularAutomata.GetDeltaTemp();
+		sf::Text txt(strText.str(), FDefaultFont, 10);
+		txt.setPosition(150, 25);
+		app.draw(txt);
+	}
+	{ // Tick
+		std::ostringstream strText;
+		strText << "Tick : " << FTickNb;
+		sf::Text txt(strText.str(), FDefaultFont, 10);
+		txt.setPosition(150, 10);
 		app.draw(txt);
 	}
 }
@@ -138,6 +179,7 @@ bool World::LoadWorld(std::string const & parFilename)
 
 void World::OnTick()
 {
+	++FTickNb;
 	// Update Object
 	for (MapType const & map : FMaps)
 	{
