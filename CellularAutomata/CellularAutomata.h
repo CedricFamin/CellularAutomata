@@ -5,6 +5,11 @@
 
 #include <SFML\Graphics.hpp>
 
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/version.hpp>
+#include <boost/serialization/split_member.hpp>
+
 class CellularCoordConverter
 {
 public:
@@ -17,6 +22,19 @@ public:
 	int GetRealY() const { return FRealSizeY; }
 	int GetX() const { return FSizeX; }
 	int GetY() const { return FSizeY; }
+
+	// -----------------------------------------------------------
+	// SaveLoad
+	// -----------------------------------------------------------
+	friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+		ar & FRealSizeX;
+		ar & FRealSizeY;
+		ar & FSizeX;
+		ar & FSizeY;
+    }
 protected:
 private:
 	int FRealSizeX;
@@ -42,6 +60,48 @@ public:
 	CellularCoordConverter const & CoordConverter() const { return FCoordConverter; }
 	float GetAverageTemp() const { return FAverageTemp; }
 	float GetDeltaTemp() const { return FDeltaTemp; }
+
+	// -----------------------------------------------------------
+	// SaveLoad
+	// -----------------------------------------------------------
+	friend class boost::serialization::access;
+    template<class Archive>
+    void save(Archive & ar, const unsigned int version) const
+    {
+		ar & FAverageTemp;
+		ar & FDeltaTemp;
+		ar & FCoordConverter;
+
+		for (int y = 0; y <= FCoordConverter.GetY(); ++y)
+		{
+			for (int x = 0; x <= FCoordConverter.GetX(); ++x)
+			{	
+				ar & FCelluls[y][x];
+				ar & FPreviousCelluls[y][x];
+			}
+		}
+    }
+    template<class Archive>
+    void load(Archive & ar, const unsigned int version)
+    {
+		ar & FAverageTemp;
+		ar & FDeltaTemp;
+		ar & FCoordConverter;
+
+		FCelluls = new float*[FCoordConverter.GetY() + 1]();
+		FPreviousCelluls = new float*[FCoordConverter.GetY() + 1]();
+		for (int i = 0; i <= FCoordConverter.GetY(); ++i)
+		{
+			FPreviousCelluls[i] = new float[FCoordConverter.GetX() + 1]();
+			FCelluls[i] = new float[FCoordConverter.GetX() + 1];
+			for (int j = 0; j <= FCoordConverter.GetX(); ++j)
+			{
+				ar & FCelluls[i][j];
+				ar & FPreviousCelluls[i][j];
+			}
+		}
+    }
+    BOOST_SERIALIZATION_SPLIT_MEMBER()
 protected:
 private:
 	float FAverageTemp;

@@ -30,7 +30,7 @@ public:
 	// ----------------- SAVELOAD ------------------------------
 	friend class boost::serialization::access;
 	template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) const
+    void serialize(Archive & ar, const unsigned int version)
     {
 		ar  & first;
 		ar  & second;
@@ -66,24 +66,15 @@ public:
 	// ----------------- SAVELOAD ------------------------------
 	friend class boost::serialization::access;
     template<class Archive>
-    void save(Archive & ar, const unsigned int version) const
+    void serialize(Archive & ar, const unsigned int version)
     {
 		ar & FWorldSize;
 		ar & FInitialWorldTemperature;
 		ar & FMapName;
 		ar & FMaps;
 		ar & FTickNb;
+		ar & FCellularAutomata;
     }
-    template<class Archive>
-    void load(Archive & ar, const unsigned int version)
-    {
-        ar & FWorldSize;
-		ar & FInitialWorldTemperature;
-		ar & FMapName;
-		ar & FMaps;
-		ar & FTickNb;
-    }
-    BOOST_SERIALIZATION_SPLIT_MEMBER()
 
 private:
 	bool InitWorldParams(ParamList const & parParams);

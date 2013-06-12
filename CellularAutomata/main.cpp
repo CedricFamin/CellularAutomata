@@ -18,6 +18,8 @@ namespace {
 	static unsigned int WindowXSize = 960;
 	static unsigned int WindowYSize = 640;
 	static std::string MapFileName = "../Map/BaseMap.map";
+	static std::string SaveFileName = "../Save/BaseMap-save-1371081451.casave";
+	static bool DONT_LOAD = false;
 }
 
 int main(int ac, char **av)
@@ -29,10 +31,28 @@ int main(int ac, char **av)
 	factory.RegisterObject(new WindowObject());
 
 	World world(factory);
-	if (!world.LoadWorld(MapFileName))
+	
+	// on load la map
+	if (DONT_LOAD)
 	{
-		std::cout << "FATAL ERROR : EXIT" << std::endl;
-		return 1;
+		if (!world.LoadWorld(MapFileName))
+		{
+			std::cout << "FATAL ERROR : EXIT" << std::endl;
+			return 1;
+		}
+	}
+	// on charge la sauvegarde
+	else 
+	{
+		std::ifstream file;
+		file.open(SaveFileName);
+		if (!file.is_open())
+		{
+			std::cout << "Cannot open file : " << SaveFileName << std::endl;
+			return 1; 
+		}
+		boost::archive::text_iarchive oa(file);
+		oa >> world;
 	}
 
 	sf::RenderWindow app(sf::VideoMode(WindowXSize, WindowYSize, 32), world.GetMapName(), sf::Style::Titlebar | sf::Style::Close);
