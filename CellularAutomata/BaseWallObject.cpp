@@ -1,49 +1,49 @@
-#include "WallObject.h"
+#include "BaseWallObject.h"
 
 #include "World.h"
 
-BOOST_CLASS_EXPORT_IMPLEMENT(WallObject)
+BOOST_CLASS_EXPORT_IMPLEMENT(BaseWallObject)
 
-WallObject::WallObject(void)
-: BaseObject("wall")
+BaseWallObject::BaseWallObject(void)
+: BaseObject("basewall")
 {
 	FLayer = 0;
 }
 
 
-WallObject::~WallObject(void)
+BaseWallObject::~BaseWallObject(void)
 {
 }
 
-void WallObject::Init(ParamList const & parParams)
+void BaseWallObject::Init(ParamList const & parParams)
 {
 	BaseObject::Init(parParams);
 	InitShape();
 }
 
-void WallObject::InitShape()
+void BaseWallObject::InitShape()
 {
 	sf::Vector2f size((float)(FPosition.maxX - FPosition.minX), (float)(FPosition.maxY - FPosition.minY));
 	FShape.setSize(size);
 	FShape.setPosition((float)FPosition.minX, (float)FPosition.minY);
-	FTexture.loadFromFile("../Tiles/wall0.png");
+	FTexture.loadFromFile("../Tiles/base-wall.png");
 	FTexture.setRepeated(true);
 	FShape.setTexture(&FTexture);
-	sf::IntRect textureRect(sf::Vector2i(0, 0), sf::Vector2i(FPosition.maxX - FPosition.minX, FPosition.maxY - FPosition.minY));
+	sf::IntRect textureRect(sf::Vector2i(0, 0), sf::Vector2i(FTexture.getSize().x, FPosition.maxY - FPosition.minY));
 	FShape.setTextureRect(textureRect);
 }
 
-void WallObject::Draw(sf::RenderWindow & app) const
+void BaseWallObject::Draw(sf::RenderWindow & app) const
 {
 	app.draw(FShape);
 }
 
-BaseObject * WallObject::Clone() const
+BaseObject * BaseWallObject::Clone() const
 {
-	return new WallObject();
+	return new BaseWallObject();
 }
 
-void WallObject::Update(World * parWorld)
+void BaseWallObject::Update(World * parWorld)
 {
 	std::pair<int, int> cellulCoord = parWorld->GetCelluls().CoordConverter().MapCoordToCellulCoord(FPosition.minX, FPosition.minY);
 	int maxX = parWorld->GetCelluls().CoordConverter().GetX();

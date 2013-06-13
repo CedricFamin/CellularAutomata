@@ -51,6 +51,9 @@
     <ClCompile Include="KeyToAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BaseWallObject.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectFactory.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="KeyToAction.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseWallObject.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -17,8 +17,8 @@ class World;
 
 class BaseObject
 {
-	typedef std::vector<std::string> ParamList;
 public:
+	typedef std::vector<std::string> ParamList;
 	struct ObjectPosition
 	{
 		int minX;

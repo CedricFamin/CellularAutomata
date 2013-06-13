@@ -1,11 +1,11 @@
 #pragma once
 #include "BaseObject.h"
 
-class WallObject : public BaseObject
+class BaseWallObject : public BaseObject
 {
 public:
-	WallObject(void);
-	virtual ~WallObject(void);
+	BaseWallObject(void);
+	virtual ~BaseWallObject(void);
 
 	virtual void Draw(sf::RenderWindow & app) const;
 	virtual BaseObject * Clone() const;
@@ -32,4 +32,4 @@ private:
 	sf::Texture FTexture;
 };
 
-BOOST_CLASS_EXPORT_KEY(WallObject);
+BOOST_CLASS_EXPORT_KEY(BaseWallObject);

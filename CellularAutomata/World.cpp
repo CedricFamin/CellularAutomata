@@ -26,6 +26,20 @@ World::~World(void)
 
 void World::Draw(sf::RenderWindow& app) const
 {
+	// draw background 
+	{
+		sf::Vector2f size((float)(FWorldSize.first), (float)(FWorldSize.second));
+		sf::RectangleShape shape(size);
+		shape.setPosition(sf::Vector2f(0.0f, 0.0f));
+		sf::Texture texture;
+		texture.loadFromFile("../Tiles/sol.png");
+		texture.setRepeated(true);
+		shape.setTexture(&texture);
+		sf::IntRect textureRect(sf::Vector2i(0, 0), sf::Vector2i(FWorldSize.first, FWorldSize.second));
+		shape.setTextureRect(textureRect);
+		app.draw(shape);
+	}
+
 	// draw object first
 	for (MapType const & map : FMaps)
 	{

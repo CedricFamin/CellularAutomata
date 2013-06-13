@@ -30,7 +30,7 @@ CellularAutomata::CellularAutomata()
 		int colorR = (int)(temperature / 10.0f * 255);
 		int colorB = 255 - colorR;
 		int colorV = 255 - abs(colorR - colorB);
-		FTemperatureShapes[i]->setFillColor(sf::Color(colorR, colorV, colorB, 30));
+		FTemperatureShapes[i]->setFillColor(sf::Color(colorR, colorV, colorB, 100));
 	}
 }
 
@@ -67,8 +67,6 @@ void CellularAutomata::Update()
 	float** tmp = FPreviousCelluls;
 	FPreviousCelluls = FCelluls;
 	FCelluls = tmp;
-	float * currentPreviousCellul = NULL;
-	float * currentCellul = NULL;
 	// Regle : update des cellule
 	float nbCell = 0;
 	FAverageTemp = 0;
@@ -76,14 +74,14 @@ void CellularAutomata::Update()
 	float tempMin = FLT_MAX;
 	for (int i = 0; i < FCoordConverter.GetY(); ++i)
 	{
-		currentCellul = FCelluls[i];
-		currentPreviousCellul = FPreviousCelluls[i];
-		for (int j = 0; j < FCoordConverter.GetX(); ++j, ++currentCellul, ++currentPreviousCellul)
+		for (int j = 0; j < FCoordConverter.GetX(); ++j)
 		{
-			if (*currentPreviousCellul < 0)
+			float valuePreviousCell = FPreviousCelluls[i][j];
+			float valueCell = 0;
+			if (valuePreviousCell < 0)
 			{
-				if (*currentPreviousCellul > -.8f)
-					*currentPreviousCellul = 0;
+				if (valuePreviousCell > -.8f)
+					valuePreviousCell = 0;
 				else
 					continue;
 			}
@@ -95,19 +93,19 @@ void CellularAutomata::Update()
 				int y = cellsToConsider[move][1] + i;
 				if (x < 0 || y < 0 || x >= FCoordConverter.GetX() || y >= FCoordConverter.GetY())
 					continue;
-				float * cell = *(FPreviousCelluls + y) + x;
-				if (*cell < 0)
+				if (FPreviousCelluls[y][x] < 0)
 					continue;
 				nbTempUse++;
-				totalTemp += *cell;
+				totalTemp += FPreviousCelluls[y][x];
 			}
-			*currentCellul = totalTemp / nbTempUse;
-			if (*currentCellul > 10.0f)
-				*currentCellul = 10.0f;
-			if (*currentCellul > tempMax) tempMax = *currentCellul;
-			if (*currentCellul < tempMin) tempMin = *currentCellul;
-			FAverageTemp += *currentCellul;
+			valueCell = totalTemp / nbTempUse;
+			if (valueCell > 10.0f)
+				valueCell = 10.0f;
+			if (valueCell > tempMax) tempMax = valueCell;
+			if (valueCell < tempMin) tempMin = valueCell;
+			FAverageTemp += valueCell;
 			++nbCell;
+			FCelluls[i][j] = valueCell;
 		}
 	}
 	FAverageTemp = ceilf((FAverageTemp/ nbCell) * 100.0f) / 100.0f;

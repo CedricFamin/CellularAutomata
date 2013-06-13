@@ -19,7 +19,7 @@ namespace {
 	static unsigned int WindowYSize = 640;
 	static std::string MapFileName = "../Map/BaseMap.map";
 	static std::string SaveFileName = "../Save/BaseMap-save-1371081451.casave";
-	static bool DONT_LOAD = false;
+	static bool DONT_LOAD = true;
 }
 
 int main(int ac, char **av)
@@ -29,6 +29,7 @@ int main(int ac, char **av)
 	factory.RegisterObject(new WallObject());
 	factory.RegisterObject(new HeatObject());
 	factory.RegisterObject(new WindowObject());
+	factory.RegisterObject(new BaseWallObject());
 
 	World world(factory);
 	

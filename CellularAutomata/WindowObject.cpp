@@ -22,8 +22,9 @@ void WindowObject::Draw(sf::RenderWindow & app) const
 	sf::RectangleShape shape(size);
 
 	shape.setPosition(FPosition.minX, FPosition.minY);
-	shape.setFillColor(sf::Color(0, 0, 255));
-	
+	sf::Texture texture;
+	texture.loadFromFile(FEnable ? "../Tiles/window-on.png" : "../Tiles/window-off.png");
+	shape.setTexture(&texture);
 	app.draw(shape);
 }
 

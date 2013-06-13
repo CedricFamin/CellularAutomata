@@ -74,6 +74,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseObject.cpp" />
+    <ClCompile Include="BaseWallObject.cpp" />
     <ClCompile Include="CellularAutomata.cpp" />
     <ClCompile Include="HeatObject.cpp" />
     <ClCompile Include="KeyToAction.cpp" />
@@ -86,6 +87,7 @@
   <ItemGroup>
     <ClInclude Include="AllObject.h" />
     <ClInclude Include="BaseObject.h" />
+    <ClInclude Include="BaseWallObject.h" />
     <ClInclude Include="CellularAutomata.h" />
     <ClInclude Include="HeatObject.h" />
     <ClInclude Include="KeyToAction.h" />
