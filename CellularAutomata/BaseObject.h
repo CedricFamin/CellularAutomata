@@ -47,7 +47,7 @@ public:
 	unsigned int GetLevelLayer(void) const { return FLayer; }
 	virtual void Draw(sf::RenderWindow & app) const = 0;
 	virtual void Update(World * parWorld) {}
-	virtual void OnClick(World * parWorld, int parX, int parY) {}
+	virtual bool OnClick(World * parWorld, int parX, int parY) { return false; }
 
 	friend class boost::serialization::access;
 	template<class Archive>

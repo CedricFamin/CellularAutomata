@@ -62,13 +62,15 @@ void WindowObject::Update(World * parWorld)
 	}
 }
 
-void WindowObject::OnClick(World * parWorld, int parX, int parY)
+bool WindowObject::OnClick(World * parWorld, int parX, int parY)
 {
 	if (FPosition.minX <= parX && FPosition.maxX >= parX)
 	{
 		if (FPosition.minY <= parY && FPosition.maxY >= parY)
 		{
 			FEnable = !FEnable;
+			return true;
 		}
 	}
+	return false;
 }

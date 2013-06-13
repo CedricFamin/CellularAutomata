@@ -16,7 +16,6 @@ World::World(ObjectFactory const & parFactory)
 , FPause(false)
 , FTickNb(0)
 {
-	FDefaultFont.loadFromFile("../font/arial.ttf");
 }
 
 
@@ -54,46 +53,7 @@ void World::Draw(sf::RenderWindow& app) const
 
 void World::DrawInterface(sf::RenderWindow& app) const
 {
-	{ 
-		// background 
-		sf::Vector2f size(app.getSize().x, 45);
-		sf::RectangleShape shape(size);
-		shape.setPosition(0, 0);
-		shape.setFillColor(sf::Color(0, 0, 0, 155));
-		shape.setOutlineColor(sf::Color(200, 200, 200, 200));
-		shape.setOutlineThickness(-3.0f);
-		app.draw(shape);
-	}
-
-	// stat
-	{ // tick
-		std::ostringstream strText;
-		strText << "TickSize : " << FTickSize;
-		sf::Text txt(strText.str(), FDefaultFont, 10);
-		txt.setPosition(10, 10);
-		app.draw(txt);
-	}
-	{ // average temp
-		std::ostringstream strText;
-		strText << "Average Temp : " << FCellularAutomata.GetAverageTemp();
-		sf::Text txt(strText.str(), FDefaultFont, 10);
-		txt.setPosition(10, 25);
-		app.draw(txt);
-	}
-	{ // average temp
-		std::ostringstream strText;
-		strText << "Delta temp : " << FCellularAutomata.GetDeltaTemp();
-		sf::Text txt(strText.str(), FDefaultFont, 10);
-		txt.setPosition(150, 25);
-		app.draw(txt);
-	}
-	{ // Tick
-		std::ostringstream strText;
-		strText << "Tick : " << FTickNb;
-		sf::Text txt(strText.str(), FDefaultFont, 10);
-		txt.setPosition(150, 10);
-		app.draw(txt);
-	}
+	FInterface.Draw(app, *this);
 }
 
 bool World::InitWorldParams(ParamList const & parParams)
@@ -200,15 +160,22 @@ void World::OnTick()
 	FCellularAutomata.Update();
 }
 
-void World::OnClick(int parX, int parY)
+void World::OnClick(sf::RenderTarget const & parApp, int parX, int parY)
 {
-	if (parX < 0 || parY < 0 || parX >= FWorldSize.first || parY >= FWorldSize.second)
+	if (FInterface.OnClick(this, parX, parY))
 		return ;
+
+	sf::Vector2f realPosition = parApp.mapPixelToCoords(sf::Vector2i(parX, parY), parApp.getView());
 	for (MapType const & map : FMaps)
 	{
 		for (BaseObject * object : map)
 		{
-			object->OnClick(this, parX, parY);
+			if (object->OnClick(this, (int)realPosition.x, (int)realPosition.y))
+				return ;
 		}
 	}
+
+	int temperature = FInterface.TemperatureSelected();
+	std::pair<int, int> cellulCoord = FCellularAutomata.CoordConverter().MapCoordToCellulCoord((int)realPosition.x, (int)realPosition.y);
+	FCellularAutomata.UpdateCell(cellulCoord.first, cellulCoord.second, temperature);
 }

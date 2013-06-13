@@ -62,13 +62,15 @@ void HeatObject::Update(World * parWorld)
 	}
 }
 
-void HeatObject::OnClick(World * parWorld, int parX, int parY)
+bool HeatObject::OnClick(World * parWorld, int parX, int parY)
 {
 	if (FPosition.minX <= parX && FPosition.maxX >= parX)
 	{
 		if (FPosition.minY <= parY && FPosition.maxY >= parY)
 		{
 			FEnable = !FEnable;
+			return true;
 		}
 	}
+	return false;
 }

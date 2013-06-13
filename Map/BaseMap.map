@@ -36,3 +36,4 @@ object heat 50 140 60 150
 object heat 50 200 60 210
 
 object window 0 50 10 70
+object window 350 12 400 32

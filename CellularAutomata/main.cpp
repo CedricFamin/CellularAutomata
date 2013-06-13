@@ -80,10 +80,10 @@ int main(int ac, char **av)
 				{
 					if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 					{
-						sf::Vector2f realPosition = app.mapPixelToCoords(sf::Mouse::getPosition(app), view);
-						world.OnClick((int)realPosition.x, (int)realPosition.y);
+						app.setView(view);
+						sf::Vector2i coord = sf::Mouse::getPosition(app);
+						world.OnClick(app, coord.x, coord.y);
 					}
-
 				}
                 default :
                     break;

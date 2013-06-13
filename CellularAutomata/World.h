@@ -16,6 +16,7 @@
 #include "ObjectFactory.h"
 #include "BaseObject.h"
 #include "CellularAutomata.h"
+#include "Interface.h"
 
 #include "AllObject.h"
 
@@ -54,13 +55,15 @@ public:
 	void DrawInterface(sf::RenderWindow& app) const;
 	// World logic
 	void OnTick();
-	void OnClick(int parX, int parY);
+	void OnClick(sf::RenderTarget const & parApp, int parX, int parY);
 	float GetTickSize() const { return FTickSize; }
 	void SetTickSize(float parTickSize) { FTickSize = parTickSize; }
+	unsigned int GetTick() const { return FTickNb; }
 	void TogglePause() { FPause = !FPause; }
 	bool Pause() const { return FPause; }
 
 	CellularAutomata& GetCelluls() { return FCellularAutomata; }
+	CellularAutomata const& GetCelluls() const { return FCellularAutomata; }
 	std::string const & GetMapName() const {return FMapName; }
 
 	// ----------------- SAVELOAD ------------------------------
@@ -91,7 +94,8 @@ private:
 
 	MapWithTileLevel FMaps;
 	CellularAutomata FCellularAutomata;
+	Interface FInterface;
 
-	sf::Font FDefaultFont;
+
 };
 
