@@ -26,6 +26,7 @@ std::pair<int, int> CellularCoordConverter::CellulCoordToMapCoord(int parX, int 
 CellularAutomata::CellularAutomata()
 : FAverageTemp(0.0f)
 , FDeltaTemp(0.0f)
+, FViscosity(1.0f)
 {
 	for (int i = 0; i < 11; ++i)
 	{
@@ -107,7 +108,7 @@ void CellularAutomata::Update()
 				else
 					totalTemp += FCelluls[i][j];
 				*/
-				totalTemp += FCelluls[i][j] + 0.5f * (FPreviousCelluls[y][x] - FCelluls[i][j]);
+				totalTemp += FCelluls[i][j] + (FPreviousCelluls[y][x] - FCelluls[i][j]) / FViscosity;
 			}
 			valueCell = totalTemp / nbTempUse;
 			if (valueCell > 10.0f)

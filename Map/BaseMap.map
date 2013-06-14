@@ -1,4 +1,5 @@
 world 500 300 2
+viscosity 2
 
 object wall 0 0 500 10
 object basewall 10 10 490 30

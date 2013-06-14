@@ -60,7 +60,7 @@ public:
 	CellularCoordConverter const & CoordConverter() const { return FCoordConverter; }
 	float GetAverageTemp() const { return FAverageTemp; }
 	float GetDeltaTemp() const { return FDeltaTemp; }
-
+	void SetViscosity(float parValue) { FViscosity = parValue; }
 	// -----------------------------------------------------------
 	// SaveLoad
 	// -----------------------------------------------------------
@@ -71,6 +71,7 @@ public:
 		ar & FAverageTemp;
 		ar & FDeltaTemp;
 		ar & FCoordConverter;
+		ar & FViscosity;
 
 		for (int y = 0; y <= FCoordConverter.GetY(); ++y)
 		{
@@ -87,6 +88,7 @@ public:
 		ar & FAverageTemp;
 		ar & FDeltaTemp;
 		ar & FCoordConverter;
+		ar & FViscosity;
 
 		FCelluls = new float*[FCoordConverter.GetY() + 1]();
 		FPreviousCelluls = new float*[FCoordConverter.GetY() + 1]();
@@ -104,6 +106,7 @@ public:
     BOOST_SERIALIZATION_SPLIT_MEMBER()
 protected:
 private:
+	float FViscosity;
 	float FAverageTemp;
 	float FDeltaTemp;
 	float ** FPreviousCelluls;

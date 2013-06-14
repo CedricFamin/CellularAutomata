@@ -70,6 +70,14 @@ bool World::InitWorldParams(ParamList const & parParams)
 	return true;
 }
 
+bool World::SetVisicosity(ParamList const & parParams)
+{
+	float viscosity = 0.0f;
+	std::istringstream (parParams[1]) >> viscosity;
+	FCellularAutomata.SetViscosity(viscosity);
+	return true;
+}
+
 bool World::CreateObject(ParamList const & parParams)
 {
 	std::cout << " --------- Create Object" << std::endl;
@@ -99,6 +107,7 @@ bool World::LoadWorld(std::string const & parFilename)
 	{
 		operation["world"] = &World::InitWorldParams;
 		operation["object"] = &World::CreateObject;
+		operation["viscosity"] = &World::SetVisicosity;
 	}
 
 	std::ifstream fileStream;
@@ -175,7 +184,7 @@ void World::OnClick(sf::RenderTarget const & parApp, int parX, int parY)
 		}
 	}
 
-	int temperature = FInterface.TemperatureSelected();
+	float temperature = (float)FInterface.TemperatureSelected();
 	std::pair<int, int> cellulCoord = FCellularAutomata.CoordConverter().MapCoordToCellulCoord((int)realPosition.x, (int)realPosition.y);
 	FCellularAutomata.UpdateCell(cellulCoord.first, cellulCoord.second, temperature);
 }

@@ -82,6 +82,7 @@ public:
 private:
 	bool InitWorldParams(ParamList const & parParams);
 	bool CreateObject(ParamList const & parParams);
+	bool SetVisicosity(ParamList const & parParams);
 	
 	std::string FMapName;
 	WorldSizeType FWorldSize;
