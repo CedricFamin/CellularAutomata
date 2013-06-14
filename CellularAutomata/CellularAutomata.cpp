@@ -1,22 +1,26 @@
 #include "CellularAutomata.h"
 
+namespace {
+	int GridSize = 5;
+}
+
 void CellularCoordConverter::Init(int parRealX, int parRealY)
 {
 	FRealSizeX = parRealX;
 	FRealSizeY = parRealY;
 
-	FSizeY = FRealSizeY / 10;
-	FSizeX = FRealSizeX / 10;
+	FSizeY = FRealSizeY / GridSize;
+	FSizeX = FRealSizeX / GridSize;
 }
 
 std::pair<int, int> CellularCoordConverter::MapCoordToCellulCoord(int parRealX, int parRealY) const
 {
-	return std::make_pair(parRealX / 10, parRealY / 10);
+	return std::make_pair(parRealX / GridSize, parRealY / GridSize);
 }
 
 std::pair<int, int> CellularCoordConverter::CellulCoordToMapCoord(int parX, int parY) const
 {
-	return std::make_pair(parX * 10, parY * 10);
+	return std::make_pair(parX * GridSize, parY * GridSize);
 }
 
 CellularAutomata::CellularAutomata()
@@ -25,7 +29,7 @@ CellularAutomata::CellularAutomata()
 {
 	for (int i = 0; i < 11; ++i)
 	{
-		FTemperatureShapes[i] = new sf::RectangleShape(sf::Vector2f(10, 10));
+		FTemperatureShapes[i] = new sf::RectangleShape(sf::Vector2f((float)GridSize, (float)GridSize));
 		float temperature = (float)i;
 		int colorR = (int)(temperature / 10.0f * 255);
 		int colorB = 255 - colorR;
@@ -96,7 +100,14 @@ void CellularAutomata::Update()
 				if (FPreviousCelluls[y][x] < 0)
 					continue;
 				nbTempUse++;
-				totalTemp += FPreviousCelluls[y][x];
+				// viscosite
+				/*
+				if (std::fabs(FPreviousCelluls[y][x] - FCelluls[i][j]) > 0.05f)
+					
+				else
+					totalTemp += FCelluls[i][j];
+				*/
+				totalTemp += FCelluls[i][j] + 0.5f * (FPreviousCelluls[y][x] - FCelluls[i][j]);
 			}
 			valueCell = totalTemp / nbTempUse;
 			if (valueCell > 10.0f)

@@ -78,6 +78,7 @@ int main(int ac, char **av)
 						keyAction[event.key.code](app, view, world);
 				case sf::Event::MouseButtonPressed:
 				{
+					// Todo faire en sorte de pouvoir garder un clic enfoncer pour setter les zone de chaleur.
 					if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 					{
 						app.setView(view);
