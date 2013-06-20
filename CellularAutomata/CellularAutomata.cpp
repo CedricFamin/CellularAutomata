@@ -1,26 +1,7 @@
 #include "CellularAutomata.h"
 
 namespace {
-	int GridSize = 5;
-}
-
-void CellularCoordConverter::Init(int parRealX, int parRealY)
-{
-	FRealSizeX = parRealX;
-	FRealSizeY = parRealY;
-
-	FSizeY = FRealSizeY / GridSize;
-	FSizeX = FRealSizeX / GridSize;
-}
-
-std::pair<int, int> CellularCoordConverter::MapCoordToCellulCoord(int parRealX, int parRealY) const
-{
-	return std::make_pair(parRealX / GridSize, parRealY / GridSize);
-}
-
-std::pair<int, int> CellularCoordConverter::CellulCoordToMapCoord(int parX, int parY) const
-{
-	return std::make_pair(parX * GridSize, parY * GridSize);
+	int GridSize = 10;
 }
 
 CellularAutomata::CellularAutomata()

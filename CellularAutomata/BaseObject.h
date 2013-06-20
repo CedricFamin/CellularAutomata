@@ -45,7 +45,7 @@ public:
 	virtual BaseObject * Clone() const = 0;
 	virtual void Init(ParamList const & parParams);
 	unsigned int GetLevelLayer(void) const { return FLayer; }
-	virtual void Draw(sf::RenderWindow & app) const = 0;
+	virtual void Draw(sf::RenderWindow & app) const  { };
 	virtual void Update(World * parWorld) {}
 	virtual bool OnClick(World * parWorld, int parX, int parY) { return false; }
 

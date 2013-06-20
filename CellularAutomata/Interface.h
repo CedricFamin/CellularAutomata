@@ -13,7 +13,10 @@ public:
 	void Draw(sf::RenderWindow& app, World const & parWorld) const;
 	bool OnClick(World * parWorld, int parX, int parY);
 	int TemperatureSelected() const { return FTemperatureSelected; }
+	void ToggleAutoMode() { FAuto = !FAuto; }
+	bool AutoMode() { return FAuto; }
 private:
+	bool FAuto;
 	int FTemperatureSelected;
 	sf::Font FDefaultFont;
 };

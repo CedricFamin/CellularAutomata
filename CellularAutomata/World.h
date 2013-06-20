@@ -42,9 +42,9 @@ public:
 class World
 {
 	typedef std::vector<BaseObject*> MapType;
-	typedef std::vector<std::string> ParamList;
 	typedef std::vector<MapType> MapWithTileLevel;
 public:
+	typedef std::vector<std::string> ParamList;
 	World(ObjectFactory const & parFactory);
 	~World(void);
 
@@ -61,6 +61,8 @@ public:
 	unsigned int GetTick() const { return FTickNb; }
 	void TogglePause() { FPause = !FPause; }
 	bool Pause() const { return FPause; }
+	void ToggleAutoMode() { FInterface.ToggleAutoMode(); }
+	void AddObject(BaseObject * parObject);
 
 	CellularAutomata& GetCelluls() { return FCellularAutomata; }
 	CellularAutomata const& GetCelluls() const { return FCellularAutomata; }

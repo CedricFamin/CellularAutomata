@@ -7,6 +7,7 @@
 
 Interface::Interface(void)
 	: FTemperatureSelected(0)
+	, FAuto(false)
 {
 	FDefaultFont.loadFromFile("../font/arial.ttf");
 }
@@ -75,6 +76,14 @@ void Interface::Draw(sf::RenderWindow& app, World const & parWorld) const
 			rect.setOutlineThickness(-3.0f);
 			app.draw(rect);
 		}
+	}
+
+	{ // Boutton Autpo
+		std::ostringstream strText;
+		strText << "heating regulation system : " << FAuto;
+		sf::Text txt(strText.str(), FDefaultFont, 10);
+		txt.setPosition((float)app.getSize().x - 200.0f, 10.0f);
+		app.draw(txt);
 	}
 }
 

@@ -10,38 +10,7 @@
 #include <boost/serialization/version.hpp>
 #include <boost/serialization/split_member.hpp>
 
-class CellularCoordConverter
-{
-public:
-	void Init(int parRealX, int parRealY);
-
-	std::pair<int, int> MapCoordToCellulCoord(int parRealX, int parRealY) const;
-	std::pair<int, int> CellulCoordToMapCoord(int parX, int parY) const;
-
-	int GetRealX() const { return FRealSizeX; }
-	int GetRealY() const { return FRealSizeY; }
-	int GetX() const { return FSizeX; }
-	int GetY() const { return FSizeY; }
-
-	// -----------------------------------------------------------
-	// SaveLoad
-	// -----------------------------------------------------------
-	friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
-    {
-		ar & FRealSizeX;
-		ar & FRealSizeY;
-		ar & FSizeX;
-		ar & FSizeY;
-    }
-protected:
-private:
-	int FRealSizeX;
-	int FRealSizeY;
-	int FSizeX;
-	int FSizeY;
-};
+#include "CoordConverter.h"
 
 class CellularAutomata
 {
@@ -57,7 +26,7 @@ public:
 	void Update();
 
 	void Draw(sf::RenderWindow& app) const;
-	CellularCoordConverter const & CoordConverter() const { return FCoordConverter; }
+	CoordConverter const & GetCoordConverter() const { return FCoordConverter; }
 	float GetAverageTemp() const { return FAverageTemp; }
 	float GetDeltaTemp() const { return FDeltaTemp; }
 	void SetViscosity(float parValue) { FViscosity = parValue; }
@@ -113,7 +82,7 @@ private:
 	float ** FCelluls;
 	CellToUpdateList FCellsToUpdate;
 
-	CellularCoordConverter FCoordConverter;
+	CoordConverter FCoordConverter;
 
 	
 	// ------------- SFML ------------------------

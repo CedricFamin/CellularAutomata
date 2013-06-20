@@ -86,9 +86,7 @@ bool World::CreateObject(ParamList const & parParams)
 	if (newObject)
 	{
 		newObject->Init(parParams);
-		if (FMaps.size() < newObject->GetLevelLayer() + 1)
-			FMaps.resize(newObject->GetLevelLayer() + 1);
-		FMaps[newObject->GetLevelLayer()].push_back(newObject);
+		AddObject(newObject);
 	}
 	else
 	{
@@ -97,6 +95,12 @@ bool World::CreateObject(ParamList const & parParams)
 	return true;
 }
 
+void World::AddObject(BaseObject * parObject)
+{
+	if (FMaps.size() < parObject->GetLevelLayer() + 1)
+			FMaps.resize(parObject->GetLevelLayer() + 1);
+		FMaps[parObject->GetLevelLayer()].push_back(parObject);
+}
 bool World::LoadWorld(std::string const & parFilename)
 {
 	boost::filesystem::path const p(parFilename);
@@ -185,6 +189,6 @@ void World::OnClick(sf::RenderTarget const & parApp, int parX, int parY)
 	}
 
 	float temperature = (float)FInterface.TemperatureSelected();
-	std::pair<int, int> cellulCoord = FCellularAutomata.CoordConverter().MapCoordToCellulCoord((int)realPosition.x, (int)realPosition.y);
+	std::pair<int, int> cellulCoord = FCellularAutomata.GetCoordConverter().MapCoordToCellulCoord((int)realPosition.x, (int)realPosition.y);
 	FCellularAutomata.UpdateCell(cellulCoord.first, cellulCoord.second, temperature);
 }

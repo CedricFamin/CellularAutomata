@@ -30,6 +30,7 @@ int main(int ac, char **av)
 	factory.RegisterObject(new HeatObject());
 	factory.RegisterObject(new WindowObject());
 	factory.RegisterObject(new BaseWallObject());
+	factory.RegisterObject(new Probe());
 
 	World world(factory);
 	

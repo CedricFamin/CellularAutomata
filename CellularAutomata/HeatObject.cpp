@@ -39,9 +39,9 @@ void HeatObject::Update(World * parWorld)
 	if (!FEnable)
 		return ;
 
-	std::pair<int, int> cellulCoord = parWorld->GetCelluls().CoordConverter().MapCoordToCellulCoord(FPosition.minX, FPosition.minY);
-	int maxX = parWorld->GetCelluls().CoordConverter().GetX();
-	int maxY = parWorld->GetCelluls().CoordConverter().GetY();
+	std::pair<int, int> cellulCoord = parWorld->GetCelluls().GetCoordConverter().MapCoordToCellulCoord(FPosition.minX, FPosition.minY);
+	int maxX = parWorld->GetCelluls().GetCoordConverter().GetX();
+	int maxY = parWorld->GetCelluls().GetCoordConverter().GetY();
 	int baseX = cellulCoord.first;
 	int baseY = cellulCoord.second;
 	// on chauffe les case sur laquelle on est
@@ -50,7 +50,7 @@ void HeatObject::Update(World * parWorld)
 		std::pair<int, int> realCoord(INT_MAX, INT_MAX);
 		for (int y = baseY; y < maxY; ++y)
 		{
-			realCoord = parWorld->GetCelluls().CoordConverter().CellulCoordToMapCoord(x, y);
+			realCoord = parWorld->GetCelluls().GetCoordConverter().CellulCoordToMapCoord(x, y);
 			if (realCoord.second >= FPosition.maxY)
 				break;
 			float temp = parWorld->GetCelluls()[y][x];

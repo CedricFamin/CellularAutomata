@@ -75,7 +75,46 @@ void ActionOnF5(sf::RenderWindow & app, sf::View & view, World & world)
 	oa << world;
 }
 					
+void ActionOnReturn(sf::RenderWindow & app, sf::View & view, World & world)
+{
+	world.ToggleAutoMode();
+}
 
+void ActionOnP(sf::RenderWindow & app, sf::View & view, World & world)
+{
+	sf::Vector2f position = app.mapPixelToCoords(sf::Mouse::getPosition(app), view);
+	if (position.x >= 0.0f && position.y >= 0.0f && (int)position.x < world.GetX() && (int)position.y < world.GetY())
+	{
+		BaseObject * object = new Probe();
+		World::ParamList params;
+		params.push_back("oject");
+		params.push_back("probe");
+		{
+			std::stringstream istr;
+			istr << position.x;
+			params.push_back(istr.str());
+		}
+		{
+			std::stringstream istr;
+			istr << position.y;
+			params.push_back(istr.str());
+		}
+		
+		{
+			std::stringstream istr;
+			istr << position.x;
+			params.push_back(istr.str());
+		}
+		{
+			std::stringstream istr;
+			istr << position.y;
+			params.push_back(istr.str());
+		}
+
+		object->Init(params);
+		world.AddObject(object);
+	}
+}
 
 KeyToAction::KeyToAction()
 {
@@ -90,6 +129,8 @@ KeyToAction::KeyToAction()
 	FKeyToAction[sf::Keyboard::PageDown] = ActionOnPageDown;
 	FKeyToAction[sf::Keyboard::Space] = ActionOnSpace;
 	FKeyToAction[sf::Keyboard::F5] = ActionOnF5;
+	FKeyToAction[sf::Keyboard::Return] = ActionOnReturn;
+	FKeyToAction[sf::Keyboard::P] = ActionOnP;
 }
 
 KeyToAction::ActionType KeyToAction::operator[](sf::Keyboard::Key const & parKey)
