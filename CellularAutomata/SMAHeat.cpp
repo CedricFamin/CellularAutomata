@@ -3,48 +3,53 @@
 #include "World.h"
 
 // --------------------------------------------------------
-// Agent
-// --------------------------------------------------------
-Agent::Agent()
-	: FTemperature(0.0f)
-{
-}
-
-Agent::~Agent()
-{
-}
-
-Demand * Agent::MakeWish()
-{
-	FInternalDemand.Value = FTempToReach - FTemperature;
-	return &FInternalDemand;
-}
-
-void Agent::ClearDemands()
-{
-	FExternalDemands.clear();
-	FInternalDemand.Value = 0.0f;
-	FInternalDemand.Destinataire = this;
-}
-// --------------------------------------------------------
 // SMAHeat
 // --------------------------------------------------------
 
 SMAHeat::SMAHeat(void)
 {
-	FAgentGrid.resize(FCoordConverter.GetY());
-	for (std::vector<Agent>& line : FAgentGrid)
-	{
-		FAgentGrid.resize(FCoordConverter.GetX());
-	}
 }
 
-
+// --------------------------------------------------------
+// --------------------------------------------------------
 SMAHeat::~SMAHeat(void)
 {
 }
 
+// --------------------------------------------------------
+// --------------------------------------------------------
 void SMAHeat::Update(World & parWorld)
 {
-	
+	FBlackboard.Clear();
+	for (auto agent : FEnvironmentalAgent)
+	{
+		agent->ReadAndWriteSomething(FBlackboard);
+	}
+
+	for (auto agent : FDistributorAgent)
+	{
+		agent->ReadAndWriteSomething(FBlackboard);
+	}
+}
+
+// --------------------------------------------------------
+// --------------------------------------------------------
+void SMAHeat::CreateAgent(Probe & parProbe)
+{
+	FEnvironmentalAgent.push_back(new EnvironmentalAgent(parProbe));
+}
+
+// --------------------------------------------------------
+// --------------------------------------------------------
+void SMAHeat::CreateAgent(HeatObject & parHeat)
+{
+	FDistributorAgent.push_back(new DistributorAgent(parHeat));
+}
+
+
+// --------------------------------------------------------
+// --------------------------------------------------------
+void SMAHeat::CreateAgent(BaseObject & parObject)
+{
+	// Nothing
 }

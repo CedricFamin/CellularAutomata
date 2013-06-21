@@ -4,44 +4,33 @@
 #include <list>
 
 #include "CoordConverter.h"
+#include "Agent.h"
+#include "Messages.h"
+#include "Blackboard.h"
 
-class Agent;
 class World;
+class BaseObject;
 
-struct Demand
-{
-	float Value;
-	Agent const * Destinataire;
-};
-
-class Agent
-{
-public:
-	typedef std::vector<Demand> Demands;
-	Agent();
-	~Agent();
-	Demand * MakeWish();
-	void ClearDemands();
-	void SetTemperature(float parTemp) { FTemperature = parTemp; }
-protected:
-private:
-	Demands FExternalDemands;
-	Demand  FInternalDemand;
-	float FTempToReach;
-	float FTemperature;
-};
-
+// --------------------------------------------
+// SMAHeat
+// --------------------------------------------
 class SMAHeat
 {
-	typedef std::vector<std::vector<Agent>> AgentGrid;
+	typedef std::vector<Agent*> AgentList;
 public:
 	SMAHeat(void);
 	~SMAHeat(void);
 
-	CoordConverter const & GetCoordConverter() const { return FCoordConverter; }
 	void Update(World & parWorld);
+
+	// Creation des agents
+	void CreateAgent(Probe & parProbe);
+	void CreateAgent(HeatObject & parHeat);
+	void CreateAgent(BaseObject & parObject);
 private:
 	CoordConverter	FCoordConverter;
-	AgentGrid		FAgentGrid;
+	AgentList FDistributorAgent;
+	AgentList FEnvironmentalAgent;
+	Blackboard FBlackboard;
+	
 };
-

@@ -18,6 +18,11 @@ public:
     {
 		ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(BaseObject);
     }
+
+	virtual void CreateAgent(SMAHeat & parSMA)
+	{
+		parSMA.CreateAgent(*this);
+	}
 private:
 	float FTemp;
 	sf::Text FText;

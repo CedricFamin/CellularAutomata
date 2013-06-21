@@ -17,6 +17,7 @@
 #include "BaseObject.h"
 #include "CellularAutomata.h"
 #include "Interface.h"
+#include "SMAHeat.h"
 
 #include "AllObject.h"
 
@@ -53,6 +54,7 @@ public:
 	int GetY() const { return FWorldSize.second; }
 	void Draw(sf::RenderWindow& app) const;
 	void DrawInterface(sf::RenderWindow& app) const;
+
 	// World logic
 	void OnTick();
 	void OnClick(sf::RenderTarget const & parApp, int parX, int parY);
@@ -98,7 +100,7 @@ private:
 	MapWithTileLevel FMaps;
 	CellularAutomata FCellularAutomata;
 	Interface FInterface;
-
+	SMAHeat FSMAHeat;
 
 };
 

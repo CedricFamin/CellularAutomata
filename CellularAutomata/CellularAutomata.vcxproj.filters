@@ -22,6 +22,12 @@
     <Filter Include="Header Files\Object">
       <UniqueIdentifier>{0f478ff7-b0b9-4068-a021-a55997b87f64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SMA">
+      <UniqueIdentifier>{5a4db5d3-f0c5-4de4-b099-43c823a8d1a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SMA">
+      <UniqueIdentifier>{3239484d-428a-409f-9e64-6b2ac7438a46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,14 +63,23 @@
     <ClCompile Include="Interface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SMAHeat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CoordConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Probe.cpp">
       <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SMAHeat.cpp">
+      <Filter>Source Files\SMA</Filter>
+    </ClCompile>
+    <ClCompile Include="Agent.cpp">
+      <Filter>Source Files\SMA</Filter>
+    </ClCompile>
+    <ClCompile Include="Messages.cpp">
+      <Filter>Source Files\SMA</Filter>
+    </ClCompile>
+    <ClCompile Include="Blackboard.cpp">
+      <Filter>Source Files\SMA</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,14 +116,23 @@
     <ClInclude Include="Interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SMAHeat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CoordConverter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Probe.h">
       <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SMAHeat.h">
+      <Filter>Header Files\SMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Agent.h">
+      <Filter>Header Files\SMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Messages.h">
+      <Filter>Header Files\SMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Blackboard.h">
+      <Filter>Header Files\SMA</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ Probe::Probe(void)
 	FLayer = 1;
 	FFont.loadFromFile("../font/arial.ttf");
 	FText = sf::Text("", FFont, 7);
-	FText.setPosition((float)FPosition.minX, (float)FPosition.minY);
+	FText.setPosition(FPosition.MinX<float>(), FPosition.MinY<float>());
 }
 
 
@@ -33,12 +33,12 @@ void Probe::Draw(sf::RenderWindow & app) const
 
 void Probe::Update(World * parWorld)
 {
-	std::pair<int, int> cellulCoord = parWorld->GetCelluls().GetCoordConverter().MapCoordToCellulCoord(FPosition.minX, FPosition.minY);
+	std::pair<int, int> cellulCoord = parWorld->GetCelluls().GetCoordConverter().MapCoordToCellulCoord(FPosition.MinX<int>(), FPosition.MinY<int>());
 	FTemp = (float)parWorld->GetCelluls()[cellulCoord.second][cellulCoord.first];
 	FTemp = ceilf(FTemp * 100.0f) / 100.0f;
 
 	std::ostringstream strText;
 	strText << FTemp;
 	FText = sf::Text(strText.str(), FFont, 7);
-	FText.setPosition((float)FPosition.minX, (float)FPosition.minY);
+	FText.setPosition(FPosition.MinX<float>(), FPosition.MinY<float>());
 }

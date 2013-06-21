@@ -98,8 +98,10 @@ bool World::CreateObject(ParamList const & parParams)
 void World::AddObject(BaseObject * parObject)
 {
 	if (FMaps.size() < parObject->GetLevelLayer() + 1)
-			FMaps.resize(parObject->GetLevelLayer() + 1);
-		FMaps[parObject->GetLevelLayer()].push_back(parObject);
+		FMaps.resize(parObject->GetLevelLayer() + 1);
+	FMaps[parObject->GetLevelLayer()].push_back(parObject);
+
+	parObject->CreateAgent(FSMAHeat);
 }
 bool World::LoadWorld(std::string const & parFilename)
 {

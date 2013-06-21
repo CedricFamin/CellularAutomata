@@ -73,14 +73,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Agent.cpp" />
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="BaseWallObject.cpp" />
+    <ClCompile Include="Blackboard.cpp" />
     <ClCompile Include="CellularAutomata.cpp" />
     <ClCompile Include="CoordConverter.cpp" />
     <ClCompile Include="HeatObject.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="KeyToAction.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Messages.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="Probe.cpp" />
     <ClCompile Include="SMAHeat.cpp" />
@@ -89,14 +92,17 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Agent.h" />
     <ClInclude Include="AllObject.h" />
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="BaseWallObject.h" />
+    <ClInclude Include="Blackboard.h" />
     <ClInclude Include="CellularAutomata.h" />
     <ClInclude Include="CoordConverter.h" />
     <ClInclude Include="HeatObject.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="KeyToAction.h" />
+    <ClInclude Include="Messages.h" />
     <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="Probe.h" />
     <ClInclude Include="SMAHeat.h" />

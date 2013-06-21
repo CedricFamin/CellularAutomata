@@ -23,13 +23,13 @@ void BaseWallObject::Init(ParamList const & parParams)
 
 void BaseWallObject::InitShape()
 {
-	sf::Vector2f size((float)(FPosition.maxX - FPosition.minX), (float)(FPosition.maxY - FPosition.minY));
+	sf::Vector2f size(FPosition.SizeX<float>(), FPosition.SizeY<float>());
 	FShape.setSize(size);
-	FShape.setPosition((float)FPosition.minX, (float)FPosition.minY);
+	FShape.setPosition(FPosition.MinX<float>(), FPosition.MinY<float>());
 	FTexture.loadFromFile("../Tiles/base-wall.png");
 	FTexture.setRepeated(true);
 	FShape.setTexture(&FTexture);
-	sf::IntRect textureRect(sf::Vector2i(0, 0), sf::Vector2i(FTexture.getSize().x, FPosition.maxY - FPosition.minY));
+	sf::IntRect textureRect(sf::Vector2i(0, 0), sf::Vector2i(FTexture.getSize().x, FPosition.SizeY<int>()));
 	FShape.setTextureRect(textureRect);
 }
 
@@ -45,7 +45,7 @@ BaseObject * BaseWallObject::Clone() const
 
 void BaseWallObject::Update(World * parWorld)
 {
-	std::pair<int, int> cellulCoord = parWorld->GetCelluls().GetCoordConverter().MapCoordToCellulCoord(FPosition.minX, FPosition.minY);
+	std::pair<int, int> cellulCoord = parWorld->GetCelluls().GetCoordConverter().MapCoordToCellulCoord(FPosition.MinX<int>(), FPosition.MinY<int>());
 	int maxX = parWorld->GetCelluls().GetCoordConverter().GetX();
 	int maxY = parWorld->GetCelluls().GetCoordConverter().GetY();
 	int baseX = cellulCoord.first;
@@ -54,12 +54,12 @@ void BaseWallObject::Update(World * parWorld)
 	for (int x = baseX; x < maxX ; ++x)
 	{
 		std::pair<int, int> realCoord = parWorld->GetCelluls().GetCoordConverter().CellulCoordToMapCoord(x, baseY);
-		if (realCoord.first >= FPosition.maxX)
+		if (realCoord.first >= FPosition.MaxX<int>())
 			break;
 		for (int y = baseY; y < maxY; ++y)
 		{
 			realCoord = parWorld->GetCelluls().GetCoordConverter().CellulCoordToMapCoord(x, y);
-			if (realCoord.second >= FPosition.maxY)
+			if (realCoord.second >= FPosition.MaxY<int>())
 				break;
 			parWorld->GetCelluls().UpdateCell(x, y, -1.0f);
 		}
