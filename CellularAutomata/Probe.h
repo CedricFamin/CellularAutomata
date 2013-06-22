@@ -11,6 +11,8 @@ public:
 	virtual BaseObject * Clone() const;
 	virtual void Draw(sf::RenderWindow & app) const;
 	virtual void Update(World * parWorld);
+	float GetTemp() const { return FTemp; }
+
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -29,3 +31,4 @@ private:
 	sf::Font FFont;
 };
 
+BOOST_CLASS_EXPORT_KEY(Probe);

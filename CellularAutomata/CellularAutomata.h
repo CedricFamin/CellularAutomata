@@ -16,11 +16,12 @@ class CellularAutomata
 {
 	typedef std::set<std::pair<int, int>> CellToUpdateList;
 	typedef std::pair<int, int> Size;
+	typedef std::vector<std::vector<float>> GridType;
 public:
 	CellularAutomata();
 	void Init(int parX, int parY, float parDefaultValue);
 
-	float const * operator[](int parY) const;
+	std::vector<float> const & operator[](int parY) const;
 
 	void UpdateCell(int parX, int parY, float parValue);
 	void Update();
@@ -35,51 +36,22 @@ public:
 	// -----------------------------------------------------------
 	friend class boost::serialization::access;
     template<class Archive>
-    void save(Archive & ar, const unsigned int version) const
+    void serialize(Archive & ar, const unsigned int version)
     {
 		ar & FAverageTemp;
 		ar & FDeltaTemp;
 		ar & FCoordConverter;
 		ar & FViscosity;
-
-		for (int y = 0; y <= FCoordConverter.GetY(); ++y)
-		{
-			for (int x = 0; x <= FCoordConverter.GetX(); ++x)
-			{	
-				ar & FCelluls[y][x];
-				ar & FPreviousCelluls[y][x];
-			}
-		}
+		ar & FCelluls;
+		ar & FPreviousCelluls;
     }
-    template<class Archive>
-    void load(Archive & ar, const unsigned int version)
-    {
-		ar & FAverageTemp;
-		ar & FDeltaTemp;
-		ar & FCoordConverter;
-		ar & FViscosity;
-
-		FCelluls = new float*[FCoordConverter.GetY() + 1]();
-		FPreviousCelluls = new float*[FCoordConverter.GetY() + 1]();
-		for (int i = 0; i <= FCoordConverter.GetY(); ++i)
-		{
-			FPreviousCelluls[i] = new float[FCoordConverter.GetX() + 1]();
-			FCelluls[i] = new float[FCoordConverter.GetX() + 1];
-			for (int j = 0; j <= FCoordConverter.GetX(); ++j)
-			{
-				ar & FCelluls[i][j];
-				ar & FPreviousCelluls[i][j];
-			}
-		}
-    }
-    BOOST_SERIALIZATION_SPLIT_MEMBER()
 protected:
 private:
 	float FViscosity;
 	float FAverageTemp;
 	float FDeltaTemp;
-	float ** FPreviousCelluls;
-	float ** FCelluls;
+	GridType FPreviousCelluls;
+	GridType FCelluls;
 	CellToUpdateList FCellsToUpdate;
 
 	CoordConverter FCoordConverter;

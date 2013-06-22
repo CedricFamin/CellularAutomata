@@ -8,6 +8,7 @@ class Agent;
 struct Message
 {
 	Agent * source;
+	virtual void Decode(Agent * parAgent) = 0;
 };
 
 // --------------------------------------------
@@ -17,4 +18,5 @@ struct TempDemand : public Message
 {
 	float InitialTemp;
 	float WishTemp;
+	virtual void Decode(Agent * parAgent);
 };

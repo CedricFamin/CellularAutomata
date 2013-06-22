@@ -49,6 +49,7 @@ public:
 	World(ObjectFactory const & parFactory);
 	~World(void);
 
+	void AfterLoad();
 	bool LoadWorld(std::string const & parFilename);
 	int GetX() const { return FWorldSize.first; }
 	int GetY() const { return FWorldSize.second; }

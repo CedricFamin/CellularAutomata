@@ -75,7 +75,7 @@ void ActionOnF5(sf::RenderWindow & app, sf::View & view, World & world)
 	oa << world;
 }
 					
-void ActionOnReturn(sf::RenderWindow & app, sf::View & view, World & world)
+void ActionOnF1(sf::RenderWindow & app, sf::View & view, World & world)
 {
 	world.ToggleAutoMode();
 }
@@ -129,7 +129,7 @@ KeyToAction::KeyToAction()
 	FKeyToAction[sf::Keyboard::PageDown] = ActionOnPageDown;
 	FKeyToAction[sf::Keyboard::Space] = ActionOnSpace;
 	FKeyToAction[sf::Keyboard::F5] = ActionOnF5;
-	FKeyToAction[sf::Keyboard::Return] = ActionOnReturn;
+	FKeyToAction[sf::Keyboard::F1] = ActionOnF1;
 	FKeyToAction[sf::Keyboard::P] = ActionOnP;
 }
 

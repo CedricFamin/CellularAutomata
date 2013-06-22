@@ -8,6 +8,9 @@
 
 #include "AllObject.h"
 
+// --------------------------------------------------------
+// World
+// --------------------------------------------------------
 World::World(ObjectFactory const & parFactory)
 : FFactory(parFactory)
 , FWorldSize(0, 0)
@@ -19,10 +22,14 @@ World::World(ObjectFactory const & parFactory)
 }
 
 
+// --------------------------------------------------------
+// --------------------------------------------------------
 World::~World(void)
 {
 }
 
+// --------------------------------------------------------
+// --------------------------------------------------------
 void World::Draw(sf::RenderWindow& app) const
 {
 	// draw background 
@@ -49,13 +56,18 @@ void World::Draw(sf::RenderWindow& app) const
 	}
 
 	FCellularAutomata.Draw(app);
+	FSMAHeat.Draw(app);
 }
 
+// --------------------------------------------------------
+// --------------------------------------------------------
 void World::DrawInterface(sf::RenderWindow& app) const
 {
 	FInterface.Draw(app, *this);
 }
 
+// --------------------------------------------------------
+// --------------------------------------------------------
 bool World::InitWorldParams(ParamList const & parParams)
 {
 	std::cout << "----------------------------" << std::endl;
@@ -67,9 +79,12 @@ bool World::InitWorldParams(ParamList const & parParams)
 	std::cout << "Initial temperature " << FInitialWorldTemperature << std::endl;
 	std::cout << "----------------------------" << std::endl << std::endl;
 	FCellularAutomata.Init(FWorldSize.first, FWorldSize.second, FInitialWorldTemperature);
+	FSMAHeat.Init(*this);
 	return true;
 }
 
+// --------------------------------------------------------
+// --------------------------------------------------------
 bool World::SetVisicosity(ParamList const & parParams)
 {
 	float viscosity = 0.0f;
@@ -78,6 +93,8 @@ bool World::SetVisicosity(ParamList const & parParams)
 	return true;
 }
 
+// --------------------------------------------------------
+// --------------------------------------------------------
 bool World::CreateObject(ParamList const & parParams)
 {
 	std::cout << " --------- Create Object" << std::endl;
@@ -95,6 +112,8 @@ bool World::CreateObject(ParamList const & parParams)
 	return true;
 }
 
+// --------------------------------------------------------
+// --------------------------------------------------------
 void World::AddObject(BaseObject * parObject)
 {
 	if (FMaps.size() < parObject->GetLevelLayer() + 1)
@@ -103,6 +122,9 @@ void World::AddObject(BaseObject * parObject)
 
 	parObject->CreateAgent(FSMAHeat);
 }
+
+// --------------------------------------------------------
+// --------------------------------------------------------
 bool World::LoadWorld(std::string const & parFilename)
 {
 	boost::filesystem::path const p(parFilename);
@@ -156,10 +178,18 @@ bool World::LoadWorld(std::string const & parFilename)
 			}
 		}
 	}
-
 	return true;
 }
 
+// --------------------------------------------------------
+// --------------------------------------------------------
+void World::AfterLoad()
+{
+	//FSMAHeat.BuildVisionCache(*this);
+}
+
+// --------------------------------------------------------
+// --------------------------------------------------------
 void World::OnTick()
 {
 	++FTickNb;
@@ -173,8 +203,14 @@ void World::OnTick()
 	}
 
 	FCellularAutomata.Update();
+	if (FTickNb == 1)
+		FSMAHeat.BuildVisionCache(*this);
+	if (FInterface.AutoMode())
+		FSMAHeat.Update(*this);
 }
 
+// --------------------------------------------------------
+// --------------------------------------------------------
 void World::OnClick(sf::RenderTarget const & parApp, int parX, int parY)
 {
 	if (FInterface.OnClick(this, parX, parY))

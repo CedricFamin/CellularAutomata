@@ -23,13 +23,13 @@ CellularAutomata::CellularAutomata()
 void CellularAutomata::Init(int parX, int parY, float parDefaultValue)
 {
 	FCoordConverter.Init(parX, parY);
-	FCelluls = new float*[FCoordConverter.GetY() + 1]();
-	FPreviousCelluls = new float*[FCoordConverter.GetY() + 1]();
-	for (int i = 0; i <= FCoordConverter.GetY(); ++i)
+	FCelluls.resize(FCoordConverter.GetY());
+	FPreviousCelluls.resize(FCoordConverter.GetY());
+	for (int i = 0; i < FCoordConverter.GetY(); ++i)
 	{
-		FPreviousCelluls[i] = new float[FCoordConverter.GetX() + 1]();
-		FCelluls[i] = new float[FCoordConverter.GetX() + 1];
-		for (int j = 0; j <= FCoordConverter.GetX(); ++j)
+		FPreviousCelluls[i].resize(FCoordConverter.GetX());
+		FCelluls[i].resize(FCoordConverter.GetX());
+		for (int j = 0; j < FCoordConverter.GetX(); ++j)
 		{
 			FCelluls[i][j] = parDefaultValue;
 			FPreviousCelluls[i][j] = parDefaultValue;
@@ -37,7 +37,7 @@ void CellularAutomata::Init(int parX, int parY, float parDefaultValue)
 	}
 }
 
-float const * CellularAutomata::operator[](int parY) const
+std::vector<float> const & CellularAutomata::operator[](int parY) const
 {
 	return FCelluls[parY];
 }
@@ -50,9 +50,7 @@ void CellularAutomata::UpdateCell(int parX, int parY, float parValue)
 void CellularAutomata::Update()
 {
 	static int cellsToConsider[8][2] = {{-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}};
-	float** tmp = FPreviousCelluls;
-	FPreviousCelluls = FCelluls;
-	FCelluls = tmp;
+	FPreviousCelluls.swap(FCelluls);
 	// Regle : update des cellule
 	float nbCell = 0;
 	FAverageTemp = 0;
