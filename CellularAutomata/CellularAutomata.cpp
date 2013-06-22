@@ -67,7 +67,10 @@ void CellularAutomata::Update()
 				if (valuePreviousCell > -.8f)
 					valuePreviousCell = 0;
 				else
+				{
+					FCelluls[i][j] = -1.0f;
 					continue;
+				}
 			}
 			float totalTemp = 0;
 			float nbTempUse = 0;

@@ -1,9 +1,15 @@
+#include <list>
+
 #include "SMAHeat.h"
 
 #include "World.h"
 
 template<typename type = int>
 struct Point { type x; type y; };
+
+namespace {
+	static const int CLUSTER_SIZE = 10;
+}
 
 // --------------------------------------------------------
 // VisionCluster
@@ -61,6 +67,70 @@ void SMAHeat::Init(World & parWorld)
 
 // --------------------------------------------------------
 // --------------------------------------------------------
+bool CreateLinkRight(CellularAutomata const & celluls, VisionCluster * c1, VisionCluster * c2, int left, int right, int x)
+{
+	
+	int begin = -1;
+	while (left < right)
+	{
+		if (celluls[left][x] != -1 && celluls[left][x - 1] != -1)
+		{
+			if (begin == -1)
+				begin = left;
+		}
+		else if (begin >= 0)
+		{
+			int middle = (left - begin) / 2;
+			c1->AddLink(Link(c2, x - 1, begin + middle));
+			c2->AddLink(Link(c1, x, begin + middle));
+			begin = -1;
+		}
+		++left;
+	}
+	if (begin >= 0)
+	{
+		int middle = (left - begin) / 2;
+		c1->AddLink(Link(c2, x - 1, begin + middle));
+		c2->AddLink(Link(c1, x, begin + middle));
+		begin = -1;
+	}
+	return true;
+}
+
+// --------------------------------------------------------
+// --------------------------------------------------------
+bool CreateLinkBot(CellularAutomata const & celluls, VisionCluster * c1, VisionCluster * c2, int left, int right, int y)
+{
+	
+	int begin = -1;
+	while (left < right)
+	{
+		if (celluls[y][left] != -1 && celluls[y - 1][left] != -1)
+		{
+			if (begin == -1)
+				begin = left;
+		}
+		else if (begin >= 0)
+		{
+			int middle = (left - begin) / 2;
+			c1->AddLink(Link(c2, begin + middle, y - 1));
+			c2->AddLink(Link(c1, begin + middle, y));
+			begin = -1;
+		}
+		++left;
+	}
+	if (begin >= 0)
+	{
+		int middle = (left - begin) / 2;
+		c1->AddLink(Link(c2, begin + middle, y - 1));
+		c2->AddLink(Link(c1, begin + middle, y));
+		begin = -1;
+	}
+	return true;
+}
+
+// --------------------------------------------------------
+// --------------------------------------------------------
 void SMAHeat::BuildVisionCache(World const & parWorld)
 {
 	CellularAutomata const & celluls = parWorld.GetCelluls();
@@ -69,30 +139,31 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 	for (unsigned int i = 0; i < FVisionClusters.size(); ++i)
 	{
 		VisionCluster * currentCluster = FVisionClusters[i];
-		int indexCluster[][2] = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 		
-		for (unsigned int j = 0; j < 4; ++j)
+		std::list<std::pair<int, int>> posToCheck;
+		// bot
 		{
-
-			int otherClusterIndex = i + indexCluster[j][0] + indexCluster[j][1] * mapSize.GetX() / 10;
+			unsigned int otherClusterIndex = i + 0 + 1 * mapSize.GetX() / CLUSTER_SIZE;
 			if (otherClusterIndex >= 0 && otherClusterIndex < FVisionClusters.size())
 			{
 				VisionCluster * oCluster = FVisionClusters[otherClusterIndex];
 
-				int x = (currentCluster->MaxX() - currentCluster->MinX()) / 2 + currentCluster->MinX();
-				int y = currentCluster->MaxY() - 1;
-				if (parWorld.GetCelluls()[y][x] >= 0)
-				{
-					Link link;
-					link.x = x;
-					link.y = y;
-					link.Cluster = oCluster;
-					currentCluster->AddLink(link);
-				}
-				break;
+				if (currentCluster->MaxX() >= mapSize.GetX()) continue;
+				CreateLinkBot(celluls, currentCluster, oCluster, currentCluster->MinX(), currentCluster->MinX() + CLUSTER_SIZE, currentCluster->MaxY());
 			}
 		}
-		
+
+		// right
+		{
+			unsigned int otherClusterIndex = i + 1 + 0 * mapSize.GetX() / CLUSTER_SIZE;
+			if (otherClusterIndex >= 0 && otherClusterIndex < FVisionClusters.size())
+			{
+				VisionCluster * oCluster = FVisionClusters[otherClusterIndex];
+
+				if (currentCluster->MaxX() >= mapSize.GetX()) continue;
+				CreateLinkRight(celluls, currentCluster, oCluster, currentCluster->MinY(), currentCluster->MinY() + CLUSTER_SIZE, currentCluster->MaxX());
+			}
+		}
 	}
 }
 

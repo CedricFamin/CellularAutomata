@@ -19,6 +19,7 @@ class BaseObject;
 class VisionCluster;
 
 struct Link {
+	Link(VisionCluster * parCluster, int parX, int parY) : Cluster(parCluster), x(parX), y(parY) {}
 	VisionCluster * Cluster;
 	int x;
 	int y;
