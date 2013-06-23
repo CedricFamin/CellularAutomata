@@ -370,7 +370,8 @@ int SMAHeat::GetDistanceBetween(Agent const * agent1, Agent const * agent2)
 			break;
 		}
 	}
-	assert(intialLink && destLink);
+	if (!(intialLink && destLink))
+		return -1;
 
 	std::list<Link const *> openedLink;
 	std::unordered_set<Link const *> closedLink;
