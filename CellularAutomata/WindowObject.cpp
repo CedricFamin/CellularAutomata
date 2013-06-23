@@ -51,7 +51,7 @@ void WindowObject::Update(World * parWorld)
 		for (int y = baseY; y < maxY; ++y)
 		{
 			realCoord = parWorld->GetCelluls().GetCoordConverter().CellulCoordToMapCoord(x, y);
-			if (realCoord.second >= FPosition.MaxY<int>())
+			if (realCoord.second >= FPosition.MaxY<int>() + 1)
 				break;
 			float temp = parWorld->GetCelluls()[y][x];
 			if (temp > 0)
