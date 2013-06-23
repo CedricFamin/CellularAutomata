@@ -58,8 +58,9 @@ ReachablePathFind::node_type * ReachablePathFind::CreateGraph(int parX,  int par
             params.parent->AddNode(edge);
         this->_edgeMap[y][x] = edge;
         edge->GetData().dist = computedDist;
-        edge->GetData().walkable = !((*FCelluls)[y][x] == -1.0f);
-        
+		edge->GetData().walkable = !((*FCelluls)[y][x] == -1.0f) || ignoreCollision;
+		if (ignoreCollision && (*FCelluls)[y][x] != -1.0f)
+			ignoreCollision = false;
         edge->X() = x;
         edge->Y() = y;
         
@@ -75,7 +76,6 @@ ReachablePathFind::node_type * ReachablePathFind::CreateGraph(int parX,  int par
             Params param(x + move.first, y + move.second, edge);
             stackParam.push_back(param);
         }
-        ignoreCollision = false;
     }
     
     return NULL;

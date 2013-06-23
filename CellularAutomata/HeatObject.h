@@ -23,7 +23,7 @@ public:
 		ar & FEnable;
     }
 
-		virtual void CreateAgent(SMAHeat & parSMA)
+	virtual void CreateAgent(SMAHeat & parSMA)
 	{
 		parSMA.CreateAgent(*this);
 	}

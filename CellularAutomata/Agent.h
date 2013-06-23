@@ -10,6 +10,7 @@ class Probe;
 struct Message;
 struct TempDemand;
 class SMAHeat;
+class WindowObject;
 
 // --------------------------------------------
 // Agent
@@ -33,17 +34,31 @@ protected:
 };
 
 // --------------------------------------------
-// DistributorAgent
+// DistributorHeatAgent
 // --------------------------------------------
-class DistributorAgent : public Agent
+class DistributorHeatAgent : public Agent
 {
 public:
-	DistributorAgent(SMAHeat * parSMA, HeatObject & parHeat);
-	virtual ~DistributorAgent();
+	DistributorHeatAgent(SMAHeat * parSMA, HeatObject & parHeat);
+	virtual ~DistributorHeatAgent();
 	virtual void ReadAndWriteSomething(Blackboard & parBlackBoard);
 	virtual void Read(TempDemand* parMessage);
 private:
 	HeatObject & FHeatObject;
+};
+
+// --------------------------------------------
+// DistributorColdAgent
+// --------------------------------------------
+class DistributorColdAgent : public Agent
+{
+public:
+	DistributorColdAgent(SMAHeat * parSMA, WindowObject & parObject);
+	virtual ~DistributorColdAgent();
+	virtual void ReadAndWriteSomething(Blackboard & parBlackBoard);
+	virtual void Read(TempDemand* parMessage);
+private:
+	WindowObject & FWindowObject;
 };
 
 // --------------------------------------------

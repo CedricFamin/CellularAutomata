@@ -17,6 +17,7 @@ namespace sf
 class World;
 class BaseObject;
 class VisionCluster;
+class WindowObject;
 
 struct Link {
 	Link(VisionCluster * parCluster, int parX, int parY) : Cluster(parCluster), x(parX), y(parY) {}
@@ -74,6 +75,7 @@ public:
 	// Creation des agents
 	void CreateAgent(Probe & parProbe);
 	void CreateAgent(HeatObject & parHeat);
+	void CreateAgent(WindowObject & parHeat);
 	void CreateAgent(BaseObject & parObject);
 
 	int GetDistanceBetween(Agent const * agent1, Agent const * agent2);

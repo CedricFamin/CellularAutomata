@@ -2,12 +2,13 @@
 
 #include "Probe.h"
 #include "HeatObject.h"
+#include "WindowObject.h"
 #include "Messages.h"
 
 // --------------------------------------------
 // DistributorAgent
 // --------------------------------------------
-DistributorAgent::DistributorAgent(SMAHeat * parSMA, HeatObject & parHeat)
+DistributorHeatAgent::DistributorHeatAgent(SMAHeat * parSMA, HeatObject & parHeat)
 	: Agent(parSMA, parHeat.Position().MinX<int>() / 10, parHeat.Position().MinY<int>() / 10)
 	, FHeatObject(parHeat)
 {
@@ -15,13 +16,13 @@ DistributorAgent::DistributorAgent(SMAHeat * parSMA, HeatObject & parHeat)
 
 // --------------------------------------------
 // --------------------------------------------
-DistributorAgent::~DistributorAgent()
+DistributorHeatAgent::~DistributorHeatAgent()
 {
 }
 
 // --------------------------------------------
 // --------------------------------------------
-void DistributorAgent::ReadAndWriteSomething(Blackboard & parBlackBoard)
+void DistributorHeatAgent::ReadAndWriteSomething(Blackboard & parBlackBoard)
 {
 	FHeatObject.SetEnable(false);
 
@@ -34,7 +35,7 @@ void DistributorAgent::ReadAndWriteSomething(Blackboard & parBlackBoard)
 
 // --------------------------------------------
 // --------------------------------------------
-void DistributorAgent::Read(TempDemand* parMessage)
+void DistributorHeatAgent::Read(TempDemand* parMessage)
 {
 	// est ce que l'on a besoin de temperature ?
 	if (parMessage->InitialTemp < parMessage->WishTemp)
@@ -48,6 +49,53 @@ void DistributorAgent::Read(TempDemand* parMessage)
 		}
 	}
 }
+
+
+// --------------------------------------------
+// DistributorColdAgent
+// --------------------------------------------
+DistributorColdAgent::DistributorColdAgent(SMAHeat * parSMA, WindowObject & parObject)
+	: Agent(parSMA, parObject.Position().MinX<int>() / 10, parObject.Position().MinY<int>() / 10)
+	, FWindowObject(parObject)
+{
+}
+
+// --------------------------------------------
+// --------------------------------------------
+DistributorColdAgent::~DistributorColdAgent()
+{
+}
+
+// --------------------------------------------
+// --------------------------------------------
+void DistributorColdAgent::ReadAndWriteSomething(Blackboard & parBlackBoard)
+{
+	FWindowObject.SetEnable(false);
+
+	Blackboard::MessageList messages = parBlackBoard.GetMessages();
+	for (Message * message : messages)
+	{
+		message->Decode(this);
+	}
+}
+
+// --------------------------------------------
+// --------------------------------------------
+void DistributorColdAgent::Read(TempDemand* parMessage)
+{
+	// est ce que l'on a besoin de fraicheur ?
+	if (parMessage->InitialTemp > parMessage->WishTemp)
+	{
+		// est ce que je suis deja allumer ?
+		if (!FWindowObject.Enable())
+		{
+			// est ce que je peux chauffer la cible ?
+			if (FSMA->GetDistanceBetween(this, parMessage->source) >= 0)
+				FWindowObject.SetEnable(true);
+		}
+	}
+}
+
 
 // --------------------------------------------
 // EnvironmentalAgent

@@ -25,6 +25,7 @@ class ReachablePathFind : public APathFinder<ReachablePathFindAdvancedProperty, 
 public:
 	ReachablePathFind(CellularAutomata const * parCelluls, VisionCluster const * parVisionCluster);
 	void Init(Position const & initialPos, Position const & dest);
+	void SetInitialPos(Position const & parInitialPost) { _initialPos = parInitialPost; }
 
 protected:
 	virtual unsigned int EvalNode(node_type* node) const;

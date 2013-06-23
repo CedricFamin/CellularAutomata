@@ -28,26 +28,31 @@ VisionCluster::VisionCluster(int parMinX, int parMaxX, int parMinY, int parMaxY)
 void VisionCluster::Draw(sf::RenderWindow& app) const
 {
 	sf::Vector2f size(10.0f, 10.0f);
+	float decal =  FCLUSTER_SIZE / 2;
+
 	for (auto const & link : FLinks)
 	{
 		sf::RectangleShape rect(size);
-		rect.setPosition(link->x * FCLUSTER_SIZE, link->y * FCLUSTER_SIZE);
+		sf::Vector2f linkPos(link->x * FCLUSTER_SIZE, link->y * FCLUSTER_SIZE);
+		rect.setPosition(linkPos.x, linkPos.y);
 		rect.setFillColor(sf::Color::Blue);
 		app.draw(rect);
 
+		linkPos.x += decal;
+		linkPos.y += decal;
 		for (auto const & connectedLink : link->ReachableLinks)
 		{
 			sf::VertexArray lines(sf::LinesStrip, 2);
-			lines[0].position = sf::Vector2f(link->x * FCLUSTER_SIZE, link->y * FCLUSTER_SIZE);
-			lines[1].position = sf::Vector2f(connectedLink->x * FCLUSTER_SIZE, connectedLink->y * FCLUSTER_SIZE);
+			lines[0].position = sf::Vector2f(linkPos.x, linkPos.y);
+			lines[1].position = sf::Vector2f(connectedLink->x * FCLUSTER_SIZE + decal, connectedLink->y * FCLUSTER_SIZE + decal);
 			app.draw(lines);
 		}
 
 		for (auto const & connectedAgent : link->ReachableAgents)
 		{
 			sf::VertexArray lines(sf::LinesStrip, 2);
-			lines[0].position = sf::Vector2f(link->x * FCLUSTER_SIZE, link->y * FCLUSTER_SIZE);
-			lines[1].position = sf::Vector2f(connectedAgent->X() * FCLUSTER_SIZE, connectedAgent->Y() * FCLUSTER_SIZE);
+			lines[0].position = sf::Vector2f(linkPos.x, linkPos.y);
+			lines[1].position = sf::Vector2f(connectedAgent->X() * FCLUSTER_SIZE + decal, connectedAgent->Y() * FCLUSTER_SIZE + decal);
 			app.draw(lines);
 		}
 	}
@@ -250,9 +255,7 @@ void SMAHeat::BuildVisionCache(World const & parWorld, Agent* parAgent)
 			Position p2 = { parAgent->X(), parAgent->Y() };
 			pathFind.Init(p1, p2);
 			if (pathFind.ComputePath())
-			{
 				link->ReachableAgents.push_back(parAgent);
-			}
 		}
 	}
 }
@@ -310,8 +313,17 @@ void SMAHeat::CreateAgent(Probe & parProbe)
 // --------------------------------------------------------
 void SMAHeat::CreateAgent(HeatObject & parHeat)
 {
-	FDistributorAgent.push_back(new DistributorAgent(this, parHeat));
+	FDistributorAgent.push_back(new DistributorHeatAgent(this, parHeat));
 	RegisterInVisionCache(FDistributorAgent.back(), &parHeat);
+	FAgentToCacheInCluster.push_back(FDistributorAgent.back());
+}
+
+// --------------------------------------------------------
+// --------------------------------------------------------
+void SMAHeat::CreateAgent(WindowObject & parObject)
+{
+	FDistributorAgent.push_back(new DistributorColdAgent(this, parObject));
+	RegisterInVisionCache(FDistributorAgent.back(), &parObject);
 	FAgentToCacheInCluster.push_back(FDistributorAgent.back());
 }
 
