@@ -40,5 +40,5 @@ void Probe::Update(World * parWorld)
 	std::ostringstream strText;
 	strText << FTemp;
 	FText = sf::Text(strText.str(), FFont, 7);
-	FText.setPosition(FPosition.MinX<float>(), FPosition.MinY<float>());
+	FText.setPosition(FPosition.MinX<float>() * Config::CellulSize, FPosition.MinY<float>() * Config::CellulSize);
 }

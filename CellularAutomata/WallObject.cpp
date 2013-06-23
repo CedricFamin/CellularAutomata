@@ -24,12 +24,13 @@ void WallObject::Init(ParamList const & parParams)
 void WallObject::InitShape()
 {
 	sf::Vector2f size(FPosition.SizeX<float>(), FPosition.SizeY<float>());
+	size *= Config::CellulSize;
 	FShape.setSize(size);
-	FShape.setPosition(FPosition.MinX<float>(), FPosition.MinY<float>());
+	FShape.setPosition(FPosition.MinX<float>() * Config::CellulSize, FPosition.MinY<float>() * Config::CellulSize);
 	FTexture.loadFromFile("../Tiles/wall0.png");
 	FTexture.setRepeated(true);
 	FShape.setTexture(&FTexture);
-	sf::IntRect textureRect(sf::Vector2i(0, 0), sf::Vector2i(FPosition.SizeX<int>(), FPosition.SizeY<int>()));
+	sf::IntRect textureRect(sf::Vector2i(0, 0), sf::Vector2i(FPosition.SizeX<int>() * Config::iCellulSize, FPosition.SizeY<int>() * Config::iCellulSize));
 	FShape.setTextureRect(textureRect);
 }
 

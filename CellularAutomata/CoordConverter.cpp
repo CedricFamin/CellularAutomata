@@ -15,10 +15,10 @@ void CoordConverter::Init(int parRealX, int parRealY)
 
 std::pair<int, int> CoordConverter::MapCoordToCellulCoord(int parRealX, int parRealY) const
 {
-	return std::make_pair(parRealX / GridSize, parRealY / GridSize);
+	return std::make_pair(parRealX, parRealY);
 }
 
 std::pair<int, int> CoordConverter::CellulCoordToMapCoord(int parX, int parY) const
 {
-	return std::make_pair(parX * GridSize, parY * GridSize);
+	return std::make_pair(parX , parY);
 }

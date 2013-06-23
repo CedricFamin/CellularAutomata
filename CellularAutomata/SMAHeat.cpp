@@ -338,8 +338,8 @@ void SMAHeat::CreateAgent(BaseObject & parObject)
 // --------------------------------------------------------
 void SMAHeat::RegisterInVisionCache(Agent * parAgent, BaseObject const * parObject)
 {
-	int posX = parObject->Position().MinX<int>() / 10;
-	int posY = parObject->Position().MinY<int>() / 10;
+	int posX = parObject->Position().MinX<int>();
+	int posY = parObject->Position().MinY<int>();
 	for (auto & cluster : FVisionClusters)
 	{
 		if (cluster->Contains(posX, posY))

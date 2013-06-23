@@ -15,8 +15,8 @@ public:
 
 	int GetRealX() const { return FRealSizeX; }
 	int GetRealY() const { return FRealSizeY; }
-	int GetX() const { return FSizeX; }
-	int GetY() const { return FSizeY; }
+	int GetX() const { return FRealSizeX; }
+	int GetY() const { return FRealSizeY; }
 
 	// -----------------------------------------------------------
 	// SaveLoad

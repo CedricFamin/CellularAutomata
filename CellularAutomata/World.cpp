@@ -19,6 +19,7 @@ World::World(ObjectFactory const & parFactory)
 , FPause(false)
 , FTickNb(0)
 , FNeedBuildVisionCache(true)
+, FShowDebug(false)
 {
 }
 
@@ -36,13 +37,14 @@ void World::Draw(sf::RenderWindow& app) const
 	// draw background 
 	{
 		sf::Vector2f size((float)(FWorldSize.first), (float)(FWorldSize.second));
+		size *= Config::CellulSize;
 		sf::RectangleShape shape(size);
 		shape.setPosition(sf::Vector2f(0.0f, 0.0f));
 		sf::Texture texture;
 		texture.loadFromFile("../Tiles/sol.png");
 		texture.setRepeated(true);
 		shape.setTexture(&texture);
-		sf::IntRect textureRect(sf::Vector2i(0, 0), sf::Vector2i(FWorldSize.first, FWorldSize.second));
+		sf::IntRect textureRect(sf::Vector2i(0, 0), sf::Vector2i(FWorldSize.first * Config::iCellulSize, FWorldSize.second * Config::iCellulSize));
 		shape.setTextureRect(textureRect);
 		app.draw(shape);
 	}
@@ -57,7 +59,8 @@ void World::Draw(sf::RenderWindow& app) const
 	}
 
 	FCellularAutomata.Draw(app);
-	FSMAHeat.Draw(app);
+	if (FShowDebug)
+		FSMAHeat.Draw(app);
 }
 
 // --------------------------------------------------------
@@ -221,6 +224,7 @@ void World::OnClick(sf::RenderTarget const & parApp, int parX, int parY)
 		return ;
 
 	sf::Vector2f realPosition = parApp.mapPixelToCoords(sf::Vector2i(parX, parY), parApp.getView());
+	realPosition /= Config::CellulSize;
 	for (MapType const & map : FMaps)
 	{
 		for (BaseObject * object : map)

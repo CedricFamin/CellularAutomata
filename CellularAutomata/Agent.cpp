@@ -9,7 +9,7 @@
 // DistributorAgent
 // --------------------------------------------
 DistributorHeatAgent::DistributorHeatAgent(SMAHeat * parSMA, HeatObject & parHeat)
-	: Agent(parSMA, parHeat.Position().MinX<int>() / 10, parHeat.Position().MinY<int>() / 10)
+	: Agent(parSMA, parHeat.Position().MinX<int>() , parHeat.Position().MinY<int>())
 	, FHeatObject(parHeat)
 {
 }
@@ -55,7 +55,7 @@ void DistributorHeatAgent::Read(TempDemand* parMessage)
 // DistributorColdAgent
 // --------------------------------------------
 DistributorColdAgent::DistributorColdAgent(SMAHeat * parSMA, WindowObject & parObject)
-	: Agent(parSMA, parObject.Position().MinX<int>() / 10, parObject.Position().MinY<int>() / 10)
+	: Agent(parSMA, parObject.Position().MinX<int>() , parObject.Position().MinY<int>())
 	, FWindowObject(parObject)
 {
 }
@@ -101,7 +101,7 @@ void DistributorColdAgent::Read(TempDemand* parMessage)
 // EnvironmentalAgent
 // --------------------------------------------
 EnvironmentalAgent::EnvironmentalAgent(SMAHeat * parSMA, Probe & parProbe)
-	: Agent(parSMA, parProbe.Position().MinX<int>() / 10, parProbe.Position().MinY<int>() / 10)
+	: Agent(parSMA, parProbe.Position().MinX<int>() , parProbe.Position().MinY<int>())
 	, FProbe(parProbe)
 {
 }

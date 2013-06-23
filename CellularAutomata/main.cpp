@@ -62,6 +62,8 @@ int main(int ac, char **av)
 	sf::RenderWindow app(sf::VideoMode(WindowXSize, WindowYSize, 32), world.GetMapName(), sf::Style::Titlebar | sf::Style::Close);
 	sf::Vector2f center((float)world.GetX()/2, (float)world.GetY()/2);
     sf::Vector2f halfsize((float)world.GetX(), (float)world.GetY());
+	center *= Config::CellulSize;
+	halfsize *= Config::CellulSize;
     sf::View view(center, halfsize);
 	view.zoom(1.0f);
 	app.setView(view);

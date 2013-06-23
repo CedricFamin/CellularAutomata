@@ -23,7 +23,7 @@ void HeatObject::Draw(sf::RenderWindow & app) const
 	texture.setRepeated(true);
 	sf::Sprite sprite;
 	sprite.setTexture(texture, true);
-	sprite.setPosition(FPosition.MinX<float>(), FPosition.MinY<float>());
+	sprite.setPosition(FPosition.MinX<float>() * Config::CellulSize, FPosition.MinY<float>() * Config::CellulSize);
 	
 	app.draw(sprite);
 }

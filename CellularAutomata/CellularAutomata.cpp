@@ -1,4 +1,5 @@
 #include "CellularAutomata.h"
+#include "World.h"
 
 namespace {
 	int GridSize = 10;
@@ -115,7 +116,7 @@ void CellularAutomata::Draw(sf::RenderWindow& app) const
 			if (FCelluls[y][x] < 0)
 				continue;
 			std::pair<int, int> realCoord = FCoordConverter.CellulCoordToMapCoord(x, y);
-			FTemperatureShapes[(int)FCelluls[y][x]]->setPosition((float)realCoord.first, (float)realCoord.second);
+			FTemperatureShapes[(int)FCelluls[y][x]]->setPosition((float)realCoord.first * Config::CellulSize, (float)realCoord.second * Config::CellulSize);
 			app.draw(*FTemperatureShapes[(int)FCelluls[y][x]]);
 		}
 	}

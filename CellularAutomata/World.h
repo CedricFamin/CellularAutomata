@@ -21,6 +21,11 @@
 
 #include "AllObject.h"
 
+namespace Config
+{
+	static const float CellulSize = 10.0f;
+	static const int iCellulSize = 10;
+};
 
 class WorldSizeType
 {
@@ -65,6 +70,7 @@ public:
 	void TogglePause() { FPause = !FPause; }
 	bool Pause() const { return FPause; }
 	void ToggleAutoMode() { FInterface.ToggleAutoMode(); }
+	void ToggleDebug() { FShowDebug = !FShowDebug; }
 	void AddObject(BaseObject * parObject);
 
 	CellularAutomata& GetCelluls() { return FCellularAutomata; }
@@ -89,6 +95,7 @@ private:
 	bool CreateObject(ParamList const & parParams);
 	bool SetVisicosity(ParamList const & parParams);
 	
+	bool FShowDebug;
 	bool FNeedBuildVisionCache;
 	std::string FMapName;
 	WorldSizeType FWorldSize;

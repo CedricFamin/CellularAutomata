@@ -18,10 +18,10 @@ WindowObject::~WindowObject(void)
 
 void WindowObject::Draw(sf::RenderWindow & app) const
 {
-	sf::Vector2f size(FPosition.SizeX<float>(), FPosition.SizeY<float>());
+	sf::Vector2f size(FPosition.SizeX<float>() * Config::CellulSize, FPosition.SizeY<float>() * Config::CellulSize);
 	sf::RectangleShape shape(size);
 
-	shape.setPosition(FPosition.MinX<float>(), FPosition.MinY<float>());
+	shape.setPosition(FPosition.MinX<float>() * Config::CellulSize, FPosition.MinY<float>() * Config::CellulSize);
 	sf::Texture texture;
 	texture.loadFromFile(FEnable ? "../Tiles/window-on.png" : "../Tiles/window-off.png");
 	shape.setTexture(&texture);

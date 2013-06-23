@@ -80,9 +80,15 @@ void ActionOnF1(sf::RenderWindow & app, sf::View & view, World & world)
 	world.ToggleAutoMode();
 }
 
+void ActionOnF2(sf::RenderWindow & app, sf::View & view, World & world)
+{
+	world.ToggleDebug();
+}
+
 void ActionOnP(sf::RenderWindow & app, sf::View & view, World & world)
 {
 	sf::Vector2f position = app.mapPixelToCoords(sf::Mouse::getPosition(app), view);
+	position /= Config::CellulSize;
 	if (position.x >= 0.0f && position.y >= 0.0f && (int)position.x < world.GetX() && (int)position.y < world.GetY())
 	{
 		BaseObject * object = new Probe();
@@ -130,6 +136,7 @@ KeyToAction::KeyToAction()
 	FKeyToAction[sf::Keyboard::Space] = ActionOnSpace;
 	FKeyToAction[sf::Keyboard::F5] = ActionOnF5;
 	FKeyToAction[sf::Keyboard::F1] = ActionOnF1;
+	FKeyToAction[sf::Keyboard::F2] = ActionOnF2;
 	FKeyToAction[sf::Keyboard::P] = ActionOnP;
 }
 
