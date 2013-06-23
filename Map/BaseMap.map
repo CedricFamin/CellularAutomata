@@ -31,12 +31,13 @@ object wall 250 120 260 170
 
 object wall 250 170 500 180
 object basewall 250 180 490 200
-²
-object heat 20 20 30 40
+
+object heat 20 30 30 50
 object heat 50 140 60 150
-object heat 50 200 60 210
+object heat 50 240 60 250
 
 object window 0 50 10 70
 object window 350 12 400 32
 
-object probe 100 100 105 105
+object probe 110 110 120 120
+object probe 110 270 120 280

@@ -89,6 +89,7 @@ private:
 	bool CreateObject(ParamList const & parParams);
 	bool SetVisicosity(ParamList const & parParams);
 	
+	bool FNeedBuildVisionCache;
 	std::string FMapName;
 	WorldSizeType FWorldSize;
 	unsigned int FTickNb;

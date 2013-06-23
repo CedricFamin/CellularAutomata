@@ -8,7 +8,7 @@
 // DistributorAgent
 // --------------------------------------------
 DistributorAgent::DistributorAgent(SMAHeat * parSMA, HeatObject & parHeat)
-	: Agent(parSMA)
+	: Agent(parSMA, parHeat.Position().MinX<int>() / 10, parHeat.Position().MinY<int>() / 10)
 	, FHeatObject(parHeat)
 {
 }
@@ -53,7 +53,7 @@ void DistributorAgent::Read(TempDemand* parMessage)
 // EnvironmentalAgent
 // --------------------------------------------
 EnvironmentalAgent::EnvironmentalAgent(SMAHeat * parSMA, Probe & parProbe)
-	: Agent(parSMA)
+	: Agent(parSMA, parProbe.Position().MinX<int>() / 10, parProbe.Position().MinY<int>() / 10)
 	, FProbe(parProbe)
 {
 }

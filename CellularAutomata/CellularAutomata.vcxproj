@@ -86,6 +86,7 @@
     <ClCompile Include="Messages.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="Probe.cpp" />
+    <ClCompile Include="ReachablePathFind.cpp" />
     <ClCompile Include="SMAHeat.cpp" />
     <ClCompile Include="WallObject.cpp" />
     <ClCompile Include="WindowObject.cpp" />
@@ -101,10 +102,13 @@
     <ClInclude Include="CoordConverter.h" />
     <ClInclude Include="HeatObject.h" />
     <ClInclude Include="Interface.h" />
+    <ClInclude Include="IPathFinder.h" />
     <ClInclude Include="KeyToAction.h" />
     <ClInclude Include="Messages.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="Probe.h" />
+    <ClInclude Include="ReachablePathFind.h" />
     <ClInclude Include="SMAHeat.h" />
     <ClInclude Include="WallObject.h" />
     <ClInclude Include="WindowObject.h" />

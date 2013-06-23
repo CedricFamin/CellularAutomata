@@ -28,6 +28,12 @@
     <Filter Include="Source Files\SMA">
       <UniqueIdentifier>{3239484d-428a-409f-9e64-6b2ac7438a46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\PathFind">
+      <UniqueIdentifier>{82a09658-923c-4af3-8e9f-e144c7b2cc3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PathFind">
+      <UniqueIdentifier>{b97575cc-f944-41a9-ad0d-49c731e6b539}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -81,6 +87,9 @@
     <ClCompile Include="Blackboard.cpp">
       <Filter>Source Files\SMA</Filter>
     </ClCompile>
+    <ClCompile Include="ReachablePathFind.cpp">
+      <Filter>Source Files\PathFind</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectFactory.h">
@@ -133,6 +142,15 @@
     </ClInclude>
     <ClInclude Include="Blackboard.h">
       <Filter>Header Files\SMA</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\PathFind</Filter>
+    </ClInclude>
+    <ClInclude Include="IPathFinder.h">
+      <Filter>Header Files\PathFind</Filter>
+    </ClInclude>
+    <ClInclude Include="ReachablePathFind.h">
+      <Filter>Header Files\PathFind</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,7 @@ World::World(ObjectFactory const & parFactory)
 , FTickSize(.2f)
 , FPause(false)
 , FTickNb(0)
+, FNeedBuildVisionCache(true)
 {
 }
 
@@ -203,8 +204,11 @@ void World::OnTick()
 	}
 
 	FCellularAutomata.Update();
-	if (FTickNb == 1)
+	if (FNeedBuildVisionCache)
+	{
 		FSMAHeat.BuildVisionCache(*this);
+		FNeedBuildVisionCache = false;
+	}
 	if (FInterface.AutoMode())
 		FSMAHeat.Update(*this);
 }

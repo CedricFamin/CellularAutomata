@@ -23,12 +23,14 @@ struct Link {
 	VisionCluster * Cluster;
 	int x;
 	int y;
+	std::vector<Link*> ReachableLinks;
+	std::vector<Agent const*> ReachableAgents;
 };
 
 class VisionCluster
 {
 public:
-	typedef std::vector<Link> Links;
+	typedef std::vector<Link*> Links;
 	typedef std::unordered_set<Agent const*> AgentList;
 	VisionCluster(int parMinX, int parMaxX, int parMinY, int parMaxY);
 	void Draw(sf::RenderWindow& app) const;
@@ -38,9 +40,12 @@ public:
 	int MinY() const { return FMinY; }
 	int MaxY() const { return FMaxY; }
 	void AddAgent(Agent const * parAgent) { FAgents.insert(parAgent); }
-	bool Contains(Agent const * parAgent) const { FAgents.find(parAgent) != FAgents.end(); }
+	bool Contains(Agent const * parAgent) const { return FAgents.find(parAgent) != FAgents.end(); }
 	bool Contains(int parX, int parY) const { return FMinX <= parX && parX < FMaxX && FMinY <= parY && parY < FMaxY; }
-	void AddLink(Link const & parLink) { FLinks.push_back(parLink); }
+	void AddLink(Link * parLink) { FLinks.push_back(parLink); }
+
+	Links GetLinks() { return FLinks; }
+	AgentList GetAgents() { return FAgents; }
 private:
 	int FMinX;
 	int FMaxX;
@@ -64,6 +69,7 @@ public:
 	void Update(World & parWorld);
 	void Draw(sf::RenderWindow& app) const;
 	void BuildVisionCache(World const & parWorld);
+	void BuildVisionCache(World const & parWorld, Agent* parAgent);
 
 	// Creation des agents
 	void CreateAgent(Probe & parProbe);
@@ -78,5 +84,6 @@ private:
 	AgentList       FEnvironmentalAgent;
 	Blackboard      FBlackboard;
 	VisionClusters  FVisionClusters;
+	AgentList		FAgentToCacheInCluster;
 	
 };
