@@ -1,6 +1,7 @@
 #include "ReachabilityCluster.h"
 
 #include <SFML\Graphics.hpp>
+#include <sstream>
 
 #include "Link.h"
 #include "Agent.h"
@@ -40,7 +41,7 @@ void ReachabilityCluster::Draw(sf::RenderWindow& app) const
 		{
 			sf::VertexArray lines(sf::LinesStrip, 2);
 			lines[0].position = sf::Vector2f(linkPos.x, linkPos.y);
-			lines[1].position = sf::Vector2f(connectedLink->x * FCLUSTER_SIZE + decal, connectedLink->y * FCLUSTER_SIZE + decal);
+			lines[1].position = sf::Vector2f(connectedLink.link->x * FCLUSTER_SIZE + decal, connectedLink.link->y * FCLUSTER_SIZE + decal);
 			app.draw(lines);
 		}
 
@@ -48,8 +49,19 @@ void ReachabilityCluster::Draw(sf::RenderWindow& app) const
 		{
 			sf::VertexArray lines(sf::LinesStrip, 2);
 			lines[0].position = sf::Vector2f(linkPos.x, linkPos.y);
-			lines[1].position = sf::Vector2f(connectedAgent->X() * FCLUSTER_SIZE + decal, connectedAgent->Y() * FCLUSTER_SIZE + decal);
+			lines[1].position = sf::Vector2f(connectedAgent.agent->X() * FCLUSTER_SIZE + decal, connectedAgent.agent->Y() * FCLUSTER_SIZE + decal);
 			app.draw(lines);
+
+			/*sf::Vector2f positionText((linkPos.x + connectedAgent.agent->X() * FCLUSTER_SIZE + decal) / 2,
+				(linkPos.y + connectedAgent.agent->Y() * FCLUSTER_SIZE + decal) / 2);
+			std::stringstream oss;
+			oss << connectedAgent.dist;
+			sf::Font font;
+			font.loadFromFile("../font/arial.ttf");
+			sf::Text txt(oss.str(), font, 10);
+			txt.setPosition(positionText);
+			app.draw(txt);*/
+		
 		}
 	}
 }

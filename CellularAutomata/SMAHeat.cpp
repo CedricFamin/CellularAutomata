@@ -66,8 +66,8 @@ bool CreateLinkRight(CellularAutomata const & celluls, ReachabilityCluster * c1,
 			int middle = (left - begin) / 2;
 			Link * cLink1 = new Link(c2, x - 1, begin + middle);
 			Link * cLink2 = new Link(c1, x, begin + middle);
-			cLink1->ReachableLinks.push_back(cLink2);
-			cLink2->ReachableLinks.push_back(cLink1);
+			cLink1->ReachableLinks.push_back(LinkWithDist(cLink2, 1));
+			cLink2->ReachableLinks.push_back(LinkWithDist(cLink1, 1));
 			c1->AddLink(cLink1);
 			c2->AddLink(cLink2);
 			begin = -1;
@@ -79,8 +79,8 @@ bool CreateLinkRight(CellularAutomata const & celluls, ReachabilityCluster * c1,
 		int middle = (left - begin) / 2;
 		Link * cLink1 = new Link(c2, x - 1, begin + middle);
 		Link * cLink2 = new Link(c1, x, begin + middle);
-		cLink1->ReachableLinks.push_back(cLink2);
-		cLink2->ReachableLinks.push_back(cLink1);
+		cLink1->ReachableLinks.push_back(LinkWithDist(cLink2, 1));
+		cLink2->ReachableLinks.push_back(LinkWithDist(cLink1, 1));
 		c1->AddLink(cLink1);
 		c2->AddLink(cLink2);
 		begin = -1;
@@ -106,8 +106,8 @@ void CreateLinkBot(CellularAutomata const & celluls, ReachabilityCluster * c1, R
 			int middle = (left - begin) / 2;
 			Link * cLink1 = new Link(c2, begin + middle, y - 1);
 			Link * cLink2 = new Link(c1, begin + middle, y);
-			cLink1->ReachableLinks.push_back(cLink2);
-			cLink2->ReachableLinks.push_back(cLink1);
+			cLink1->ReachableLinks.push_back(LinkWithDist(cLink2, 1));
+			cLink2->ReachableLinks.push_back(LinkWithDist(cLink1, 1));
 			c1->AddLink(cLink1);
 			c2->AddLink(cLink2);
 			begin = -1;
@@ -119,8 +119,8 @@ void CreateLinkBot(CellularAutomata const & celluls, ReachabilityCluster * c1, R
 		int middle = (left - begin) / 2;
 		Link * cLink1 = new Link(c2, begin + middle, y - 1);
 		Link * cLink2 = new Link(c1, begin + middle, y);
-		cLink1->ReachableLinks.push_back(cLink2);
-		cLink2->ReachableLinks.push_back(cLink1);
+		cLink1->ReachableLinks.push_back(LinkWithDist(cLink2, 1));
+		cLink2->ReachableLinks.push_back(LinkWithDist(cLink1, 1));
 		c1->AddLink(cLink1);
 		c2->AddLink(cLink2);
 		begin = -1;
@@ -181,9 +181,10 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 					Position p1 = { link->x, link->y };
 					Position p2 = { oLink->x, oLink->y };
 					pathFind.Init(p1, p2);
-					if (pathFind.ComputePath())
+					unsigned int dist = pathFind.ComputePath();
+					if (dist)
 					{
-						link->ReachableLinks.push_back(oLink);
+						link->ReachableLinks.push_back(LinkWithDist(oLink, dist));
 					}
 				}
 			}
@@ -205,7 +206,7 @@ void SMAHeat::BuildVisionCache(World const & parWorld, Agent* parAgent)
 	}
 
 	ReachablePathFind pathFind(&parWorld.GetCelluls(), cluster);
-	// Reachabilite entre les different lien vers l'exterieur
+	// Reachabilite entre les different agent et les lien interieur
 	for (auto& link : cluster->GetLinks())
 	{
 		for (auto& link : cluster->GetLinks())
@@ -213,8 +214,11 @@ void SMAHeat::BuildVisionCache(World const & parWorld, Agent* parAgent)
 			Position p1 = { link->x, link->y };
 			Position p2 = { parAgent->X(), parAgent->Y() };
 			pathFind.Init(p1, p2);
-			if (pathFind.ComputePath())
-				link->ReachableAgents.push_back(parAgent);
+			unsigned int dist = pathFind.ComputePath();
+			if (dist)
+			{
+				link->ReachableAgents.push_back(AgentWithDist(parAgent, dist)); 
+			}
 		}
 	}
 }
@@ -311,6 +315,7 @@ void SMAHeat::RegisterInVisionCache(Agent * parAgent, BaseObject const * parObje
 }
 
 // --------------------------------------------------------
+// TODO
 // --------------------------------------------------------
 int SMAHeat::GetDistanceBetween(Agent const * agent1, Agent const * agent2)
 {
@@ -324,29 +329,38 @@ int SMAHeat::GetDistanceBetween(Agent const * agent1, Agent const * agent2)
 			destCluster = cluster;
 	}
 	assert(initialCluster && destCluster);
-	Link * intialLink = NULL, * destLink = NULL;
+	Link * initialLink = NULL, * destLink = NULL;
 	for (auto const & link : initialCluster->GetLinks())
 	{
-		if (std::find(link->ReachableAgents.begin(), link->ReachableAgents.end(), agent1) != link->ReachableAgents.end())
+		for (auto const & currentAgent : link->ReachableAgents)
 		{
-			intialLink = link;
-			break;
+			if (currentAgent.agent == agent1)
+			{
+				initialLink = link;
+				break;
+			}
 		}
+		if (initialLink) break;
 	}
 	for (auto const & link : destCluster->GetLinks())
 	{
-		if (std::find(link->ReachableAgents.begin(), link->ReachableAgents.end(), agent2) != link->ReachableAgents.end())
+		for (auto const & currentAgent : link->ReachableAgents)
 		{
-			destLink = link;
-			break;
+			if (currentAgent.agent == agent2)
+			{
+				destLink = link;
+				break;
+			}
 		}
+		if (initialLink) break;
 	}
-	if (!(intialLink && destLink))
+
+	if (!(initialLink && destLink))
 		return -1;
 
 	std::list<Link const *> openedLink;
 	std::unordered_set<Link const *> closedLink;
-	openedLink.push_back(intialLink);
+	openedLink.push_back(initialLink);
 	while (openedLink.size())
 	{
 		Link const * currentLink = openedLink.front();
@@ -355,11 +369,11 @@ int SMAHeat::GetDistanceBetween(Agent const * agent1, Agent const * agent2)
 			return 1;
 		for (auto edge : currentLink->ReachableLinks)
 		{
-			if (std::find(openedLink.begin(), openedLink.end(), edge) != openedLink.end())
+			if (std::find(openedLink.begin(), openedLink.end(), edge.link) != openedLink.end())
 				continue;
-			if (closedLink.find(edge) != closedLink.end())
+			if (closedLink.find(edge.link) != closedLink.end())
 				continue;
-			openedLink.push_back(edge);
+			openedLink.push_back(edge.link);
 		}
 		closedLink.insert(currentLink);
 	}

@@ -32,7 +32,7 @@ public:
     virtual ~IPathFinder() { }
     
     //virtual void Init(Map const * map) = 0;
-    virtual bool ComputePath() = 0;
+    virtual unsigned int ComputePath() = 0;
     virtual void ClearPathAndDestination() = 0;
 };
 
@@ -85,7 +85,7 @@ public:
     APathFinder() { }
     virtual ~APathFinder() { }
     
-    virtual bool ComputePath()
+    virtual unsigned int ComputePath()
     {
         OpenList openList;
         ClosedList closedList;
@@ -137,15 +137,20 @@ public:
 
             currentNode = 0;
         }
+		unsigned int dist = 0;
         if (currentNode)
         {
-			return true;
             currentNode->Open(false);
             currentNode->Close(false);
             std::cout << "Current Node: Dist = " << this->EvalNode(currentNode) << std::endl
             << "Position : (" << currentNode->X() << ", " << currentNode->Y() << ")" << std::endl
             << "OpenList: " << openList.size() << " ClosedList: " << closedList.size() << std::endl;
         }
+		while (currentNode)
+		{
+			++dist;
+			currentNode = currentNode->GetParent();
+		}
 
         for (node_type * node : closedList)
         {
@@ -158,7 +163,7 @@ public:
             openList.pop();
         }
         
-        return currentNode != 0;
+        return dist;
     }
     
     virtual void ClearPathAndDestination()
