@@ -5,6 +5,8 @@
 
 #include "World.h"
 #include "ReachablePathFind.h"
+#include "ReachabilityCluster.h"
+#include "Link.h"
 
 template<typename type = int>
 struct Point { type x; type y; };
@@ -14,49 +16,6 @@ namespace {
 	static const float FCLUSTER_SIZE = static_cast<float>(CLUSTER_SIZE);
 }
 
-// --------------------------------------------------------
-// VisionCluster
-// --------------------------------------------------------
-VisionCluster::VisionCluster(int parMinX, int parMaxX, int parMinY, int parMaxY)
-	: FMinX(parMinX)
-	, FMaxX(parMaxX)
-	, FMinY(parMinY)
-	, FMaxY(parMaxY)
-{
-}
-
-void VisionCluster::Draw(sf::RenderWindow& app) const
-{
-	sf::Vector2f size(10.0f, 10.0f);
-	float decal =  FCLUSTER_SIZE / 2;
-
-	for (auto const & link : FLinks)
-	{
-		sf::RectangleShape rect(size);
-		sf::Vector2f linkPos(link->x * FCLUSTER_SIZE, link->y * FCLUSTER_SIZE);
-		rect.setPosition(linkPos.x, linkPos.y);
-		rect.setFillColor(sf::Color::Blue);
-		app.draw(rect);
-
-		linkPos.x += decal;
-		linkPos.y += decal;
-		for (auto const & connectedLink : link->ReachableLinks)
-		{
-			sf::VertexArray lines(sf::LinesStrip, 2);
-			lines[0].position = sf::Vector2f(linkPos.x, linkPos.y);
-			lines[1].position = sf::Vector2f(connectedLink->x * FCLUSTER_SIZE + decal, connectedLink->y * FCLUSTER_SIZE + decal);
-			app.draw(lines);
-		}
-
-		for (auto const & connectedAgent : link->ReachableAgents)
-		{
-			sf::VertexArray lines(sf::LinesStrip, 2);
-			lines[0].position = sf::Vector2f(linkPos.x, linkPos.y);
-			lines[1].position = sf::Vector2f(connectedAgent->X() * FCLUSTER_SIZE + decal, connectedAgent->Y() * FCLUSTER_SIZE + decal);
-			app.draw(lines);
-		}
-	}
-}
 
 // --------------------------------------------------------
 // SMAHeat
@@ -84,14 +43,14 @@ void SMAHeat::Init(World & parWorld)
 	{
 		int minPosX = (i % (mapSize.GetX() / 10)) * 10;
 		int minPosY = (i / (mapSize.GetX() / 10)) * 10;
-		VisionCluster * cluster = new VisionCluster(minPosX, minPosX + 10, minPosY, minPosY + 10);
-		FVisionClusters.push_back(cluster);
+		ReachabilityCluster * cluster = new ReachabilityCluster(minPosX, minPosX + 10, minPosY, minPosY + 10);
+		FReachabilityClusters.push_back(cluster);
 	}
 }
 
 // --------------------------------------------------------
 // --------------------------------------------------------
-bool CreateLinkRight(CellularAutomata const & celluls, VisionCluster * c1, VisionCluster * c2, int left, int right, int x)
+bool CreateLinkRight(CellularAutomata const & celluls, ReachabilityCluster * c1, ReachabilityCluster * c2, int left, int right, int x)
 {
 	
 	int begin = -1;
@@ -131,7 +90,7 @@ bool CreateLinkRight(CellularAutomata const & celluls, VisionCluster * c1, Visio
 
 // --------------------------------------------------------
 // --------------------------------------------------------
-void CreateLinkBot(CellularAutomata const & celluls, VisionCluster * c1, VisionCluster * c2, int left, int right, int y)
+void CreateLinkBot(CellularAutomata const & celluls, ReachabilityCluster * c1, ReachabilityCluster * c2, int left, int right, int y)
 {
 	
 	int begin = -1;
@@ -177,15 +136,15 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 	CoordConverter const & mapSize = celluls.GetCoordConverter();
 
 	std::cout << "build Cluster external link" << std::endl;
-	for (unsigned int i = 0; i < FVisionClusters.size(); ++i)
+	for (unsigned int i = 0; i < FReachabilityClusters.size(); ++i)
 	{
-		VisionCluster * currentCluster = FVisionClusters[i];
+		ReachabilityCluster * currentCluster = FReachabilityClusters[i];
 		// bot
 		{
 			unsigned int otherClusterIndex = i + 0 + 1 * mapSize.GetX() / CLUSTER_SIZE;
-			if (otherClusterIndex >= 0 && otherClusterIndex < FVisionClusters.size())
+			if (otherClusterIndex >= 0 && otherClusterIndex < FReachabilityClusters.size())
 			{
-				VisionCluster * oCluster = FVisionClusters[otherClusterIndex];
+				ReachabilityCluster * oCluster = FReachabilityClusters[otherClusterIndex];
 				if (currentCluster->MaxX() >= mapSize.GetX()) continue;
 				CreateLinkBot(celluls, currentCluster, oCluster, currentCluster->MinX(), 
 					currentCluster->MinX() + CLUSTER_SIZE, currentCluster->MaxY());
@@ -195,9 +154,9 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 		// right
 		{
 			unsigned int otherClusterIndex = i + 1 + 0 * mapSize.GetX() / CLUSTER_SIZE;
-			if (otherClusterIndex >= 0 && otherClusterIndex < FVisionClusters.size())
+			if (otherClusterIndex >= 0 && otherClusterIndex < FReachabilityClusters.size())
 			{
-				VisionCluster * oCluster = FVisionClusters[otherClusterIndex];
+				ReachabilityCluster * oCluster = FReachabilityClusters[otherClusterIndex];
 				if (currentCluster->MaxX() >= mapSize.GetX()) continue;
 				CreateLinkRight(celluls, currentCluster, oCluster, currentCluster->MinY(), 
 					currentCluster->MinY() + CLUSTER_SIZE, currentCluster->MaxX());
@@ -207,7 +166,7 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 
 	std::cout << "build Cluster internal link <=> link" << std::endl;
 
-	for (VisionCluster * cluster : FVisionClusters)
+	for (ReachabilityCluster * cluster : FReachabilityClusters)
 	{
 		ReachablePathFind pathFind(&celluls, cluster);
 		// Reachabilite entre les different lien vers l'exterieur
@@ -238,8 +197,8 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 void SMAHeat::BuildVisionCache(World const & parWorld, Agent* parAgent)
 {
 	std::cout << "build Cluster internal link <=> Agent" << std::endl;
-	VisionCluster * cluster = NULL;
-	for (auto const & currentCluster : FVisionClusters)
+	ReachabilityCluster * cluster = NULL;
+	for (auto const & currentCluster : FReachabilityClusters)
 	{
 		if (currentCluster->Contains(parAgent))
 			cluster = currentCluster;
@@ -288,7 +247,7 @@ void SMAHeat::Draw(sf::RenderWindow& app) const
 {
 	sf::Vector2f clusterSize(100.0f, 100.0f);
 
-	for (auto & cluster : FVisionClusters)
+	for (auto & cluster : FReachabilityClusters)
 	{
 		sf::RectangleShape rect(clusterSize);
 		rect.setPosition(sf::Vector2f(cluster->MinX() * 10.0f, cluster->MinY() * 10.0f));
@@ -340,7 +299,7 @@ void SMAHeat::RegisterInVisionCache(Agent * parAgent, BaseObject const * parObje
 {
 	int posX = parObject->Position().MinX<int>();
 	int posY = parObject->Position().MinY<int>();
-	for (auto & cluster : FVisionClusters)
+	for (auto & cluster : FReachabilityClusters)
 	{
 		if (cluster->Contains(posX, posY))
 		{
@@ -356,8 +315,8 @@ void SMAHeat::RegisterInVisionCache(Agent * parAgent, BaseObject const * parObje
 int SMAHeat::GetDistanceBetween(Agent const * agent1, Agent const * agent2)
 {
 	int dist = std::numeric_limits<int>::min();
-	VisionCluster * initialCluster = NULL, * destCluster = NULL;
-	for (auto const & cluster : FVisionClusters)
+	ReachabilityCluster * initialCluster = NULL, * destCluster = NULL;
+	for (auto const & cluster : FReachabilityClusters)
 	{
 		if (cluster->Contains(agent1))
 			initialCluster = cluster;

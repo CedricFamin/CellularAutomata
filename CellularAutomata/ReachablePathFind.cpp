@@ -2,10 +2,11 @@
 
 #include "CellularAutomata.h"
 #include "SMAHeat.h"
+#include "ReachabilityCluster.h"
 
-ReachablePathFind::ReachablePathFind(CellularAutomata const * parCelluls, VisionCluster const * parVisionCluster)
+ReachablePathFind::ReachablePathFind(CellularAutomata const * parCelluls, ReachabilityCluster const * parReachabilityCluster)
 	: FCelluls(parCelluls)
-	, FVisionCluster(parVisionCluster)
+	, FReachabilityCluster(parReachabilityCluster)
 {
 }
 
@@ -35,7 +36,7 @@ ReachablePathFind::node_type * ReachablePathFind::CreateGraph(int parX,  int par
         Params params = stackParam.front();
         stackParam.pop_front();
         
-		if ((x >= FVisionCluster->MaxX() || y >= FVisionCluster->MaxY() || x < FVisionCluster->MinX() || y < FVisionCluster->MinY()))
+		if ((x >= FReachabilityCluster->MaxX() || y >= FReachabilityCluster->MaxY() || x < FReachabilityCluster->MinX() || y < FReachabilityCluster->MinY()))
         {
             continue;
         }

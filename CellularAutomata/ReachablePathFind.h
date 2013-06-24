@@ -3,7 +3,7 @@
 #include "IPathFinder.h"
 
 class CellularAutomata;
-class VisionCluster;
+class ReachabilityCluster;
 
 struct ReachablePathFindAdvancedProperty
 {
@@ -23,7 +23,7 @@ class ReachablePathFind : public APathFinder<ReachablePathFindAdvancedProperty, 
 {
 	typedef APathFinder<ReachablePathFindAdvancedProperty, ReachablePathFindComparator>::node_type node_type;
 public:
-	ReachablePathFind(CellularAutomata const * parCelluls, VisionCluster const * parVisionCluster);
+	ReachablePathFind(CellularAutomata const * parCelluls, ReachabilityCluster const * parReachabilityCluster);
 	void Init(Position const & initialPos, Position const & dest);
 	void SetInitialPos(Position const & parInitialPost) { _initialPos = parInitialPost; }
 
@@ -33,6 +33,6 @@ private:
 	node_type * CreateGraph(int parX,  int parY, int dist, bool ignoreCollision);
 
 	CellularAutomata const * FCelluls;
-	VisionCluster const * FVisionCluster;
+	ReachabilityCluster const * FReachabilityCluster;
 };
 
