@@ -4,10 +4,20 @@
 
 BOOST_CLASS_EXPORT_IMPLEMENT(BaseWallObject)
 
+BaseWallObject::BaseWallObject(std::string const & parIdentifier, std::string const & parTextureName)
+: BaseObject(parIdentifier)
+{
+	FLayer = 0;
+	FTexture.loadFromFile(parTextureName);
+	FTexture.setRepeated(true);
+}
+
 BaseWallObject::BaseWallObject(void)
 : BaseObject("basewall")
 {
 	FLayer = 0;
+	FTexture.loadFromFile("../Tiles/base-wall.png");
+	FTexture.setRepeated(true);
 }
 
 
@@ -27,8 +37,6 @@ void BaseWallObject::InitShape()
 	size *= Config::CellulSize;
 	FShape.setSize(size);
 	FShape.setPosition(FPosition.MinX<float>() * Config::CellulSize, FPosition.MinY<float>() * Config::CellulSize);
-	FTexture.loadFromFile("../Tiles/base-wall.png");
-	FTexture.setRepeated(true);
 	FShape.setTexture(&FTexture);
 	sf::IntRect textureRect(sf::Vector2i(0, 0), sf::Vector2i(FPosition.SizeX<int>() * Config::iCellulSize, FPosition.SizeY<int>() * Config::iCellulSize));
 	FShape.setTextureRect(textureRect);

@@ -4,6 +4,7 @@
 class BaseWallObject : public BaseObject
 {
 public:
+	BaseWallObject(std::string const & parIdentifier, std::string const & parTextureName);
 	BaseWallObject(void);
 	virtual ~BaseWallObject(void);
 

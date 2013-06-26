@@ -96,6 +96,9 @@
     <ClCompile Include="LinkPathFinder.cpp">
       <Filter>Source Files\PathFind</Filter>
     </ClCompile>
+    <ClCompile Include="StoneWallObject.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectFactory.h">
@@ -166,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="LinkPathFinder.h">
       <Filter>Header Files\PathFind</Filter>
+    </ClInclude>
+    <ClInclude Include="StoneWallObject.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,7 @@ int main(int ac, char **av)
 	factory.RegisterObject(new WindowObject());
 	factory.RegisterObject(new BaseWallObject());
 	factory.RegisterObject(new Probe());
+	factory.RegisterObject(new StoneWallObject());
 
 	World world(factory);
 	

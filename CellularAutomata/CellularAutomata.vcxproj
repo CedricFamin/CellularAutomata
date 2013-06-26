@@ -90,6 +90,7 @@
     <ClCompile Include="ReachabilityCluster.cpp" />
     <ClCompile Include="ReachablePathFind.cpp" />
     <ClCompile Include="SMAHeat.cpp" />
+    <ClCompile Include="StoneWallObject.cpp" />
     <ClCompile Include="WallObject.cpp" />
     <ClCompile Include="WindowObject.cpp" />
     <ClCompile Include="World.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="ReachabilityCluster.h" />
     <ClInclude Include="ReachablePathFind.h" />
     <ClInclude Include="SMAHeat.h" />
+    <ClInclude Include="StoneWallObject.h" />
     <ClInclude Include="WallObject.h" />
     <ClInclude Include="WindowObject.h" />
     <ClInclude Include="World.h" />
