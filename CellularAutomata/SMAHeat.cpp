@@ -46,6 +46,7 @@ void SMAHeat::Init(World & parWorld)
 		ReachabilityCluster * cluster = new ReachabilityCluster(minPosX, minPosX + 10, minPosY, minPosY + 10);
 		FReachabilityClusters.push_back(cluster);
 	}
+	FDecisionalAgent.push_back(new DecisionalAgent(this));
 }
 
 // --------------------------------------------------------
@@ -191,6 +192,11 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 		}
 	}
 	std::cout << "build Cluster: End" << std::endl;
+	std::vector<Link const *> links;
+	for (ReachabilityCluster * cluster : FReachabilityClusters)
+		for (auto& link : cluster->GetLinks())
+			links.push_back(link);
+	FLinkPathFinder.Init(links, mapSize.GetX(), mapSize.GetY());
 }
 
 // --------------------------------------------------------
@@ -240,6 +246,11 @@ void SMAHeat::Update(World & parWorld)
 	}
 
 	for (auto agent : FDistributorAgent)
+	{
+		agent->ReadAndWriteSomething(FBlackboard);
+	}
+
+	for (auto agent : FDecisionalAgent)
 	{
 		agent->ReadAndWriteSomething(FBlackboard);
 	}
@@ -329,18 +340,19 @@ int SMAHeat::GetDistanceBetween(Agent const * agent1, Agent const * agent2)
 			destCluster = cluster;
 	}
 	assert(initialCluster && destCluster);
-	Link * initialLink = NULL, * destLink = NULL;
+	std::list<Link const *> initialLinks;
+	std::list<Link const *> destLinks;
+	
 	for (auto const & link : initialCluster->GetLinks())
 	{
 		for (auto const & currentAgent : link->ReachableAgents)
 		{
 			if (currentAgent.agent == agent1)
 			{
-				initialLink = link;
+				initialLinks.push_back(link);
 				break;
 			}
 		}
-		if (initialLink) break;
 	}
 	for (auto const & link : destCluster->GetLinks())
 	{
@@ -348,35 +360,25 @@ int SMAHeat::GetDistanceBetween(Agent const * agent1, Agent const * agent2)
 		{
 			if (currentAgent.agent == agent2)
 			{
-				destLink = link;
+				destLinks.push_back(link);
 				break;
 			}
 		}
-		if (initialLink) break;
 	}
 
-	if (!(initialLink && destLink))
+	if (!(initialLinks.size() && destLinks.size()))
 		return -1;
-
-	std::list<Link const *> openedLink;
-	std::unordered_set<Link const *> closedLink;
-	openedLink.push_back(initialLink);
-	while (openedLink.size())
+	FLinkPathFinder.SetDestinations(destLinks);
+	for (auto initialPos : initialLinks)
 	{
-		Link const * currentLink = openedLink.front();
-		openedLink.pop_front();
-		if (currentLink == destLink)
-			return 1;
-		for (auto edge : currentLink->ReachableLinks)
+		FLinkPathFinder.SetInitialPos(initialPos);
+		if (FLinkPathFinder.ComputePath()>0)
 		{
-			if (std::find(openedLink.begin(), openedLink.end(), edge.link) != openedLink.end())
-				continue;
-			if (closedLink.find(edge.link) != closedLink.end())
-				continue;
-			openedLink.push_back(edge.link);
+			dist = FLinkPathFinder.GetDist();
+			break;
 		}
-		closedLink.insert(currentLink);
 	}
+	// TODO preciser une position initial et un set de destination au path find
 	return dist;
 }
 

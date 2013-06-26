@@ -82,6 +82,7 @@
     <ClCompile Include="HeatObject.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="KeyToAction.cpp" />
+    <ClCompile Include="LinkPathFinder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Messages.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="IPathFinder.h" />
     <ClInclude Include="KeyToAction.h" />
     <ClInclude Include="Link.h" />
+    <ClInclude Include="LinkPathFinder.h" />
     <ClInclude Include="Messages.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="ObjectFactory.h" />

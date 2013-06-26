@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 
 // --------------------------------------------
 // Forward
@@ -9,6 +10,8 @@ class HeatObject;
 class Probe;
 struct Message;
 struct TempDemand;
+struct HeatProposition;
+struct ColdProposition;
 class SMAHeat;
 class WindowObject;
 
@@ -22,7 +25,10 @@ public:
 	virtual ~Agent() { }
 	virtual void ReadAndWriteSomething(Blackboard & parBlackBoard) = 0;
 	virtual void Read(Message* parMessage) {}
-	virtual void Read(TempDemand* parMessage) {}
+	virtual void Read(Blackboard & parBlackBoard, TempDemand* parMessage) {}
+	virtual void Read(Blackboard & parBlackBoard, HeatProposition* parMessage) {}
+	virtual void Read(Blackboard & parBlackBoard, ColdProposition* parMessage) {}
+	virtual void Execute() {}
 
 	int X() const { return x; }
 	int Y() const { return y; }
@@ -42,7 +48,8 @@ public:
 	DistributorHeatAgent(SMAHeat * parSMA, HeatObject & parHeat);
 	virtual ~DistributorHeatAgent();
 	virtual void ReadAndWriteSomething(Blackboard & parBlackBoard);
-	virtual void Read(TempDemand* parMessage);
+	virtual void Read(Blackboard & parBlackBoard, TempDemand* parMessage);
+	virtual void Execute();
 private:
 	HeatObject & FHeatObject;
 };
@@ -56,7 +63,8 @@ public:
 	DistributorColdAgent(SMAHeat * parSMA, WindowObject & parObject);
 	virtual ~DistributorColdAgent();
 	virtual void ReadAndWriteSomething(Blackboard & parBlackBoard);
-	virtual void Read(TempDemand* parMessage);
+	virtual void Read(Blackboard & parBlackBoard, TempDemand* parMessage);
+	virtual void Execute();
 private:
 	WindowObject & FWindowObject;
 };
@@ -74,4 +82,19 @@ private:
 	Probe const & FProbe;
 };
 
+// --------------------------------------------
+// DecisionalAgent
+// --------------------------------------------
+class DecisionalAgent : public Agent
+{
+public:
+	DecisionalAgent(SMAHeat * parSMA);
+	virtual ~DecisionalAgent();
+	virtual void ReadAndWriteSomething(Blackboard & parBlackBoard);
+	virtual void Read(Blackboard & parBlackBoard, HeatProposition* parMessage);
+	virtual void Read(Blackboard & parBlackBoard, ColdProposition* parMessage);
+private:
+	std::map<TempDemand const * , HeatProposition*> FDemandWithBestProposition;
+	std::map<TempDemand const * , ColdProposition*> FColdDemandWithBestProposition;
+};
 

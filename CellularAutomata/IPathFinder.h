@@ -14,6 +14,7 @@
 #include <set>
 #include <algorithm>
 #include <queue>
+#include <iostream>
 
 #include "Node.h"
 
@@ -97,7 +98,7 @@ public:
         
         openList.push(this->_root);
         this->_root->Open(true);
-        
+		this->_root->SetDepth(0);
         while (!openList.empty())
         {
             currentNode = openList.top();
@@ -140,17 +141,14 @@ public:
 		unsigned int dist = 0;
         if (currentNode)
         {
+			dist = this->EvalNode(currentNode);
             currentNode->Open(false);
             currentNode->Close(false);
-            std::cout << "Current Node: Dist = " << this->EvalNode(currentNode) << std::endl
-            << "Position : (" << currentNode->X() << ", " << currentNode->Y() << ")" << std::endl
-            << "OpenList: " << openList.size() << " ClosedList: " << closedList.size() << std::endl;
         }
-		while (currentNode)
-		{
-			++dist;
-			currentNode = currentNode->GetParent();
-		}
+
+		this->ResultPath(currentNode);
+
+		//std::cout << "Closed list size : " << closedList.size() << std::endl;
 
         for (node_type * node : closedList)
         {
@@ -165,6 +163,7 @@ public:
         
         return dist;
     }
+	virtual void ResultPath(node_type * parNode) {}
     
     virtual void ClearPathAndDestination()
     {

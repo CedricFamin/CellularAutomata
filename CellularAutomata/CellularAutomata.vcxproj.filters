@@ -93,6 +93,9 @@
     <ClCompile Include="ReachabilityCluster.cpp">
       <Filter>Source Files\SMA</Filter>
     </ClCompile>
+    <ClCompile Include="LinkPathFinder.cpp">
+      <Filter>Source Files\PathFind</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectFactory.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="Link.h">
       <Filter>Header Files\SMA</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkPathFinder.h">
+      <Filter>Header Files\PathFind</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

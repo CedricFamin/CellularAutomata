@@ -29,13 +29,13 @@ void DistributorHeatAgent::ReadAndWriteSomething(Blackboard & parBlackBoard)
 	Blackboard::MessageList messages = parBlackBoard.GetMessages();
 	for (Message * message : messages)
 	{
-		message->Decode(this);
+		message->Decode(parBlackBoard, this);
 	}
 }
 
 // --------------------------------------------
 // --------------------------------------------
-void DistributorHeatAgent::Read(TempDemand* parMessage)
+void DistributorHeatAgent::Read(Blackboard & parBlackBoard, TempDemand* parMessage)
 {
 	// est ce que l'on a besoin de temperature ?
 	if (parMessage->InitialTemp < parMessage->WishTemp)
@@ -44,12 +44,25 @@ void DistributorHeatAgent::Read(TempDemand* parMessage)
 		if (!FHeatObject.Enable())
 		{
 			// est ce que je peux chauffer la cible ?
-			if (FSMA->GetDistanceBetween(this, parMessage->source) >= 0)
-				FHeatObject.SetEnable(true);
+			int dist = FSMA->GetDistanceBetween(this, parMessage->source);
+			if (dist >= 0)
+			{
+				HeatProposition * proposition = new HeatProposition();
+				proposition->source = this;
+				proposition->DistWithDestination = dist;
+				proposition->Demand = parMessage;
+				parBlackBoard.Write(proposition);
+			}
 		}
 	}
 }
 
+// --------------------------------------------
+// --------------------------------------------
+void DistributorHeatAgent::Execute()
+{
+	FHeatObject.SetEnable(true);
+}
 
 // --------------------------------------------
 // DistributorColdAgent
@@ -75,13 +88,13 @@ void DistributorColdAgent::ReadAndWriteSomething(Blackboard & parBlackBoard)
 	Blackboard::MessageList messages = parBlackBoard.GetMessages();
 	for (Message * message : messages)
 	{
-		message->Decode(this);
+		message->Decode(parBlackBoard, this);
 	}
 }
 
 // --------------------------------------------
 // --------------------------------------------
-void DistributorColdAgent::Read(TempDemand* parMessage)
+void DistributorColdAgent::Read(Blackboard & parBlackBoard, TempDemand* parMessage)
 {
 	// est ce que l'on a besoin de fraicheur ?
 	if (parMessage->InitialTemp > parMessage->WishTemp)
@@ -89,13 +102,26 @@ void DistributorColdAgent::Read(TempDemand* parMessage)
 		// est ce que je suis deja allumer ?
 		if (!FWindowObject.Enable())
 		{
-			// est ce que je peux chauffer la cible ?
-			if (FSMA->GetDistanceBetween(this, parMessage->source) >= 0)
-				FWindowObject.SetEnable(true);
+			// est ce que je peux refroidir la cible ?
+			int dist = FSMA->GetDistanceBetween(this, parMessage->source);
+			if (dist >= 0)
+			{
+				ColdProposition * proposition = new ColdProposition();
+				proposition->source = this;
+				proposition->DistWithDestination = dist;
+				proposition->Demand = parMessage;
+				parBlackBoard.Write(proposition);
+			}
 		}
 	}
 }
 
+// --------------------------------------------
+// --------------------------------------------
+void DistributorColdAgent::Execute()
+{
+	FWindowObject.SetEnable(true);
+}
 
 // --------------------------------------------
 // EnvironmentalAgent
@@ -122,4 +148,71 @@ void EnvironmentalAgent::ReadAndWriteSomething(Blackboard & parBlackBoard)
 		message->WishTemp = 5.0f;
 		parBlackBoard.Write(message);
 	}
+}
+
+// --------------------------------------------
+// DecisionalAgent
+// --------------------------------------------
+DecisionalAgent::DecisionalAgent(SMAHeat * parSMA)
+	: Agent(parSMA, -1, -1)
+{
+}
+
+// --------------------------------------------
+// --------------------------------------------
+DecisionalAgent::~DecisionalAgent()
+{
+}
+
+// --------------------------------------------
+// --------------------------------------------
+void DecisionalAgent::ReadAndWriteSomething(Blackboard & parBlackBoard)
+{
+	FDemandWithBestProposition.clear();
+	FColdDemandWithBestProposition.clear();
+	Blackboard::MessageList messages = parBlackBoard.GetMessages();
+	for (Message * message : messages)
+	{
+		message->Decode(parBlackBoard, this);
+	}
+
+	for (auto bestHeat : FDemandWithBestProposition)
+	{
+		bestHeat.second->Execute();
+	}
+
+	for (auto bestHeat : FColdDemandWithBestProposition)
+	{
+		bestHeat.second->Execute();
+	}
+}
+
+// --------------------------------------------
+// --------------------------------------------
+void DecisionalAgent::Read(Blackboard & parBlackBoard, HeatProposition* parMessage)
+{
+	if (FDemandWithBestProposition.find(parMessage->Demand) == FDemandWithBestProposition.end())
+	{
+		FDemandWithBestProposition[parMessage->Demand] = parMessage;
+	}
+	else if (FDemandWithBestProposition[parMessage->Demand]->DistWithDestination > parMessage->DistWithDestination)
+	{
+		FDemandWithBestProposition[parMessage->Demand] = parMessage;
+	}
+
+}
+
+// --------------------------------------------
+// --------------------------------------------
+void DecisionalAgent::Read(Blackboard & parBlackBoard, ColdProposition* parMessage)
+{
+	if (FColdDemandWithBestProposition.find(parMessage->Demand) == FColdDemandWithBestProposition.end())
+	{
+		FColdDemandWithBestProposition[parMessage->Demand] = parMessage;
+	}
+	else if (FColdDemandWithBestProposition[parMessage->Demand]->DistWithDestination > parMessage->DistWithDestination)
+	{
+		FColdDemandWithBestProposition[parMessage->Demand] = parMessage;
+	}
+
 }

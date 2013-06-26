@@ -9,6 +9,8 @@
 #include "Messages.h"
 #include "Blackboard.h"
 
+#include "LinkPathFinder.h"
+
 namespace sf
 {
 	class RenderWindow;
@@ -49,8 +51,10 @@ private:
 	CoordConverter	FCoordConverter;
 	AgentList       FDistributorAgent;
 	AgentList       FEnvironmentalAgent;
+	AgentList       FDecisionalAgent;
 	Blackboard      FBlackboard;
 	ReachabilityClusters  FReachabilityClusters;
 	AgentList		FAgentToCacheInCluster;
+	LinkPathFind    FLinkPathFinder;
 	
 };

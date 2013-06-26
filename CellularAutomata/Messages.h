@@ -1,6 +1,7 @@
 #pragma once
 
 class Agent;
+class Blackboard;
 
 // --------------------------------------------
 // Message
@@ -8,7 +9,7 @@ class Agent;
 struct Message
 {
 	Agent * source;
-	virtual void Decode(Agent * parAgent) = 0;
+	virtual void Decode(Blackboard & parBlackboard, Agent * parAgent) = 0;
 };
 
 // --------------------------------------------
@@ -18,5 +19,28 @@ struct TempDemand : public Message
 {
 	float InitialTemp;
 	float WishTemp;
-	virtual void Decode(Agent * parAgent);
+	virtual void Decode(Blackboard & parBlackboard, Agent * parAgent);
 };
+
+// --------------------------------------------
+// HeatProposition
+// --------------------------------------------
+struct HeatProposition : public Message
+{
+	unsigned int DistWithDestination;
+	TempDemand const * Demand;
+	virtual void Decode(Blackboard & parBlackboard, Agent * parAgent);
+	void Execute();
+};
+
+// --------------------------------------------
+// ColdProposition
+// --------------------------------------------
+struct ColdProposition : public Message
+{
+	unsigned int DistWithDestination;
+	TempDemand const * Demand;
+	virtual void Decode(Blackboard & parBlackboard, Agent * parAgent);
+	void Execute();
+};
+
