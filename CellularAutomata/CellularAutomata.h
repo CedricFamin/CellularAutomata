@@ -40,8 +40,8 @@ public:
 	void Init(int parX, int parY, float parDefaultValue);
 
 	std::vector<Cellul> const & operator[](int parY) const;
+	std::vector<Cellul> & operator[](int parY);
 
-	void UpdateCell(int parX, int parY, float parValue);
 	void Update();
 
 	void Draw(sf::RenderWindow& app) const;

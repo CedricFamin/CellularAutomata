@@ -59,7 +59,7 @@ void BaseWallObject::Update(World * parWorld)
 			realCoord = parWorld->GetCelluls().GetCoordConverter().CellulCoordToMapCoord(x, y);
 			if (realCoord.second >= FPosition.MaxY<int>())
 				break;
-			parWorld->GetCelluls().UpdateCell(x, y, -1.0f);
+			parWorld->GetCelluls()[y][x].IsWall = true;
 		}
 	}
 
@@ -89,7 +89,7 @@ void BaseWallObject::Update(World * parWorld)
 					float tempCell = parWorld->GetCelluls()[position.second][position.first].Temp;
 					if (tempCell > FWallTemp)
 					{
-						parWorld->GetCelluls().UpdateCell(position.first, position.second, tempCell - FTempToGet);
+						parWorld->GetCelluls()[position.second][position.first].Temp = tempCell - FTempToGet;
 						// on ajoute un peu de temperature a la jaunge
 						FWallTemp += FTempToGet;
 					}

@@ -43,16 +43,9 @@ std::vector<Cellul> const & CellularAutomata::operator[](int parY) const
 	return FCelluls[parY];
 }
 
-void CellularAutomata::UpdateCell(int parX, int parY, float parValue)
+std::vector<Cellul> & CellularAutomata::operator[](int parY)
 {
-	
-
-	if (parX >= 0 && parX < FCoordConverter.GetX() && parY >= 0 && parY < FCoordConverter.GetY()) 
-	{
-		if (parValue == -1.0f)
-			FCelluls[parY][parX].IsWall = true;
-		FCelluls[parY][parX].Temp = parValue;
-	}
+	return FCelluls[parY];
 }
 
 void CellularAutomata::Update()

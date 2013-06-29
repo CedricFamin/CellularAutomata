@@ -238,5 +238,5 @@ void World::OnClick(sf::RenderTarget const & parApp, int parX, int parY)
 	std::pair<int, int> cellulCoord = FCellularAutomata.GetCoordConverter().MapCoordToCellulCoord((int)realPosition.x, (int)realPosition.y);
 	if (cellulCoord.first >= 0 && cellulCoord.first < FCellularAutomata.GetCoordConverter().GetX() &&
 		cellulCoord.second >= 0 && cellulCoord.second < FCellularAutomata.GetCoordConverter().GetY())
-		FCellularAutomata.UpdateCell(cellulCoord.first, cellulCoord.second, temperature);
+		FCellularAutomata[cellulCoord.second][cellulCoord.first].Temp = temperature;
 }
