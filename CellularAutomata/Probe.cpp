@@ -33,7 +33,7 @@ void Probe::Draw(sf::RenderWindow & app) const
 
 void Probe::Update(World * parWorld)
 {
-	FTemp = parWorld->GetCelluls()[FPosition.MinX<int>()][FPosition.MinY<int>()].Temp;
+	FTemp = parWorld->GetCelluls()[FPosition.MinY<int>()][FPosition.MinX<int>()].Temp;
 	FTemp = ceilf(FTemp * 100.0f) / 100.0f;
 
 	std::ostringstream strText;

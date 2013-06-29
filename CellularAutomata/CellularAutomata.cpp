@@ -1,6 +1,8 @@
 #include "CellularAutomata.h"
 #include "World.h"
 
+#include "Physics.h"
+
 namespace {
 	int GridSize = 10;
 }
@@ -78,7 +80,7 @@ void CellularAutomata::Update()
 				if (FPreviousCelluls[y][x].IsWall)
 					continue;
 				nbTempUse++;
-				totalTemp += FPreviousCelluls[i][j].Temp + (FPreviousCelluls[y][x].Temp - FPreviousCelluls[i][j].Temp) / FViscosity;
+				totalTemp += FPreviousCelluls[i][j].Temp + Convection(FPreviousCelluls[i][j].Temp, FPreviousCelluls[y][x].Temp, FViscosity);
 			}
 			valueCell = totalTemp / nbTempUse;
 			if (valueCell > 10.0f)

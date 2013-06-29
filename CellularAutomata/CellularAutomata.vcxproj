@@ -85,6 +85,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Messages.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Probe.cpp" />
     <ClCompile Include="ReachabilityCluster.cpp" />
     <ClCompile Include="ReachablePathFind.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Messages.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="ObjectFactory.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="Probe.h" />
     <ClInclude Include="ReachabilityCluster.h" />
     <ClInclude Include="ReachablePathFind.h" />
