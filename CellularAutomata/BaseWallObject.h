@@ -18,12 +18,14 @@ public:
     {
 		ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(BaseObject);
 		ar & FTempToGet;
+		ar & FWallTemp;
     }
     template<class Archive>
     void load(Archive & ar, const unsigned int version)
     {
 		ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(BaseObject);
 		ar & FTempToGet;
+		ar & FWallTemp;
 		InitShape();
     }
     BOOST_SERIALIZATION_SPLIT_MEMBER()
@@ -32,6 +34,8 @@ private:
 	sf::RectangleShape FShape;
 	sf::Texture FTexture;
 	float FTempToGet;
+	float FWallTemp;
+	float FBaseWallTemp;
 };
 
 BOOST_CLASS_EXPORT_KEY(BaseWallObject);

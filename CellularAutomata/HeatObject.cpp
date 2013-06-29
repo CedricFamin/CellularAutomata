@@ -53,9 +53,9 @@ void HeatObject::Update(World * parWorld)
 			realCoord = parWorld->GetCelluls().GetCoordConverter().CellulCoordToMapCoord(x, y);
 			if (realCoord.second >= FPosition.MaxY<int>())
 				break;
-			float temp = parWorld->GetCelluls()[y][x];
+			float temp = parWorld->GetCelluls()[y][x].Temp;
 			if (temp >= 0)
-				parWorld->GetCelluls().UpdateCell(x, y, temp + 1.0f);
+				parWorld->GetCelluls().UpdateCell(x, y, 10);
 		}
 		if (realCoord.first >= FPosition.MaxX<int>())
 			break;

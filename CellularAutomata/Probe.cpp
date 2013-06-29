@@ -34,7 +34,7 @@ void Probe::Draw(sf::RenderWindow & app) const
 void Probe::Update(World * parWorld)
 {
 	std::pair<int, int> cellulCoord = parWorld->GetCelluls().GetCoordConverter().MapCoordToCellulCoord(FPosition.MinX<int>(), FPosition.MinY<int>());
-	FTemp = (float)parWorld->GetCelluls()[cellulCoord.second][cellulCoord.first];
+	FTemp = parWorld->GetCelluls()[cellulCoord.second][cellulCoord.first].Temp;
 	FTemp = ceilf(FTemp * 100.0f) / 100.0f;
 
 	std::ostringstream strText;

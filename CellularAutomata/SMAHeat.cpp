@@ -57,7 +57,7 @@ bool CreateLinkRight(CellularAutomata const & celluls, ReachabilityCluster * c1,
 	int begin = -1;
 	while (left < right)
 	{
-		if (celluls[left][x] != -1 && celluls[left][x - 1] != -1)
+		if (!celluls[left][x].IsWall && !celluls[left][x - 1].IsWall)
 		{
 			if (begin == -1)
 				begin = left;
@@ -97,7 +97,7 @@ void CreateLinkBot(CellularAutomata const & celluls, ReachabilityCluster * c1, R
 	int begin = -1;
 	while (left < right)
 	{
-		if (celluls[y][left] != -1 && celluls[y - 1][left] != -1)
+		if (!celluls[y][left].IsWall && !celluls[y - 1][left].IsWall)
 		{
 			if (begin == -1)
 				begin = left;

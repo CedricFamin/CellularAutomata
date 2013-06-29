@@ -6,11 +6,13 @@ BOOST_CLASS_EXPORT_IMPLEMENT(BaseWallObject)
 
 BaseWallObject::BaseWallObject(std::string const & parIdentifier, std::string const & parTextureName)
 : BaseObject(parIdentifier)
+, FWallTemp(3.0f)
 {
+	FBaseWallTemp = FWallTemp;
 	FLayer = 0;
 	FTexture.loadFromFile(parTextureName);
 	FTexture.setRepeated(true);
-	FTempToGet = 0.001f;
+	FTempToGet = 0.1f;
 }
 
 BaseWallObject::~BaseWallObject(void)
@@ -61,13 +63,16 @@ void BaseWallObject::Update(World * parWorld)
 		}
 	}
 
+	// on perd une partie de la jauge de temperature
+	if (FWallTemp > FBaseWallTemp)
+		FWallTemp /= 10.0f;
+
 	// je fais con mais simple, je ne change pas les regle de la grille
 	// on preleve un peu de temperature sur l'exterieur
-
 	struct Deplacement { int DecalX; int DecalY; int BorneX; int BorneY; };
 	Deplacement deplacements[] = {
-		{ 1, 0, FPosition.MaxX<int>() + 1, INT_MAX}, 
-		{ 0, 1, INT_MAX, FPosition.MaxY<int>() + 1}, 
+		{ 1, 0, FPosition.MaxX<int>(), INT_MAX}, 
+		{ 0, 1, INT_MAX, FPosition.MaxY<int>()}, 
 		{-1, 0, FPosition.MinX<int>() - 1, INT_MAX}, 
 		{ 0,-1, INT_MAX, FPosition.MinY<int>() - 1}
 	};
@@ -81,8 +86,17 @@ void BaseWallObject::Update(World * parWorld)
 			{
 				if (position.second >= 0 && position.second < parWorld->GetY())
 				{
-					float tempCell = parWorld->GetCelluls()[position.second][position.first];
-					parWorld->GetCelluls().UpdateCell(position.first, position.second,  tempCell - FTempToGet);
+					float tempCell = parWorld->GetCelluls()[position.second][position.first].Temp;
+					if (tempCell > FWallTemp)
+					{
+						parWorld->GetCelluls().UpdateCell(position.first, position.second, tempCell - FTempToGet);
+						// on ajoute un peu de temperature a la jaunge
+						FWallTemp += FTempToGet;
+					}
+					else 
+					{
+						int i = 0;
+					}
 				}
 			}
 			position.first += deplacement.DecalX;

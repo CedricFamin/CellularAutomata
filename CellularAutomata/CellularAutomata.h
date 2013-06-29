@@ -12,16 +12,34 @@
 
 #include "CoordConverter.h"
 
+struct Cellul
+{
+	Cellul() : IsWall(false), Temp(0.0f) { }
+	bool IsWall;
+	float Temp;
+
+	// -----------------------------------------------------------
+	// SaveLoad
+	// -----------------------------------------------------------
+	friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+		ar & IsWall;
+		ar & Temp;
+    }
+};
+
 class CellularAutomata
 {
 	typedef std::set<std::pair<int, int>> CellToUpdateList;
 	typedef std::pair<int, int> Size;
-	typedef std::vector<std::vector<float>> GridType;
+	typedef std::vector<std::vector<Cellul>> GridType;
 public:
 	CellularAutomata();
 	void Init(int parX, int parY, float parDefaultValue);
 
-	std::vector<float> const & operator[](int parY) const;
+	std::vector<Cellul> const & operator[](int parY) const;
 
 	void UpdateCell(int parX, int parY, float parValue);
 	void Update();

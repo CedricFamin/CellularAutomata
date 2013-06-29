@@ -32,21 +32,27 @@ void CellularAutomata::Init(int parX, int parY, float parDefaultValue)
 		FCelluls[i].resize(FCoordConverter.GetX());
 		for (int j = 0; j < FCoordConverter.GetX(); ++j)
 		{
-			FCelluls[i][j] = parDefaultValue;
-			FPreviousCelluls[i][j] = parDefaultValue;
+			FCelluls[i][j].Temp = parDefaultValue;
+			FPreviousCelluls[i][j].Temp = parDefaultValue;
 		}
 	}
 }
 
-std::vector<float> const & CellularAutomata::operator[](int parY) const
+std::vector<Cellul> const & CellularAutomata::operator[](int parY) const
 {
 	return FCelluls[parY];
 }
 
 void CellularAutomata::UpdateCell(int parX, int parY, float parValue)
 {
+	
+
 	if (parX >= 0 && parX < FCoordConverter.GetX() && parY >= 0 && parY < FCoordConverter.GetY()) 
-		FCelluls[parY][parX] = parValue;
+	{
+		if (parValue == -1.0f)
+			FCelluls[parY][parX].IsWall = true;
+		FCelluls[parY][parX].Temp = parValue;
+	}
 }
 
 void CellularAutomata::Update()
@@ -62,17 +68,11 @@ void CellularAutomata::Update()
 	{
 		for (int j = 0; j < FCoordConverter.GetX(); ++j)
 		{
-			float valuePreviousCell = FPreviousCelluls[i][j];
 			float valueCell = 0;
-			if (valuePreviousCell < 0)
+			if (FPreviousCelluls[i][j].IsWall)
 			{
-				if (valuePreviousCell > -.8f)
-					valuePreviousCell = 0;
-				else
-				{
-					FCelluls[i][j] = -1.0f;
-					continue;
-				}
+				FCelluls[i][j].IsWall = true;
+				continue;
 			}
 			float totalTemp = 0;
 			float nbTempUse = 0;
@@ -82,17 +82,10 @@ void CellularAutomata::Update()
 				int y = cellsToConsider[move][1] + i;
 				if (x < 0 || y < 0 || x >= FCoordConverter.GetX() || y >= FCoordConverter.GetY())
 					continue;
-				/*if (FPreviousCelluls[y][x] < 0)
-					continue;*/
+				if (FPreviousCelluls[y][x].IsWall)
+					continue;
 				nbTempUse++;
-				// viscosite
-				/*
-				if (std::fabs(FPreviousCelluls[y][x] - FCelluls[i][j]) > 0.05f)
-					
-				else
-					totalTemp += FCelluls[i][j];
-				*/
-				totalTemp += FCelluls[i][j] + (FPreviousCelluls[y][x] - FCelluls[i][j]) / FViscosity;
+				totalTemp += FPreviousCelluls[i][j].Temp + (FPreviousCelluls[y][x].Temp - FPreviousCelluls[i][j].Temp) / FViscosity;
 			}
 			valueCell = totalTemp / nbTempUse;
 			if (valueCell > 10.0f)
@@ -103,7 +96,7 @@ void CellularAutomata::Update()
 			if (valueCell < tempMin) tempMin = valueCell;
 			FAverageTemp += valueCell;
 			++nbCell;
-			FCelluls[i][j] = valueCell;
+			FCelluls[i][j].Temp = valueCell;
 		}
 	}
 	FAverageTemp = ceilf((FAverageTemp/ nbCell) * 100.0f) / 100.0f;
@@ -116,11 +109,11 @@ void CellularAutomata::Draw(sf::RenderWindow& app) const
 	{
 		for (int x = 0; x < FCoordConverter.GetX(); ++x)
 		{	
-			if (FCelluls[y][x] < 0)
+			if (FCelluls[y][x].IsWall)
 				continue;
 			std::pair<int, int> realCoord = FCoordConverter.CellulCoordToMapCoord(x, y);
-			FTemperatureShapes[(int)FCelluls[y][x]]->setPosition((float)realCoord.first * Config::CellulSize, (float)realCoord.second * Config::CellulSize);
-			app.draw(*FTemperatureShapes[(int)FCelluls[y][x]]);
+			FTemperatureShapes[(int)FCelluls[y][x].Temp]->setPosition((float)realCoord.first * Config::CellulSize, (float)realCoord.second * Config::CellulSize);
+			app.draw(*FTemperatureShapes[(int)FCelluls[y][x].Temp]);
 		}
 	}
 }
