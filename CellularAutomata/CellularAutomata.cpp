@@ -45,7 +45,8 @@ std::vector<float> const & CellularAutomata::operator[](int parY) const
 
 void CellularAutomata::UpdateCell(int parX, int parY, float parValue)
 {
-	FCelluls[parY][parX] = parValue;
+	if (parX >= 0 && parX < FCoordConverter.GetX() && parY >= 0 && parY < FCoordConverter.GetY()) 
+		FCelluls[parY][parX] = parValue;
 }
 
 void CellularAutomata::Update()
@@ -81,8 +82,8 @@ void CellularAutomata::Update()
 				int y = cellsToConsider[move][1] + i;
 				if (x < 0 || y < 0 || x >= FCoordConverter.GetX() || y >= FCoordConverter.GetY())
 					continue;
-				if (FPreviousCelluls[y][x] < 0)
-					continue;
+				/*if (FPreviousCelluls[y][x] < 0)
+					continue;*/
 				nbTempUse++;
 				// viscosite
 				/*
@@ -96,6 +97,8 @@ void CellularAutomata::Update()
 			valueCell = totalTemp / nbTempUse;
 			if (valueCell > 10.0f)
 				valueCell = 10.0f;
+			if (valueCell < .0f)
+				valueCell = .0f;
 			if (valueCell > tempMax) tempMax = valueCell;
 			if (valueCell < tempMin) tempMin = valueCell;
 			FAverageTemp += valueCell;

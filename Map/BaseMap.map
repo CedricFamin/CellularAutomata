@@ -1,9 +1,6 @@
 world 50 30 2
 viscosity 2
 
-
-
-
 object stonewall 0 0 50 3
 object stonewall 20 7 21 10
 object stonewall 0 15 20 18
@@ -19,8 +16,6 @@ object wall 49 0 50 30
 object wall 20 12 21 30
 object wall 25 0 26 7
 object wall 25 12 26 17
-
-
 
 object heat 2 3 3 5
 object heat 5 14 6 15
