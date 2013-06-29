@@ -86,7 +86,7 @@ void ReachablePathFind::Init(Position const & initialPos, Position const & dest)
 {
 	_initialPos = initialPos;
 	_destination = dest;
-	this->_edgeMap.Init(FCelluls->GetCoordConverter().GetX(), FCelluls->GetCoordConverter().GetY());
+	this->_edgeMap.Init(FCelluls->GetSize().x, FCelluls->GetSize().y);
 	CreateGraph(dest.x, dest.y, 0, true);
 }
 

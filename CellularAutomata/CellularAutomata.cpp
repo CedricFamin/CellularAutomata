@@ -23,14 +23,14 @@ CellularAutomata::CellularAutomata()
 
 void CellularAutomata::Init(int parX, int parY, float parDefaultValue)
 {
-	FCoordConverter.Init(parX, parY);
-	FCelluls.resize(FCoordConverter.GetY());
-	FPreviousCelluls.resize(FCoordConverter.GetY());
-	for (int i = 0; i < FCoordConverter.GetY(); ++i)
+	FSize = PointI(parX, parY);
+	FCelluls.resize(FSize.y);
+	FPreviousCelluls.resize(FSize.y);
+	for (int i = 0; i < FSize.y; ++i)
 	{
-		FPreviousCelluls[i].resize(FCoordConverter.GetX());
-		FCelluls[i].resize(FCoordConverter.GetX());
-		for (int j = 0; j < FCoordConverter.GetX(); ++j)
+		FPreviousCelluls[i].resize(FSize.x);
+		FCelluls[i].resize(FSize.x);
+		for (int j = 0; j < FSize.x; ++j)
 		{
 			FCelluls[i][j].Temp = parDefaultValue;
 			FPreviousCelluls[i][j].Temp = parDefaultValue;
@@ -57,9 +57,9 @@ void CellularAutomata::Update()
 	FAverageTemp = 0;
 	float tempMax = FLT_MIN;
 	float tempMin = FLT_MAX;
-	for (int i = 0; i < FCoordConverter.GetY(); ++i)
+	for (int i = 0; i < FSize.y; ++i)
 	{
-		for (int j = 0; j < FCoordConverter.GetX(); ++j)
+		for (int j = 0; j < FSize.x; ++j)
 		{
 			float valueCell = 0;
 			if (FPreviousCelluls[i][j].IsWall)
@@ -73,7 +73,7 @@ void CellularAutomata::Update()
 			{
 				int x = cellsToConsider[move][0] + j;
 				int y = cellsToConsider[move][1] + i;
-				if (x < 0 || y < 0 || x >= FCoordConverter.GetX() || y >= FCoordConverter.GetY())
+				if (x < 0 || y < 0 || x >= FSize.x || y >= FSize.y)
 					continue;
 				if (FPreviousCelluls[y][x].IsWall)
 					continue;
@@ -98,14 +98,13 @@ void CellularAutomata::Update()
 
 void CellularAutomata::Draw(sf::RenderWindow& app) const
 {
-	for (int y = 0; y < FCoordConverter.GetY(); ++y)
+	for (int y = 0; y < FSize.y; ++y)
 	{
-		for (int x = 0; x < FCoordConverter.GetX(); ++x)
+		for (int x = 0; x < FSize.x; ++x)
 		{	
 			if (FCelluls[y][x].IsWall)
 				continue;
-			std::pair<int, int> realCoord = FCoordConverter.CellulCoordToMapCoord(x, y);
-			FTemperatureShapes[(int)FCelluls[y][x].Temp]->setPosition((float)realCoord.first * Config::CellulSize, (float)realCoord.second * Config::CellulSize);
+			FTemperatureShapes[(int)FCelluls[y][x].Temp]->setPosition((float)x * Config::CellulSize, (float)y* Config::CellulSize);
 			app.draw(*FTemperatureShapes[(int)FCelluls[y][x].Temp]);
 		}
 	}

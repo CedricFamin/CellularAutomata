@@ -4,7 +4,6 @@
 #include <list>
 #include <unordered_set>
 
-#include "CoordConverter.h"
 #include "Agent.h"
 #include "Messages.h"
 #include "Blackboard.h"
@@ -48,7 +47,6 @@ public:
 	int GetDistanceBetween(Agent const * agent1, Agent const * agent2);
 private:
 	void RegisterInVisionCache(Agent * parAgent, BaseObject const * parObject);
-	CoordConverter	FCoordConverter;
 	AgentList       FDistributorAgent;
 	AgentList       FEnvironmentalAgent;
 	AgentList       FDecisionalAgent;

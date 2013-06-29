@@ -10,7 +10,7 @@
 #include <boost/serialization/version.hpp>
 #include <boost/serialization/split_member.hpp>
 
-#include "CoordConverter.h"
+#include "Utils.h"
 
 struct Cellul
 {
@@ -45,7 +45,7 @@ public:
 	void Update();
 
 	void Draw(sf::RenderWindow& app) const;
-	CoordConverter const & GetCoordConverter() const { return FCoordConverter; }
+	PointI const & GetSize() const { return FSize; }
 	float GetAverageTemp() const { return FAverageTemp; }
 	float GetDeltaTemp() const { return FDeltaTemp; }
 	void SetViscosity(float parValue) { FViscosity = parValue; }
@@ -58,10 +58,10 @@ public:
     {
 		ar & FAverageTemp;
 		ar & FDeltaTemp;
-		ar & FCoordConverter;
 		ar & FViscosity;
 		ar & FCelluls;
 		ar & FPreviousCelluls;
+		ar & FSize;
     }
 protected:
 private:
@@ -72,7 +72,7 @@ private:
 	GridType FCelluls;
 	CellToUpdateList FCellsToUpdate;
 
-	CoordConverter FCoordConverter;
+	PointI FSize;
 
 	
 	// ------------- SFML ------------------------

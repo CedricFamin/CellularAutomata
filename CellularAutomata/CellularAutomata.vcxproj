@@ -78,7 +78,6 @@
     <ClCompile Include="BaseWallObject.cpp" />
     <ClCompile Include="Blackboard.cpp" />
     <ClCompile Include="CellularAutomata.cpp" />
-    <ClCompile Include="CoordConverter.cpp" />
     <ClCompile Include="HeatObject.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="KeyToAction.cpp" />
@@ -102,7 +101,6 @@
     <ClInclude Include="BaseWallObject.h" />
     <ClInclude Include="Blackboard.h" />
     <ClInclude Include="CellularAutomata.h" />
-    <ClInclude Include="CoordConverter.h" />
     <ClInclude Include="HeatObject.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="IPathFinder.h" />
@@ -117,6 +115,7 @@
     <ClInclude Include="ReachablePathFind.h" />
     <ClInclude Include="SMAHeat.h" />
     <ClInclude Include="StoneWallObject.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="WallObject.h" />
     <ClInclude Include="WindowObject.h" />
     <ClInclude Include="World.h" />

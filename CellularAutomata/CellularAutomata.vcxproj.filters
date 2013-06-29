@@ -54,9 +54,6 @@
     <ClCompile Include="WindowObject.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
-    <ClCompile Include="CellularAutomata.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BaseObject.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
@@ -67,9 +64,6 @@
       <Filter>Source Files\Object</Filter>
     </ClCompile>
     <ClCompile Include="Interface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CoordConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Probe.cpp">
@@ -98,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="StoneWallObject.cpp">
       <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CellularAutomata.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,9 +129,6 @@
       <Filter>Header Files\Object</Filter>
     </ClInclude>
     <ClInclude Include="Interface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CoordConverter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Probe.h">
@@ -172,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="StoneWallObject.h">
       <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

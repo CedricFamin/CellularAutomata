@@ -7,9 +7,7 @@
 #include "ReachablePathFind.h"
 #include "ReachabilityCluster.h"
 #include "Link.h"
-
-template<typename type = int>
-struct Point { type x; type y; };
+#include "Utils.h"
 
 namespace {
 	static const int CLUSTER_SIZE = 10;
@@ -35,14 +33,14 @@ SMAHeat::~SMAHeat(void)
 void SMAHeat::Init(World & parWorld)
 {
 	CellularAutomata const & celluls = parWorld.GetCelluls();
-	CoordConverter const & mapSize = celluls.GetCoordConverter();
+	PointI const & mapSize = celluls.GetSize();
 
-	int nbCluster = mapSize.GetX() * mapSize.GetY() / 100;
+	int nbCluster = mapSize.x * mapSize.y / 100;
 
 	for (int i = 0; i < nbCluster; ++i)
 	{
-		int minPosX = (i % (mapSize.GetX() / 10)) * 10;
-		int minPosY = (i / (mapSize.GetX() / 10)) * 10;
+		int minPosX = (i % (mapSize.x / 10)) * 10;
+		int minPosY = (i / (mapSize.x  / 10)) * 10;
 		ReachabilityCluster * cluster = new ReachabilityCluster(minPosX, minPosX + 10, minPosY, minPosY + 10);
 		FReachabilityClusters.push_back(cluster);
 	}
@@ -134,7 +132,7 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 {
 	std::cout << "Vuild Vision cache" << std::endl;
 	CellularAutomata const & celluls = parWorld.GetCelluls();
-	CoordConverter const & mapSize = celluls.GetCoordConverter();
+	PointI const & mapSize = celluls.GetSize();
 
 	std::cout << "build Cluster external link" << std::endl;
 	for (unsigned int i = 0; i < FReachabilityClusters.size(); ++i)
@@ -142,11 +140,11 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 		ReachabilityCluster * currentCluster = FReachabilityClusters[i];
 		// bot
 		{
-			unsigned int otherClusterIndex = i + 0 + 1 * mapSize.GetX() / CLUSTER_SIZE;
+			unsigned int otherClusterIndex = i + 0 + 1 * mapSize.x / CLUSTER_SIZE;
 			if (otherClusterIndex >= 0 && otherClusterIndex < FReachabilityClusters.size())
 			{
 				ReachabilityCluster * oCluster = FReachabilityClusters[otherClusterIndex];
-				if (currentCluster->MaxX() >= mapSize.GetX()) continue;
+				if (currentCluster->MaxX() >= mapSize.x) continue;
 				CreateLinkBot(celluls, currentCluster, oCluster, currentCluster->MinX(), 
 					currentCluster->MinX() + CLUSTER_SIZE, currentCluster->MaxY());
 			}
@@ -154,11 +152,11 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 
 		// right
 		{
-			unsigned int otherClusterIndex = i + 1 + 0 * mapSize.GetX() / CLUSTER_SIZE;
+			unsigned int otherClusterIndex = i + 1 + 0 * mapSize.x / CLUSTER_SIZE;
 			if (otherClusterIndex >= 0 && otherClusterIndex < FReachabilityClusters.size())
 			{
 				ReachabilityCluster * oCluster = FReachabilityClusters[otherClusterIndex];
-				if (currentCluster->MaxX() >= mapSize.GetX()) continue;
+				if (currentCluster->MaxX() >= mapSize.x) continue;
 				CreateLinkRight(celluls, currentCluster, oCluster, currentCluster->MinY(), 
 					currentCluster->MinY() + CLUSTER_SIZE, currentCluster->MaxX());
 			}
@@ -196,7 +194,7 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 	for (ReachabilityCluster * cluster : FReachabilityClusters)
 		for (auto& link : cluster->GetLinks())
 			links.push_back(link);
-	FLinkPathFinder.Init(links, mapSize.GetX(), mapSize.GetY());
+	FLinkPathFinder.Init(links, mapSize.x, mapSize.y);
 }
 
 // --------------------------------------------------------

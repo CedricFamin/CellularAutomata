@@ -225,18 +225,20 @@ void World::OnClick(sf::RenderTarget const & parApp, int parX, int parY)
 
 	sf::Vector2f realPosition = parApp.mapPixelToCoords(sf::Vector2i(parX, parY), parApp.getView());
 	realPosition /= Config::CellulSize;
+	int x = (int)realPosition.x;
+	int y = (int)realPosition.y;
 	for (MapType const & map : FMaps)
 	{
 		for (BaseObject * object : map)
 		{
-			if (object->OnClick(this, (int)realPosition.x, (int)realPosition.y))
+			if (object->OnClick(this, x, y))
 				return ;
 		}
 	}
 
 	float temperature = (float)FInterface.TemperatureSelected();
-	std::pair<int, int> cellulCoord = FCellularAutomata.GetCoordConverter().MapCoordToCellulCoord((int)realPosition.x, (int)realPosition.y);
-	if (cellulCoord.first >= 0 && cellulCoord.first < FCellularAutomata.GetCoordConverter().GetX() &&
-		cellulCoord.second >= 0 && cellulCoord.second < FCellularAutomata.GetCoordConverter().GetY())
-		FCellularAutomata[cellulCoord.second][cellulCoord.first].Temp = temperature;
+	
+	
+	if (x >= 0 && x < FCellularAutomata.GetSize().x && y >= 0 && y < FCellularAutomata.GetSize().y)
+		FCellularAutomata[y][x].Temp = temperature;
 }

@@ -43,21 +43,18 @@ void BaseWallObject::Draw(sf::RenderWindow & app) const
 
 void BaseWallObject::Update(World * parWorld)
 {
-	std::pair<int, int> cellulCoord = parWorld->GetCelluls().GetCoordConverter().MapCoordToCellulCoord(FPosition.MinX<int>(), FPosition.MinY<int>());
-	int maxX = parWorld->GetCelluls().GetCoordConverter().GetX();
-	int maxY = parWorld->GetCelluls().GetCoordConverter().GetY();
-	int baseX = cellulCoord.first;
-	int baseY = cellulCoord.second;
+	int maxX = parWorld->GetCelluls().GetSize().x;
+	int maxY = parWorld->GetCelluls().GetSize().y;
+	int baseX = FPosition.MinX<int>();
+	int baseY = FPosition.MinY<int>();
 	// La chaleur de passe pas les mur, on set la temperature invalide
 	for (int x = baseX; x < maxX ; ++x)
 	{
-		std::pair<int, int> realCoord = parWorld->GetCelluls().GetCoordConverter().CellulCoordToMapCoord(x, baseY);
-		if (realCoord.first >= FPosition.MaxX<int>())
+		if (x>= FPosition.MaxX<int>())
 			break;
 		for (int y = baseY; y < maxY; ++y)
 		{
-			realCoord = parWorld->GetCelluls().GetCoordConverter().CellulCoordToMapCoord(x, y);
-			if (realCoord.second >= FPosition.MaxY<int>())
+			if (y >= FPosition.MaxY<int>())
 				break;
 			parWorld->GetCelluls()[y][x].IsWall = true;
 		}
