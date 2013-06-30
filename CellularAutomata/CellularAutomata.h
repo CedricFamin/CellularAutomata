@@ -14,9 +14,12 @@
 
 struct Cellul
 {
-	Cellul() : IsWall(false), Temp(0.0f) { }
-	bool IsWall;
+	Cellul() : IsWall(false), Temp(0.0f), Conductivity(1.0f) { }
 	float Temp;
+
+	// Partie wall
+	bool IsWall;
+	float Conductivity;
 
 	// -----------------------------------------------------------
 	// SaveLoad
@@ -27,6 +30,7 @@ struct Cellul
     {
 		ar & IsWall;
 		ar & Temp;
+		ar & Conductivity;
     }
 };
 

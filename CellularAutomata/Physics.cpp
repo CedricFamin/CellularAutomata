@@ -1,3 +1,6 @@
+#include <math.h>
+#include <assert.h>
+
 #include "Physics.h"
 
 float Convection(float parTemp1, float parTemp2, float parAirViscosity)
@@ -5,7 +8,23 @@ float Convection(float parTemp1, float parTemp2, float parAirViscosity)
 	return (parTemp2 - parTemp1) / parAirViscosity;
 }
 
-float Conduction(float parTemp, float parSurface, float parThickness, float parThermalConductivity)
+float ConductionThoughWall(float parTemp, float parThickness, float parThermalConductivity)
 {
-	return parTemp - parThickness / (parSurface * parThermalConductivity);
+	assert(parThermalConductivity != 0.0f);
+	return parTemp - parThickness / (parThermalConductivity);
+}
+
+float ConductionAirToWall(float parAirTemp, float parWallTemp, float parThermalConductivity)
+{
+	assert(parThermalConductivity >= 1.0f && parThermalConductivity <= 10.0f);
+	return (parAirTemp - parWallTemp) * log10f(parThermalConductivity);
+}
+
+float WallAbsorbance(float parWallTemp, float parThermalConductivity)
+{
+	assert(parThermalConductivity >= 1.0f && parThermalConductivity <= 10.0f);
+	float absorbance = 1 - 0.1 * parThermalConductivity;
+	if (absorbance > parWallTemp)
+		return parWallTemp;
+	return absorbance;
 }

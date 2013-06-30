@@ -57,9 +57,11 @@ void BaseWallObject::Update(World * parWorld)
 			if (y >= FPosition.MaxY<int>())
 				break;
 			parWorld->GetCelluls()[y][x].IsWall = true;
+			parWorld->GetCelluls()[y][x].Conductivity = 2.0f; /// TODO PARAMETER
 		}
 	}
 
+	return ;
 	// on perd une partie de la jauge de temperature
 	if (FWallTemp > FBaseWallTemp)
 		FWallTemp /= 10.0f;

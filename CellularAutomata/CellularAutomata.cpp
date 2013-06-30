@@ -64,11 +64,11 @@ void CellularAutomata::Update()
 		for (int j = 0; j < FSize.x; ++j)
 		{
 			float valueCell = 0;
-			if (FPreviousCelluls[i][j].IsWall)
-			{
-				FCelluls[i][j].IsWall = true;
-				continue;
-			}
+			// if (FPreviousCelluls[i][j].IsWall)
+			// {
+			// 	FCelluls[i][j].IsWall = true;
+			// 	continue;
+			// }
 			float totalTemp = 0;
 			float nbTempUse = 0;
 			for (int move = 0; move < 8; ++move)
@@ -77,8 +77,8 @@ void CellularAutomata::Update()
 				int y = cellsToConsider[move][1] + i;
 				if (x < 0 || y < 0 || x >= FSize.x || y >= FSize.y)
 					continue;
-				if (FPreviousCelluls[y][x].IsWall)
-					continue;
+				// if (FPreviousCelluls[y][x].IsWall)
+				// 	continue;
 				nbTempUse++;
 				totalTemp += FPreviousCelluls[i][j].Temp + Convection(FPreviousCelluls[i][j].Temp, FPreviousCelluls[y][x].Temp, FViscosity);
 			}
