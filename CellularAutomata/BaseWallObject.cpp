@@ -6,13 +6,10 @@ BOOST_CLASS_EXPORT_IMPLEMENT(BaseWallObject)
 
 BaseWallObject::BaseWallObject(std::string const & parIdentifier, std::string const & parTextureName)
 : BaseObject(parIdentifier)
-, FWallTemp(3.0f)
 {
-	FBaseWallTemp = FWallTemp;
 	FLayer = 0;
 	FTexture.loadFromFile(parTextureName);
 	FTexture.setRepeated(true);
-	FTempToGet = 0.1f;
 }
 
 BaseWallObject::~BaseWallObject(void)
@@ -57,49 +54,9 @@ void BaseWallObject::Update(World * parWorld)
 			if (y >= FPosition.MaxY<int>())
 				break;
 			parWorld->GetCelluls()[y][x].IsWall = true;
-			parWorld->GetCelluls()[y][x].Conductivity = 2.0f; /// TODO PARAMETER
+			parWorld->GetCelluls()[y][x].Conductivity = 1.1f; /// TODO PARAMETER
 		}
 	}
 
 	return ;
-	// on perd une partie de la jauge de temperature
-	if (FWallTemp > FBaseWallTemp)
-		FWallTemp /= 10.0f;
-
-	// je fais con mais simple, je ne change pas les regle de la grille
-	// on preleve un peu de temperature sur l'exterieur
-	struct Deplacement { int DecalX; int DecalY; int BorneX; int BorneY; };
-	Deplacement deplacements[] = {
-		{ 1, 0, FPosition.MaxX<int>(), INT_MAX}, 
-		{ 0, 1, INT_MAX, FPosition.MaxY<int>()}, 
-		{-1, 0, FPosition.MinX<int>() - 1, INT_MAX}, 
-		{ 0,-1, INT_MAX, FPosition.MinY<int>() - 1}
-	};
-	std::pair<int, int> position(FPosition.MinX<int>() - 1, FPosition.MinY<int>() - 1);
-	for (unsigned int i = 0; i < sizeof(deplacements) / sizeof(*deplacements); ++i)
-	{
-		Deplacement const & deplacement = deplacements[i];
-		while (position.first != deplacement.BorneX && position.second != deplacement.BorneY)
-		{
-			if (position.first >= 0 && position.first < parWorld->GetX())
-			{
-				if (position.second >= 0 && position.second < parWorld->GetY())
-				{
-					float tempCell = parWorld->GetCelluls()[position.second][position.first].Temp;
-					if (tempCell > FWallTemp)
-					{
-						parWorld->GetCelluls()[position.second][position.first].Temp = tempCell - FTempToGet;
-						// on ajoute un peu de temperature a la jaunge
-						FWallTemp += FTempToGet;
-					}
-					else 
-					{
-						int i = 0;
-					}
-				}
-			}
-			position.first += deplacement.DecalX;
-			position.second += deplacement.DecalY;
-		}
-	}
 }

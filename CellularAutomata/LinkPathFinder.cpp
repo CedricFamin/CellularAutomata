@@ -64,15 +64,15 @@ void LinkPathFind::ResultPath(node_type * parNode)
 void LinkPathFind::EvalDist(node_type* node) const
 {
 	Link const * currentLink = node->GetData().link;
-	unsigned int dist = UINT_MAX;
+	int dist = INT_MAX;
 
 	for (auto destination : FDestinations)
 	{
-		unsigned int distance = std::sqrtl(std::powl(currentLink->x - destination->x, 2) + std::powl(currentLink->y - destination->y, 2));
+		int distance = std::sqrtl(std::powl(currentLink->x - destination->x, 2) + std::powl(currentLink->y - destination->y, 2));
+		assert(distance >= 0);
 		dist = std::min(dist, distance);
 	}
 	node->GetData().dist = dist;
-
 }
 
 void LinkPathFind::SetInitialPos(Link const * parLink)
@@ -98,10 +98,22 @@ void LinkPathFind::SetDestinations(std::list<Link const*> const & parDestination
 	FDestinations = parDestinations;
 	for (unsigned int i = 0; i < _edgeMap.height(); ++i)
 	{
-		for (unsigned int j = 0; j < _edgeMap.height(); ++j)
+		for (unsigned int j = 0; j < _edgeMap.width(); ++j)
 		{
 			if (_edgeMap[i][j])
-			EvalDist(_edgeMap[i][j]);
+				EvalDist(_edgeMap[i][j]);
 		}
 	}
+}
+bool LinkPathFind::HasARechableTarget() const
+{
+	for (unsigned int i = 0; i < _edgeMap.height(); ++i)
+	{
+		for (unsigned int j = 0; j < _edgeMap.width(); ++j)
+		{
+			if (_edgeMap[i][j] && _edgeMap[i][j]->GetData().dist == 0)
+				return true;
+		}
+	}
+	return false;
 }

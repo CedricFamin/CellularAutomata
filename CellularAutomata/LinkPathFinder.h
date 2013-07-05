@@ -34,6 +34,7 @@ public:
 
 	static LinkPathFind * instanceBigHackFunThis;
 	void EvalDist(node_type* node) const;
+	bool HasARechableTarget() const;
 protected:
 	virtual unsigned int EvalNode(node_type* node) const;
 private:

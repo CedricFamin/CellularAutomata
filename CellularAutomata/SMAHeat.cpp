@@ -367,6 +367,7 @@ int SMAHeat::GetDistanceBetween(Agent const * agent1, Agent const * agent2)
 	if (!(initialLinks.size() && destLinks.size()))
 		return -1;
 	FLinkPathFinder.SetDestinations(destLinks);
+	assert(FLinkPathFinder.HasARechableTarget());
 	for (auto initialPos : initialLinks)
 	{
 		FLinkPathFinder.SetInitialPos(initialPos);

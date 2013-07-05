@@ -64,11 +64,10 @@ void CellularAutomata::Update()
 		for (int j = 0; j < FSize.x; ++j)
 		{
 			float valueCell = 0;
-			// if (FPreviousCelluls[i][j].IsWall)
-			// {
-			// 	FCelluls[i][j].IsWall = true;
-			// 	continue;
-			// }
+			if (FPreviousCelluls[i][j].IsWall)
+			{
+			 	FCelluls[i][j].IsWall = true;
+			}
 			float totalTemp = 0;
 			float nbTempUse = 0;
 			for (int move = 0; move < 8; ++move)
@@ -77,10 +76,20 @@ void CellularAutomata::Update()
 				int y = cellsToConsider[move][1] + i;
 				if (x < 0 || y < 0 || x >= FSize.x || y >= FSize.y)
 					continue;
-				// if (FPreviousCelluls[y][x].IsWall)
-				// 	continue;
 				nbTempUse++;
-				totalTemp += FPreviousCelluls[i][j].Temp + Convection(FPreviousCelluls[i][j].Temp, FPreviousCelluls[y][x].Temp, FViscosity);
+				if (FPreviousCelluls[y][x].IsWall)
+				{
+					float cellTemp = FPreviousCelluls[i][j].Temp, wallTemp = FPreviousCelluls[y][x].Temp, conductivity = FPreviousCelluls[y][x].Conductivity;
+					totalTemp += cellTemp + ConductionAirToWall(cellTemp, wallTemp, conductivity);
+				}
+				else if (FPreviousCelluls[i][j].IsWall)
+				{
+					float wallTemp = FPreviousCelluls[i][j].Temp, cellTemp = FPreviousCelluls[y][x].Temp, conductivity = FPreviousCelluls[i][j].Conductivity;
+					bool reverse = cellTemp > wallTemp;
+					totalTemp += cellTemp + ConductionAirToWall(cellTemp, wallTemp, conductivity);
+				}
+				else
+					totalTemp += FPreviousCelluls[i][j].Temp + Convection(FPreviousCelluls[i][j].Temp, FPreviousCelluls[y][x].Temp, FViscosity);
 			}
 			valueCell = totalTemp / nbTempUse;
 			if (valueCell > 10.0f)
@@ -92,6 +101,8 @@ void CellularAutomata::Update()
 			FAverageTemp += valueCell;
 			++nbCell;
 			FCelluls[i][j].Temp = valueCell;
+			if (FCelluls[i][j].IsWall)
+				FCelluls[i][j].Temp -= WallAbsorbance(FCelluls[i][j].Temp, FCelluls[i][j].Conductivity);
 		}
 	}
 	FAverageTemp = ceilf((FAverageTemp/ nbCell) * 100.0f) / 100.0f;

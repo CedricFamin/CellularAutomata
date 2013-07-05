@@ -17,13 +17,13 @@ float ConductionThoughWall(float parTemp, float parThickness, float parThermalCo
 float ConductionAirToWall(float parAirTemp, float parWallTemp, float parThermalConductivity)
 {
 	assert(parThermalConductivity >= 1.0f && parThermalConductivity <= 10.0f);
-	return (parAirTemp - parWallTemp) * log10f(parThermalConductivity);
+	return (parWallTemp - parAirTemp) * log10f(parThermalConductivity);
 }
 
 float WallAbsorbance(float parWallTemp, float parThermalConductivity)
 {
 	assert(parThermalConductivity >= 1.0f && parThermalConductivity <= 10.0f);
-	float absorbance = 1 - 0.1 * parThermalConductivity;
+	float absorbance = 0.01 * parThermalConductivity;
 	if (absorbance > parWallTemp)
 		return parWallTemp;
 	return absorbance;
