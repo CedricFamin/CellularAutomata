@@ -3,7 +3,7 @@
 #include <set>
 #include <utility>
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/string.hpp>
@@ -14,7 +14,7 @@
 
 struct Cellul
 {
-	Cellul() : IsWall(false), Temp(0.0f), Conductivity(1.0f) { }
+	Cellul() : Temp(0.0f), IsWall(false), Conductivity(1.0f) { }
 	float Temp;
 
 	// Partie wall

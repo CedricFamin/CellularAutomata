@@ -3,7 +3,8 @@
 #include <iostream>
 #include <vector>
 
-#include <SFML\Graphics.hpp>
+
+#include <SFML/Graphics.hpp>
 
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/string.hpp>
@@ -79,8 +80,8 @@ public:
     void serialize(Archive & ar, const unsigned int version)
     {
 		ar & FLayer;
+        ar & FIdentifier;
 		ar & FPosition;
-		ar & FIdentifier;
     }
 
 	virtual void CreateAgent(SMAHeat & parSMA)

@@ -141,7 +141,7 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 		// bot
 		{
 			unsigned int otherClusterIndex = i + 0 + 1 * mapSize.x / CLUSTER_SIZE;
-			if (otherClusterIndex >= 0 && otherClusterIndex < FReachabilityClusters.size())
+			if (otherClusterIndex < FReachabilityClusters.size())
 			{
 				ReachabilityCluster * oCluster = FReachabilityClusters[otherClusterIndex];
 				if (currentCluster->MaxX() >= mapSize.x) continue;
@@ -153,7 +153,7 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 		// right
 		{
 			unsigned int otherClusterIndex = i + 1 + 0 * mapSize.x / CLUSTER_SIZE;
-			if (otherClusterIndex >= 0 && otherClusterIndex < FReachabilityClusters.size())
+			if (otherClusterIndex < FReachabilityClusters.size())
 			{
 				ReachabilityCluster * oCluster = FReachabilityClusters[otherClusterIndex];
 				if (currentCluster->MaxX() >= mapSize.x) continue;
@@ -170,24 +170,21 @@ void SMAHeat::BuildVisionCache(World const & parWorld)
 		ReachablePathFind pathFind(&celluls, cluster);
 		// Reachabilite entre les different lien vers l'exterieur
 		for (auto& link : cluster->GetLinks())
-		{
-			for (auto& link : cluster->GetLinks())
-			{
-				for (auto const & oLink : cluster->GetLinks())
-				{
-					if (link == oLink)
-						continue;
-					Position p1 = { link->x, link->y };
-					Position p2 = { oLink->x, oLink->y };
-					pathFind.Init(p1, p2);
-					unsigned int dist = pathFind.ComputePath();
-					if (dist)
-					{
-						link->ReachableLinks.push_back(LinkWithDist(oLink, dist));
-					}
-				}
-			}
-		}
+        {
+            for (auto const & oLink : cluster->GetLinks())
+            {
+                if (link == oLink)
+                    continue;
+                Position p1 = { link->x, link->y };
+                Position p2 = { oLink->x, oLink->y };
+                pathFind.Init(p1, p2);
+                unsigned int dist = pathFind.ComputePath();
+                if (dist)
+                {
+                    link->ReachableLinks.push_back(LinkWithDist(oLink, dist));
+                }
+            }
+        }
 	}
 	std::cout << "build Cluster: End" << std::endl;
 	std::vector<Link const *> links;
@@ -212,19 +209,16 @@ void SMAHeat::BuildVisionCache(World const & parWorld, Agent* parAgent)
 	ReachablePathFind pathFind(&parWorld.GetCelluls(), cluster);
 	// Reachabilite entre les different agent et les lien interieur
 	for (auto& link : cluster->GetLinks())
-	{
-		for (auto& link : cluster->GetLinks())
-		{
-			Position p1 = { link->x, link->y };
-			Position p2 = { parAgent->X(), parAgent->Y() };
-			pathFind.Init(p1, p2);
-			unsigned int dist = pathFind.ComputePath();
-			if (dist)
-			{
-				link->ReachableAgents.push_back(AgentWithDist(parAgent, dist)); 
-			}
-		}
-	}
+    {
+        Position p1 = { link->x, link->y };
+        Position p2 = { parAgent->X(), parAgent->Y() };
+        pathFind.Init(p1, p2);
+        unsigned int dist = pathFind.ComputePath();
+        if (dist)
+        {
+            link->ReachableAgents.push_back(AgentWithDist(parAgent, dist));
+        }
+    }
 }
 
 // --------------------------------------------------------

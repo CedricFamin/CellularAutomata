@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-#include <unordered_set>
+
+#include <boost/unordered_set.hpp>
 
 class Agent;
 class Link;
@@ -13,7 +14,7 @@ class ReachabilityCluster
 {
 public:
 	typedef std::vector<Link*> Links;
-	typedef std::unordered_set<Agent const*> AgentList;
+	typedef boost::unordered_set<Agent const*> AgentList;
 	ReachabilityCluster(int parMinX, int parMaxX, int parMinY, int parMaxY);
 	void Draw(sf::RenderWindow& app) const;
 

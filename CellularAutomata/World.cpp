@@ -1,8 +1,8 @@
 #include <fstream>
-#include <regex>
 #include <sstream>
+#include <regex>
 
-#include "boost/filesystem.hpp"
+#include <boost/filesystem.hpp>
 
 #include "World.h"
 
@@ -13,13 +13,13 @@
 // --------------------------------------------------------
 World::World(ObjectFactory const & parFactory)
 : FFactory(parFactory)
+, FShowDebug(false)
+, FNeedBuildVisionCache(true)
 , FWorldSize(0, 0)
-, FInitialWorldTemperature(0)
+, FTickNb(0)
 , FTickSize(.2f)
 , FPause(false)
-, FTickNb(0)
-, FNeedBuildVisionCache(true)
-, FShowDebug(false)
+, FInitialWorldTemperature(0)
 {
 }
 
@@ -143,7 +143,7 @@ bool World::LoadWorld(std::string const & parFilename)
 	}
 
 	std::ifstream fileStream;
-	fileStream.open(parFilename);
+	fileStream.open(parFilename.c_str());
 	std::smatch m;
 	std::regex e ("([a-z|A-Z|0-9]+) ?");
 
@@ -162,7 +162,7 @@ bool World::LoadWorld(std::string const & parFilename)
 		std::string s(line);
 		std::vector<std::string> params;
 
-		while (std::regex_search(s,m,e)) 
+		while (std::regex_search(s,m,e))
 		{
 			params.push_back(m[1]);
 			s = m.suffix().str();

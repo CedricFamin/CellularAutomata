@@ -8,6 +8,7 @@ class Blackboard;
 // --------------------------------------------
 struct Message
 {
+    virtual ~Message() {}
 	Agent * source;
 	virtual void Decode(Blackboard & parBlackboard, Agent * parAgent) = 0;
 };

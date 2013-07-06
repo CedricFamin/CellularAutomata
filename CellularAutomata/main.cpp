@@ -6,8 +6,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#include <boost\archive\text_iarchive.hpp>
-#include <boost\archive\text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 
 #include "World.h"
 #include "ObjectFactory.h"
@@ -24,6 +24,7 @@ namespace {
 
 int main(int ac, char **av)
 {
+    system("pwd");
 	KeyToAction keyAction;
 	ObjectFactory factory;
 	factory.RegisterObject(new WallObject());
@@ -47,7 +48,7 @@ int main(int ac, char **av)
 	else 
 	{
 		std::ifstream file;
-		file.open(SaveFileName);
+		file.open(SaveFileName.c_str());
 		if (!file.is_open())
 		{
 			std::cout << "Cannot open file : " << SaveFileName << std::endl;

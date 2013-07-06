@@ -13,7 +13,7 @@ void ObjectFactory::RegisterObject(BaseObject const * parObject)
 BaseObject * ObjectFactory::CreateObject(std::string const & parIdentifier) const
 {
 	ModelsContainerType::const_iterator it = this->FModels.find(parIdentifier);
-	if (it == this->FModels.cend())
+	if (it == this->FModels.end())
 		return NULL;
 	return it->second->Clone();
 }

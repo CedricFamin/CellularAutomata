@@ -3,10 +3,9 @@
 #include <iostream>
 #include <vector>
 #include <utility>
-#include <unordered_set>
 #include <set>
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/string.hpp>
@@ -95,6 +94,8 @@ private:
 	bool CreateObject(ParamList const & parParams);
 	bool SetVisicosity(ParamList const & parParams);
 	
+	ObjectFactory const & FFactory;
+
 	bool FShowDebug;
 	bool FNeedBuildVisionCache;
 	std::string FMapName;
@@ -104,7 +105,6 @@ private:
 	bool FPause;
 	float FInitialWorldTemperature;
 
-	ObjectFactory const & FFactory;
 
 	MapWithTileLevel FMaps;
 	CellularAutomata FCellularAutomata;

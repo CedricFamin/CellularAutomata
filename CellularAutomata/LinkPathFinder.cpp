@@ -1,4 +1,6 @@
 #include <assert.h>
+#include <limits>
+#include <math.h>
 
 #include "LinkPathFinder.h"
 
@@ -64,11 +66,11 @@ void LinkPathFind::ResultPath(node_type * parNode)
 void LinkPathFind::EvalDist(node_type* node) const
 {
 	Link const * currentLink = node->GetData().link;
-	int dist = INT_MAX;
+	int dist = std::numeric_limits<int>::max();
 
 	for (auto destination : FDestinations)
 	{
-		int distance = std::sqrtl(std::powl(currentLink->x - destination->x, 2) + std::powl(currentLink->y - destination->y, 2));
+		int distance = sqrtl(powl(currentLink->x - destination->x, 2) + powl(currentLink->y - destination->y, 2));
 		assert(distance >= 0);
 		dist = std::min(dist, distance);
 	}

@@ -65,7 +65,7 @@ void ActionOnF5(sf::RenderWindow & app, sf::View & view, World & world)
 	std::stringstream filename("");
 	filename << "../Save/" << world.GetMapName() << "-save-" << std::time(NULL) << ".casave";
 
-	file.open(filename.str(), std::fstream::trunc | std::ios::out);
+	file.open(filename.str().c_str(), std::fstream::trunc | std::ios::out);
 	if (!file.is_open())
 	{
 		std::cout << "Cannot open file : " << filename.str() << std::endl;

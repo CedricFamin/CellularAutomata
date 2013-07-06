@@ -1,6 +1,6 @@
 #include "ReachabilityCluster.h"
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <sstream>
 
 #include "Link.h"

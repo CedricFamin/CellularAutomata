@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "Agent.h"
 
 #include "Probe.h"
@@ -140,7 +142,7 @@ EnvironmentalAgent::~EnvironmentalAgent() {}
 // --------------------------------------------
 void EnvironmentalAgent::ReadAndWriteSomething(Blackboard & parBlackBoard)
 {
-	if (std::fabsf(FProbe.GetTemp() - 5.0f) > 1.0f)
+	if (fabsf(FProbe.GetTemp() - 5.0f) > 1.0f)
 	{
 		TempDemand* message = new TempDemand;
 		message->source = this;

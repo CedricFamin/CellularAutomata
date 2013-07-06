@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "CellularAutomata.h"
 #include "World.h"
 
@@ -8,9 +10,9 @@ namespace {
 }
 
 CellularAutomata::CellularAutomata()
-: FAverageTemp(0.0f)
+: FViscosity(1.0f)
+, FAverageTemp(0.0f)
 , FDeltaTemp(0.0f)
-, FViscosity(1.0f)
 {
 	for (int i = 0; i < 11; ++i)
 	{
@@ -57,8 +59,8 @@ void CellularAutomata::Update()
 	// Regle : update des cellule
 	float nbCell = 0;
 	FAverageTemp = 0;
-	float tempMax = FLT_MIN;
-	float tempMin = FLT_MAX;
+	float tempMax = std::numeric_limits<float>::min();
+	float tempMin = std::numeric_limits<float>::max();
 	for (int i = 0; i < FSize.y; ++i)
 	{
 		for (int j = 0; j < FSize.x; ++j)
@@ -85,7 +87,6 @@ void CellularAutomata::Update()
 				else if (FPreviousCelluls[i][j].IsWall)
 				{
 					float wallTemp = FPreviousCelluls[i][j].Temp, cellTemp = FPreviousCelluls[y][x].Temp, conductivity = FPreviousCelluls[i][j].Conductivity;
-					bool reverse = cellTemp > wallTemp;
 					totalTemp += cellTemp + ConductionAirToWall(cellTemp, wallTemp, conductivity);
 				}
 				else

@@ -6,8 +6,8 @@
 
 
 Interface::Interface(void)
-	: FTemperatureSelected(0)
-	, FAuto(false)
+	: FAuto(false)
+	, FTemperatureSelected(0)
 {
 	FDefaultFont.loadFromFile("../font/arial.ttf");
 }

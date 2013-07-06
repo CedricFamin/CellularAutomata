@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <list>
-#include <unordered_set>
 
 #include "Agent.h"
 #include "Messages.h"
