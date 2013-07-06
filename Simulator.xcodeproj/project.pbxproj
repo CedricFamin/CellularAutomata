@@ -110,52 +110,8 @@
 		2E73A9A0178870F800EB18C9 /* Simulator */ = {
 			isa = PBXGroup;
 			children = (
-				2E7EF8791788776A003F7E08 /* Agent.cpp */,
-				2E7EF87A1788776A003F7E08 /* Agent.h */,
-				2E7EF87B1788776A003F7E08 /* AllObject.h */,
-				2E7EF87C1788776A003F7E08 /* BaseObject.cpp */,
-				2E7EF87D1788776A003F7E08 /* BaseObject.h */,
-				2E7EF87E1788776A003F7E08 /* BaseWallObject.cpp */,
-				2E7EF87F1788776A003F7E08 /* BaseWallObject.h */,
-				2E7EF8801788776A003F7E08 /* Blackboard.cpp */,
-				2E7EF8811788776A003F7E08 /* Blackboard.h */,
-				2E7EF8821788776A003F7E08 /* CellularAutomata.cpp */,
-				2E7EF8831788776A003F7E08 /* CellularAutomata.h */,
-				2E7EF8841788776A003F7E08 /* HeatObject.cpp */,
-				2E7EF8851788776A003F7E08 /* HeatObject.h */,
-				2E7EF8861788776A003F7E08 /* Interface.cpp */,
-				2E7EF8871788776A003F7E08 /* Interface.h */,
-				2E7EF8881788776A003F7E08 /* IPathFinder.h */,
-				2E7EF8891788776A003F7E08 /* KeyToAction.cpp */,
-				2E7EF88A1788776A003F7E08 /* KeyToAction.h */,
-				2E7EF88B1788776A003F7E08 /* Link.h */,
-				2E7EF88C1788776A003F7E08 /* LinkPathFinder.cpp */,
-				2E7EF88D1788776A003F7E08 /* LinkPathFinder.h */,
-				2E7EF88E1788776A003F7E08 /* main.cpp */,
-				2E7EF88F1788776A003F7E08 /* Messages.cpp */,
-				2E7EF8901788776A003F7E08 /* Messages.h */,
-				2E7EF8911788776A003F7E08 /* Node.h */,
-				2E7EF8921788776A003F7E08 /* ObjectFactory.cpp */,
-				2E7EF8931788776A003F7E08 /* ObjectFactory.h */,
-				2E7EF8941788776A003F7E08 /* Physics.cpp */,
-				2E7EF8951788776A003F7E08 /* Physics.h */,
-				2E7EF8961788776A003F7E08 /* Probe.cpp */,
-				2E7EF8971788776A003F7E08 /* Probe.h */,
-				2E7EF8981788776A003F7E08 /* ReachabilityCluster.cpp */,
-				2E7EF8991788776A003F7E08 /* ReachabilityCluster.h */,
-				2E7EF89A1788776A003F7E08 /* ReachablePathFind.cpp */,
-				2E7EF89B1788776A003F7E08 /* ReachablePathFind.h */,
-				2E7EF89C1788776A003F7E08 /* SMAHeat.cpp */,
-				2E7EF89D1788776A003F7E08 /* SMAHeat.h */,
-				2E7EF89E1788776A003F7E08 /* StoneWallObject.cpp */,
-				2E7EF89F1788776A003F7E08 /* StoneWallObject.h */,
-				2E7EF8A01788776A003F7E08 /* Utils.h */,
-				2E7EF8A11788776A003F7E08 /* WallObject.cpp */,
-				2E7EF8A21788776A003F7E08 /* WallObject.h */,
-				2E7EF8A31788776A003F7E08 /* WindowObject.cpp */,
-				2E7EF8A41788776A003F7E08 /* WindowObject.h */,
-				2E7EF8A51788776A003F7E08 /* World.cpp */,
-				2E7EF8A61788776A003F7E08 /* World.h */,
+				2E7EF8BC1788B2FD003F7E08 /* Sources */,
+				2E7EF8BD1788B310003F7E08 /* Headers */,
 				2E73A9A3178870F800EB18C9 /* Resources */,
 			);
 			path = Simulator;
@@ -166,6 +122,114 @@
 			children = (
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		2E7EF8BC1788B2FD003F7E08 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				2E7EF8C31788B3B3003F7E08 /* PathFind */,
+				2E7EF8C21788B3A3003F7E08 /* SMA */,
+				2E7EF8C11788B38D003F7E08 /* Object */,
+				2E7EF8821788776A003F7E08 /* CellularAutomata.cpp */,
+				2E7EF8861788776A003F7E08 /* Interface.cpp */,
+				2E7EF8891788776A003F7E08 /* KeyToAction.cpp */,
+				2E7EF88E1788776A003F7E08 /* main.cpp */,
+				2E7EF8941788776A003F7E08 /* Physics.cpp */,
+				2E7EF8A51788776A003F7E08 /* World.cpp */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		2E7EF8BD1788B310003F7E08 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				2E7EF8C01788B35C003F7E08 /* PathFind */,
+				2E7EF8BF1788B34B003F7E08 /* SMA */,
+				2E7EF8BE1788B329003F7E08 /* Object */,
+				2E7EF8831788776A003F7E08 /* CellularAutomata.h */,
+				2E7EF8871788776A003F7E08 /* Interface.h */,
+				2E7EF88A1788776A003F7E08 /* KeyToAction.h */,
+				2E7EF8951788776A003F7E08 /* Physics.h */,
+				2E7EF8A01788776A003F7E08 /* Utils.h */,
+				2E7EF8A61788776A003F7E08 /* World.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		2E7EF8BE1788B329003F7E08 /* Object */ = {
+			isa = PBXGroup;
+			children = (
+				2E7EF8931788776A003F7E08 /* ObjectFactory.h */,
+				2E7EF87B1788776A003F7E08 /* AllObject.h */,
+				2E7EF87D1788776A003F7E08 /* BaseObject.h */,
+				2E7EF87F1788776A003F7E08 /* BaseWallObject.h */,
+				2E7EF8851788776A003F7E08 /* HeatObject.h */,
+				2E7EF8971788776A003F7E08 /* Probe.h */,
+				2E7EF89F1788776A003F7E08 /* StoneWallObject.h */,
+				2E7EF8A21788776A003F7E08 /* WallObject.h */,
+				2E7EF8A41788776A003F7E08 /* WindowObject.h */,
+			);
+			name = Object;
+			sourceTree = "<group>";
+		};
+		2E7EF8BF1788B34B003F7E08 /* SMA */ = {
+			isa = PBXGroup;
+			children = (
+				2E7EF88B1788776A003F7E08 /* Link.h */,
+				2E7EF87A1788776A003F7E08 /* Agent.h */,
+				2E7EF8811788776A003F7E08 /* Blackboard.h */,
+				2E7EF8901788776A003F7E08 /* Messages.h */,
+				2E7EF89D1788776A003F7E08 /* SMAHeat.h */,
+			);
+			name = SMA;
+			sourceTree = "<group>";
+		};
+		2E7EF8C01788B35C003F7E08 /* PathFind */ = {
+			isa = PBXGroup;
+			children = (
+				2E7EF8881788776A003F7E08 /* IPathFinder.h */,
+				2E7EF88D1788776A003F7E08 /* LinkPathFinder.h */,
+				2E7EF8911788776A003F7E08 /* Node.h */,
+				2E7EF8991788776A003F7E08 /* ReachabilityCluster.h */,
+				2E7EF89B1788776A003F7E08 /* ReachablePathFind.h */,
+			);
+			name = PathFind;
+			sourceTree = "<group>";
+		};
+		2E7EF8C11788B38D003F7E08 /* Object */ = {
+			isa = PBXGroup;
+			children = (
+				2E7EF87C1788776A003F7E08 /* BaseObject.cpp */,
+				2E7EF87E1788776A003F7E08 /* BaseWallObject.cpp */,
+				2E7EF8841788776A003F7E08 /* HeatObject.cpp */,
+				2E7EF8921788776A003F7E08 /* ObjectFactory.cpp */,
+				2E7EF8961788776A003F7E08 /* Probe.cpp */,
+				2E7EF89E1788776A003F7E08 /* StoneWallObject.cpp */,
+				2E7EF8A11788776A003F7E08 /* WallObject.cpp */,
+				2E7EF8A31788776A003F7E08 /* WindowObject.cpp */,
+			);
+			name = Object;
+			sourceTree = "<group>";
+		};
+		2E7EF8C21788B3A3003F7E08 /* SMA */ = {
+			isa = PBXGroup;
+			children = (
+				2E7EF8791788776A003F7E08 /* Agent.cpp */,
+				2E7EF8801788776A003F7E08 /* Blackboard.cpp */,
+				2E7EF88F1788776A003F7E08 /* Messages.cpp */,
+				2E7EF89C1788776A003F7E08 /* SMAHeat.cpp */,
+			);
+			name = SMA;
+			sourceTree = "<group>";
+		};
+		2E7EF8C31788B3B3003F7E08 /* PathFind */ = {
+			isa = PBXGroup;
+			children = (
+				2E7EF88C1788776A003F7E08 /* LinkPathFinder.cpp */,
+				2E7EF8981788776A003F7E08 /* ReachabilityCluster.cpp */,
+				2E7EF89A1788776A003F7E08 /* ReachablePathFind.cpp */,
+			);
+			name = PathFind;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -363,6 +427,7 @@
 					"$(inherited)",
 					/opt/local/lib,
 				);
+				MACH_O_TYPE = mh_execute;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"$(SFML_SYSTEM)",
@@ -373,6 +438,7 @@
 					"-lboost_serialization",
 					"-lboost_filesystem",
 					"-lboost_system",
+					"-lboost_program_options",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = x86_64;
@@ -393,6 +459,7 @@
 					"$(inherited)",
 					/opt/local/lib,
 				);
+				MACH_O_TYPE = mh_execute;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"$(SFML_SYSTEM)",
@@ -403,6 +470,7 @@
 					"-lboost_serialization",
 					"-lboost_filesystem",
 					"-lboost_system",
+					"-lboost_program_options",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = x86_64;
